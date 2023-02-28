@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 1.8
+          distribution: 'adopt@1.11'
 
       - name: Build with Gradle
         run: ./gradlew assembleDebug
