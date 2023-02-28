@@ -1,38 +1,105 @@
 name: Android Build
 
-on: pull_request
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ development ]
+
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: 'The application id of current build'
+        required: true
+      branch:
+        description: 'The branch of current build'
+        required: true
 
 jobs:
-
-  local_test_job:
-    name: Running Local Tests
-    runs-on: ubuntu-latest
-    continue-on-error: true
+  build:
+    name: Setup Environment and build
+    runs-on: self-hosted
     steps:
-      - name: Checkout
+      - name: Checkout the code to specific branch
         uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
         with:
-          java-version: 11
-      - name: Print Java version
-        run: javac -version
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-      - name: Restore Cache
-        uses: actions/cache@v2
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - uses: actions/cache@v2
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Run Debug Tests
-        run: ./gradlew testDebugUnitTest --continue
-      - name: Upload Test Reports
-        if: ${{ always() }}
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Generate app bundle
+        run: ./gradlew app:bundleRelease --stacktrace
+
+      - name: Sign app bundle
+        run: |
+          jarsigner -keystore app/*.jks \
+          -storepass ${{ secrets.KEY_STORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} \
+          app/build/outputs/bundle/release/app-release.aab ${{ secrets.ALIAS }}
+
+  #   STEP 2 : Upload the Artifact
+  upload:
+    needs: [ build ]
+    name: Upload the signed artifact
+    runs-on: self-hosted
+    steps:
+      - name: Upload Bundle
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports
-          path: '**/build/reports/tests/'
+          name: signed_app_bundle
+          path: app/build/outputs/bundle/release/app-release.aab
+
+#on: pull_request
+#
+#jobs:
+#
+#  local_test_job:
+#    name: Running Local Tests
+#    runs-on: ubuntu-latest
+#    continue-on-error: true
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#      - name: Print Java version
+#        run: javac -version
+#      - name: Change wrapper permissions
+#        run: chmod +x ./gradlew
+#      - name: Restore Cache
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - name: Run Debug Tests
+#        run: ./gradlew testDebugUnitTest --continue
+#      - name: Upload Test Reports
+#        if: ${{ always() }}
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: test-reports
+#          path: '**/build/reports/tests/'
