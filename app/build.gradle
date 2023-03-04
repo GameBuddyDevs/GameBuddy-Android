@@ -90,6 +90,8 @@ dependencies {
     // Lottie
     implementation "com.airbnb.android:lottie:5.2.0"
 
+    implementation "com.afollestad.material-dialogs:core:3.1.0"
+
     // Phone Number
     implementation 'com.hbb20:ccp:2.6.1'
 
