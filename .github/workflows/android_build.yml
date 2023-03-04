@@ -1,5 +1,9 @@
 name: Android Build
 
+#env:
+#  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#  FIREBASE_APP_ID: your_firebase_app_id
+
 on:
   push:
     branches:
@@ -8,65 +12,43 @@ on:
     branches:
       - development
 
-
-
-#env:
-#  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-#  FIREBASE_APP_ID: your_firebase_app_id
-
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
 
+  local_test_job:
+    name: Running Local Tests
+    runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
         with:
-          java-version: 1.8
-          distribution: 'adopt@1.11'
+          java-version: 11
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
+      - name: Print Java version
+        run: javac -version
 
-      - name: Run JUnit tests
-        run: ./gradlew testDebugUnitTest
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
-#on: pull_request
-#
-#jobs:
-#
-#  local_test_job:
-#    name: Running Local Tests
-#    runs-on: ubuntu-latest
-#    continue-on-error: true
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#      - name: Print Java version
-#        run: javac -version
-#      - name: Change wrapper permissions
-#        run: chmod +x ./gradlew
-#      - name: Restore Cache
-#        uses: actions/cache@v2
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#      - name: Run Debug Tests
-#        run: ./gradlew testDebugUnitTest --continue
-#      - name: Upload Test Reports
-#        if: ${{ always() }}
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: test-reports
-#          path: '**/build/reports/tests/'
+      - name: Restore Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run Debug Tests
+        run: ./gradlew testDebugUnitTest --continue
+
+      - name: Upload Test Reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/'
