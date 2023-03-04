@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
-import com.example.gamebuddy.Constants.PERMISSIONS_REQUEST_READ_STORAGE
+import com.example.gamebuddy.presentation.UICommunicationListener
+import com.example.gamebuddy.util.Constants.PERMISSIONS_REQUEST_READ_STORAGE
 
 class BaseActivity : AppCompatActivity(), UICommunicationListener {
 

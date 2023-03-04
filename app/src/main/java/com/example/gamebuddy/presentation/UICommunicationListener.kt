@@ -1,4 +1,4 @@
-package com.example.gamebuddy
+package com.example.gamebuddy.presentation
 
 interface UICommunicationListener {
 
