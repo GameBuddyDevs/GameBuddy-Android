@@ -30,6 +30,12 @@ jobs:
       - name: Print Java version
         run: javac -version
 
+      - name: Touch local properties
+        run: touch local.properties
+
+      - name: Add Api Key
+        run: echo "apiKey=\"\"" >> local.properties
+
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
