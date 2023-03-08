@@ -21,7 +21,7 @@ class Queue<T>(list: MutableList<T>) {
     @Throws(Exception::class)
     fun remove(): T {
         if (this.isEmpty()) {
-            throw Exception("fun 'remove' threw an exception: Nothing to remove from the queue.")
+            throw Exception("Nothing to remove from the queue.")
         } else {
             return items.removeAt(0)
         }
@@ -34,7 +34,7 @@ class Queue<T>(list: MutableList<T>) {
     @Throws(Exception::class)
     fun element(): T {
         if (this.isEmpty()) {
-            throw Exception("fun 'element' threw an exception: Nothing in the queue.")
+            throw Exception("Nothing in the queue.")
         }
         return items[0]
     }
