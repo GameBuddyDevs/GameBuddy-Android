@@ -35,13 +35,13 @@ fun StateMessage.isMessageExistInQueue(
 ): Boolean {
 
     queue.items.forEach { stateMessage ->
-        if (stateMessage.response.message == this.response.message) {
+        if (stateMessage.response.message == response.message) {
             return true
         }
-        if (stateMessage.response.messageType == this.response.messageType) {
+        if (stateMessage.response.messageType == response.messageType) {
             return true
         }
-        if (stateMessage.response.uiComponentType == this.response.uiComponentType) {
+        if (stateMessage.response.uiComponentType == response.uiComponentType) {
             return true
         }
     }

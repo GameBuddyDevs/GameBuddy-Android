@@ -19,6 +19,7 @@ fun processQueue(
     queue: Queue<StateMessage>,
     stateMessageCallback: StateMessageCallback,
 ) {
+    Timber.d("processQueue: ${queue.items}")
     context?.let { ctx ->
         if (!queue.isEmpty()) {
             queue.peek()?.let { stateMessage ->

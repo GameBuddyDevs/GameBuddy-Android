@@ -16,6 +16,7 @@ import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class RegisterFragment : BaseAuthFragment() {
 
@@ -30,6 +31,8 @@ class RegisterFragment : BaseAuthFragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+
+        Timber.d("RegisterFragment: HEREEEEEEEEEEEEEE")
 
         binding.btnRegister.setOnClickListener {
             signup()
@@ -59,6 +62,7 @@ class RegisterFragment : BaseAuthFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
+                    Timber.d("RegisterFragment: $state")
                     uiCommunicationListener.displayProgressBar(state.isLoading)
                     processQueue(
                         context = requireContext(),
