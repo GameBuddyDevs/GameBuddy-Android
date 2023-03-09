@@ -19,7 +19,19 @@ class RegisterViewModel @Inject constructor(
             is RegisterEvent.OnUpdateConfirmPassword -> TODO()
             is RegisterEvent.OnUpdateEmail -> TODO()
             is RegisterEvent.OnUpdatePassword -> TODO()
-            is RegisterEvent.Register -> TODO()
+            is RegisterEvent.Register -> {
+                register(
+                    email = event.email,
+                    password = event.password,
+                    confirmPassword = event.confirmPassword,
+                )
+            }
+        }
+    }
+
+    private fun register(email: String, password: String, confirmPassword: String) {
+        state.value?.let { state ->
+            
         }
     }
 }

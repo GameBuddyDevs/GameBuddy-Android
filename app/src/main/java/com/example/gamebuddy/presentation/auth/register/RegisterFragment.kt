@@ -32,7 +32,11 @@ class RegisterFragment : BaseAuthFragment() {
     }
 
     private fun signup() {
-        // TODO("Continue from here and add the logic")
+        viewModel.onTriggerEvent(RegisterEvent.Register(
+            email = "testke@gmail.com", /*binding.inputEmail.text.toString(),*/
+            password = "123456", /*binding.inputPassword.text.toString(),*/
+            confirmPassword = "123456", /*binding.inputConfirmPassword.text.toString()*/
+        ))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
