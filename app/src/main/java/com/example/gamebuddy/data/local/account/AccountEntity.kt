@@ -9,7 +9,7 @@ data class AccountEntity(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "pk")
-    val pk: Int,
+    val pk: String,
 
     @ColumnInfo(name = "email")
     val email: String,

@@ -3,4 +3,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="signup">Sign up</string>
+    <string name="text_success">Success</string>
+    <string name="text_ok">OK</string>
+    <string name="text_error">Error</string>
+    <string name="text_info">Info</string>
+    <string name="are_you_sure">Are you sure_</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_yes">Yes</string>
 </resources>

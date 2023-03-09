@@ -12,11 +12,11 @@ interface AccountDao {
     suspend fun insertAccount(accountEntity: AccountEntity): Long
 
     @Query("UPDATE account_prop SET email = :email WHERE pk = :pk")
-    suspend fun updateAccount(pk: Int, email: String)
+    suspend fun updateAccount(pk: String, email: String)
 
     @Query("SELECT * FROM account_prop WHERE email = :email")
     suspend fun searchByEmail(email: String): AccountEntity?
 
     @Query("SELECT * FROM account_prop WHERE pk = :pk")
-    suspend fun searchByPk(pk: Int): AccountEntity?
+    suspend fun searchByPk(pk: String): AccountEntity?
 }

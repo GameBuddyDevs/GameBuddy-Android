@@ -10,9 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.example.gamebuddy.presentation.UICommunicationListener
 import com.example.gamebuddy.util.Constants.PERMISSIONS_REQUEST_READ_STORAGE
 
-class BaseActivity : AppCompatActivity(), UICommunicationListener {
-
-    val TAG = "BaseAppDebug"
+abstract class BaseActivity : AppCompatActivity(), UICommunicationListener {
 
     private var dialogInView: MaterialDialog? = null
 
