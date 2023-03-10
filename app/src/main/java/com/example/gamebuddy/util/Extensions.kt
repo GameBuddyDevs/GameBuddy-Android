@@ -1,5 +1,6 @@
 package com.example.gamebuddy.util
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 
 
@@ -35,16 +36,26 @@ fun StateMessage.isMessageExistInQueue(
 ): Boolean {
 
     queue.items.forEach { stateMessage ->
-        if (stateMessage.response.message == this.response.message) {
+        if (stateMessage.response.message == response.message) {
             return true
         }
-        if (stateMessage.response.messageType == this.response.messageType) {
+        if (stateMessage.response.messageType == response.messageType) {
             return true
         }
-        if (stateMessage.response.uiComponentType == this.response.uiComponentType) {
+        if (stateMessage.response.uiComponentType == response.uiComponentType) {
             return true
         }
     }
 
     return false
 }
+
+//public inline fun <T> MutableStateFlow<T>.update(function: (T) -> T) {
+//    while (true) {
+//        val prevValue = value
+//        val nextValue = function(prevValue)
+//        if (compareAndSet(prevValue, nextValue)) {
+//            return
+//        }
+//    }
+//}

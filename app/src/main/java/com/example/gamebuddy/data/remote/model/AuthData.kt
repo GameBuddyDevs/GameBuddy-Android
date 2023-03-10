@@ -5,5 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AuthData(
     @SerializedName("userId")
-    val userId: String
+    val userId: String,
+    @SerializedName("token")
+    val token: String
 )
