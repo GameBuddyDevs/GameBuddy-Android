@@ -22,7 +22,7 @@ class RegisterUseCase(
     private val appDataStore: AppDataStore,
 ) {
 
-   suspend fun execute(
+    fun execute(
         email: String,
         password: String,
         confirmPassword: String,
