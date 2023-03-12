@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.gamebuddy.databinding.FragmentRegisterBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class RegisterFragment : BaseAuthFragment() {
@@ -56,7 +52,7 @@ class RegisterFragment : BaseAuthFragment() {
     }
 
     private fun collectState() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
             processQueue(
                 context = context,

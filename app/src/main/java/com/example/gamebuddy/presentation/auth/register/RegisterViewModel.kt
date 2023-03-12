@@ -9,8 +9,6 @@ import com.example.gamebuddy.session.SessionManager
 import com.example.gamebuddy.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +18,7 @@ class RegisterViewModel @Inject constructor(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
-    val state: MutableLiveData<RegisterState> = MutableLiveData(RegisterState())
+    val uiState: MutableLiveData<RegisterState> = MutableLiveData(RegisterState())
 
     fun onTriggerEvent(event: RegisterEvent) {
         when (event) {
@@ -39,12 +37,12 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun removeHeadFromQueue() {
-        state.value?.let {
+        uiState.value?.let {
             try {
                 val queue = it.queue
                 queue.remove()
-                this.state.value = it.copy(queue = queue)
-                Timber.d("Queue count after remove head: $state")
+                this.uiState.value = it.copy(queue = queue)
+                Timber.d("Queue count after remove head: $uiState")
             } catch (e: Exception) {
                 Timber.d("Nothing to remove ${e.message}")
             }
@@ -52,13 +50,13 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun appendToMessageQueue(stateMessage: StateMessage) {
-        state.value?.let { state ->
+        uiState.value?.let { state ->
             val queue = state.queue
             if (!stateMessage.isMessageExistInQueue(queue)) {
                 if (stateMessage.response.uiComponentType !is UIComponentType.None) {
                     queue.add(stateMessage)
                     Timber.d("RegisterViewModel Something added to queue: ${state.queue}")
-                    this.state.value = state.copy(queue = queue)
+                    this.uiState.value = state.copy(queue = queue)
                 }
             }
         }
@@ -69,13 +67,13 @@ class RegisterViewModel @Inject constructor(
         password: String,
         confirmPassword: String,
     ) {
-        state.value?.let { state ->
+        uiState.value?.let { state ->
             registerUseCase.execute(
                 email = email,
                 password = password,
                 confirmPassword = confirmPassword,
             ).onEach { dataState ->
-                this.state.value = state.copy(isLoading = dataState.isLoading)
+                this.uiState.value = state.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { authToken ->
                     sessionManager.onTriggerEvent(SessionEvents.Login(authToken))
