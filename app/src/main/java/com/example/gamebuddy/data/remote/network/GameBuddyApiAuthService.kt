@@ -1,6 +1,7 @@
 package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.AuthResponse
+import com.example.gamebuddy.data.remote.request.LoginRequest
 import com.example.gamebuddy.data.remote.request.RegisterRequest
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -27,6 +28,11 @@ interface GameBuddyApiAuthService {
     suspend fun register(
         @Body registerRequest: RegisterRequest,
     ): AuthResponse
+
+    @POST("auth/login")
+    suspend fun login(
+        @Body loginRequest: LoginRequest,
+    ):AuthResponse
 
     @POST("auth/verify")
     @FormUrlEncoded

@@ -11,6 +11,9 @@ interface AccountDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccount(accountEntity: AccountEntity): Long
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertOrIgnore(accountEntity: AccountEntity):Long
+
     @Query("UPDATE account_prop SET email = :email WHERE pk = :pk")
     suspend fun updateAccount(pk: String, email: String)
 

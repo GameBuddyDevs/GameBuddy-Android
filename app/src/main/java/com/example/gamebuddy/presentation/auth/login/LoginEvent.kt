@@ -1,18 +1,18 @@
 package com.example.gamebuddy.presentation.auth.login
 
-sealed class LoginEvents {
+sealed class LoginEvent {
     data class Login(
         val email: String,
         val password: String
-    ): LoginEvents()
+    ): LoginEvent()
 
     data class OnUpdateEmail(
         val email: String
-    ): LoginEvents()
+    ): LoginEvent()
 
     data class OnUpdatePassword(
         val password: String
-    ): LoginEvents()
+    ): LoginEvent()
 
-    object OnRemoveHeadFromQueue: LoginEvents()
+    object OnRemoveHeadFromQueue: LoginEvent()
 }
