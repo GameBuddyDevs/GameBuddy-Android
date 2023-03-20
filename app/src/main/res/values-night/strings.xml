@@ -8,4 +8,6 @@
     <string name="are_you_sure">Are you sure_</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_yes">Yes</string>
+    <string name="verify_info">Code has been sent to your email</string>
+    <string name="verify_button">Verify</string>
 </resources>

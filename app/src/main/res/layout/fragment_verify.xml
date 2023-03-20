@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.auth.verify.VerifyFragment">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/verify_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/verify_info"
+            android:textColor="@color/text"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/verification_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edit_text_verification"
+                android:gravity="center"
+                android:text="4"
+                android:textSize="28sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verify_button"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/pink_500"
+        android:text="@string/verify_button"
+        android:textColor="@color/white"
+        app:cornerRadius="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/container"
+        tools:layout_editor_absoluteX="32dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
