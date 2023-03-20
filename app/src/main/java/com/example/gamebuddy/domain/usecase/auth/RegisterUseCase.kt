@@ -18,7 +18,7 @@ import timber.log.Timber
 class RegisterUseCase(
     private val service: GameBuddyApiAuthService,
     private val accountDao: AccountDao,
-    private val authTokenDao: AuthTokenDao,
+    //private val authTokenDao: AuthTokenDao,
     private val appDataStore: AppDataStore,
 ) {
 
@@ -26,7 +26,7 @@ class RegisterUseCase(
         email: String,
         password: String,
         confirmPassword: String,
-    ): Flow<DataState<AuthToken>> = flow {
+    ): Flow<DataState<Boolean>> = flow {
         emit(DataState.loading())
         val registerResponse = service.register(
             registerRequest = RegisterRequest(
@@ -46,18 +46,18 @@ class RegisterUseCase(
             ).toEntity()
         )
 
-        val authToken = AuthToken(
-            pk = registerResponse.authBody.authData.userId,
-            token = registerResponse.authBody.authData.token,
-        )
+//        val authToken = AuthToken(
+//            pk = registerResponse.authBody.authData.userId,
+//            token = registerResponse.authBody.authData.token,
+//        )
 
-        val result = authTokenDao.insertAuthToken(authToken.toEntity())
-        if (result < 0) {
-            throw Exception("Error inserting auth token")
-        }
+//        val result = authTokenDao.insertAuthToken(authToken.toEntity())
+//        if (result < 0) {
+//            throw Exception("Error inserting auth token")
+//        }
 
         appDataStore.setValue(Constants.LAST_AUTH_USER, email) // For auto login
-        emit(DataState.success(response = null, data = authToken))
+        emit(DataState.success(response = null, data = true))
     }.catch { e ->
         Timber.e("RegisterUseCase hatakeeee: $e")
         emit(handleUseCaseException(e))

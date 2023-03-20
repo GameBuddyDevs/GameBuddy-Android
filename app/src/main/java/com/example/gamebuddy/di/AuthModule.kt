@@ -40,7 +40,7 @@ object AuthModule {
         return RegisterUseCase(
             service = service,
             accountDao = accountDao,
-            authTokenDao = authTokenDao,
+            //authTokenDao = authTokenDao,
             appDataStore = dataStore
         )
     }

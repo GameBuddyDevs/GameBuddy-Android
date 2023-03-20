@@ -75,9 +75,9 @@ class RegisterViewModel @Inject constructor(
             ).onEach { dataState ->
                 this.uiState.value = state.copy(isLoading = dataState.isLoading)
 
-                dataState.data?.let { authToken ->
-                    sessionManager.onTriggerEvent(SessionEvents.Login(authToken))
-                }
+//                dataState.data?.let { authToken ->
+//                    sessionManager.onTriggerEvent(SessionEvents.Login(authToken))
+//                }
 
                 dataState.stateMessage?.let { stateMessage ->
                     appendToMessageQueue(stateMessage)
