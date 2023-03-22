@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentRegisterBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.util.StateMessageCallback
@@ -25,8 +27,6 @@ class RegisterFragment : BaseAuthFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
-        Timber.d("RegisterFragment: HEREEEEEEEEEEEEEE")
-
         binding.btnRegister.setOnClickListener {
             signup()
         }
@@ -37,9 +37,9 @@ class RegisterFragment : BaseAuthFragment() {
     private fun signup() {
         viewModel.onTriggerEvent(
             RegisterEvent.Register(
-                email = "testke@gmail.com", /*binding.inputEmail.text.toString(),*/
-                password = "123456", /*binding.inputPassword.text.toString(),*/
-                confirmPassword = "123456", /*binding.inputConfirmPassword.text.toString()*/
+                email = binding.emailContainer.editText?.text.toString(),
+                password = binding.passwordContainer.editText?.text.toString(),
+                confirmPassword = binding.confirmPasswordContainer.editText?.text.toString(),
             )
         )
     }
@@ -48,7 +48,6 @@ class RegisterFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         collectState()
-
     }
 
     private fun collectState() {
@@ -63,6 +62,10 @@ class RegisterFragment : BaseAuthFragment() {
                     }
                 }
             )
+
+            if (state.isRegistrationCompleted) {
+                findNavController().navigate(R.id.action_registerFragment_to_verifyFragment)
+            }
         }
     }
 

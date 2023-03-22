@@ -18,7 +18,8 @@ class RegisterViewModel @Inject constructor(
     private val sessionManager: SessionManager,
 ) : ViewModel() {
 
-    val uiState: MutableLiveData<RegisterState> = MutableLiveData(RegisterState())
+    private val _uiState: MutableLiveData<RegisterState> = MutableLiveData(RegisterState())
+    val uiState: MutableLiveData<RegisterState> get() = _uiState
 
     fun onTriggerEvent(event: RegisterEvent) {
         when (event) {
@@ -37,11 +38,11 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun removeHeadFromQueue() {
-        uiState.value?.let {
+        _uiState.value?.let {
             try {
                 val queue = it.queue
                 queue.remove()
-                this.uiState.value = it.copy(queue = queue)
+                _uiState.value = it.copy(queue = queue)
                 Timber.d("Queue count after remove head: $uiState")
             } catch (e: Exception) {
                 Timber.d("Nothing to remove ${e.message}")
@@ -50,13 +51,13 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun appendToMessageQueue(stateMessage: StateMessage) {
-        uiState.value?.let { state ->
+        _uiState.value?.let { state ->
             val queue = state.queue
             if (!stateMessage.isMessageExistInQueue(queue)) {
                 if (stateMessage.response.uiComponentType !is UIComponentType.None) {
                     queue.add(stateMessage)
                     Timber.d("RegisterViewModel Something added to queue: ${state.queue}")
-                    this.uiState.value = state.copy(queue = queue)
+                    _uiState.value = state.copy(queue = queue)
                 }
             }
         }
@@ -73,7 +74,7 @@ class RegisterViewModel @Inject constructor(
                 password = password,
                 confirmPassword = confirmPassword,
             ).onEach { dataState ->
-                this.uiState.value = state.copy(isLoading = dataState.isLoading)
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
 
 //                dataState.data?.let { authToken ->
 //                    sessionManager.onTriggerEvent(SessionEvents.Login(authToken))
@@ -82,6 +83,11 @@ class RegisterViewModel @Inject constructor(
                 dataState.stateMessage?.let { stateMessage ->
                     appendToMessageQueue(stateMessage)
                 }
+
+                if (dataState.data != null) {
+                    _uiState.value = state.copy(isRegistrationCompleted = true)
+                }
+
             }.launchIn(viewModelScope)
         }
     }

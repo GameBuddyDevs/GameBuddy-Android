@@ -60,9 +60,20 @@ class VerifyFragment : BaseAuthFragment() {
             viewModel.onTriggerEvent(
                 VerifyEvent.EnteredVerificationCode(
                     //verificationCode = binding.verificationCode.text.toString()
-                    verificationCode = "558379"
+                    verificationCode = getVerificationCode()
                 )
             )
+        }
+    }
+
+    private fun getVerificationCode(): String {
+        binding.apply {
+            return verificationCode1.text.toString() +
+                    verificationCode2.text.toString() +
+                    verificationCode3.text.toString() +
+                    verificationCode4.text.toString() +
+                    verificationCode5.text.toString() +
+                    verificationCode6.text.toString()
         }
     }
 

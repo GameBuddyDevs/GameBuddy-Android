@@ -12,4 +12,11 @@
     <string name="text_yes">Yes</string>
     <string name="verify_info">Code has been sent to your email</string>
     <string name="verify_button">Verify</string>
+    <string name="go_to_previous_page">GO to previous page</string>
+    <string name="login_header">Login to your Account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="create_account">Create a new Account</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="register_remember">Remember me</string>
 </resources>
