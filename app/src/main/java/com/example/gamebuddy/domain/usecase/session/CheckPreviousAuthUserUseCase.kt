@@ -11,6 +11,7 @@ import com.example.gamebuddy.util.UIComponentType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class CheckPreviousAuthUserUseCase(
     private val accountDao: AccountDao,
@@ -25,6 +26,7 @@ class CheckPreviousAuthUserUseCase(
         if (account != null) {
             authToken = authTokenDao.searchByPk(account.pk)?.toAuthToken()
             if (authToken != null) {
+                Timber.d("Found previous auth token ${authToken.token} for user ${authToken.pk}")
                 emit(DataState.success(response = null, data = authToken))
             } else {
                 throw Exception("Error retrieving auth token. No previous user found")
@@ -32,11 +34,13 @@ class CheckPreviousAuthUserUseCase(
         }
     }.catch { exception ->
         exception.printStackTrace()
-        DataState.error<AuthToken>(
-            response = Response(
-                "Done checking for previously authenticated user.",
-                UIComponentType.None(),
-                MessageType.Error()
+        emit(
+            DataState.error<AuthToken>(
+                response = Response(
+                    "Done checking for previously authenticated user.",
+                    UIComponentType.None(),
+                    MessageType.Error()
+                )
             )
         )
     }

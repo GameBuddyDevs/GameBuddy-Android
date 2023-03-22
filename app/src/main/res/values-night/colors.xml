@@ -9,4 +9,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="black_700">#1A1B22</color>
+    <color name="black_500">#23252F</color>
+    <color name="pink_500">#FF4D67</color>
+    <color name="pink_200">#E98090</color>
+
+    <!-- Attribute helper colors -->
+    <color name="background">#1A1B22</color>
+    <color name="edit_text_background">#23252F</color>
+    <color name="edit_text_background_focus">#2C1F27</color>
+    <color name="text">#FFFFFFFF</color>
 </resources>

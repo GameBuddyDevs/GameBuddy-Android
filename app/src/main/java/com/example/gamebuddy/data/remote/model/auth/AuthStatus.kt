@@ -1,4 +1,4 @@
-package com.example.gamebuddy.data.remote.model
+package com.example.gamebuddy.data.remote.model.auth
 
 
 import com.google.gson.annotations.SerializedName

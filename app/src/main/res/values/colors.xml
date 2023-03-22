@@ -10,9 +10,16 @@
 
     <color name="pink_500">#FF4D67</color>
     <color name="pink_200">#E98090</color>
+    <color name="black_500">#23252F</color>
+
 
 
     <!-- Dark -->
     <color name="black_700">#1A1B22</color>
 
+    <!-- Attribute helper colors -->
+    <color name="background">#FFFFFFFF</color>
+    <color name="edit_text_background">#E1E1E1</color>
+    <color name="edit_text_background_focus">#FFF1F3</color>
+    <color name="text">#FF000000</color>
 </resources>
