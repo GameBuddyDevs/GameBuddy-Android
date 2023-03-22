@@ -40,8 +40,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
             <EditText
                 android:layout_width="50dp"
@@ -49,8 +50,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
             <EditText
                 android:layout_width="50dp"
@@ -58,8 +60,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
             <EditText
                 android:layout_width="50dp"
@@ -67,8 +70,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
             <EditText
                 android:layout_width="50dp"
@@ -76,8 +80,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
             <EditText
                 android:layout_width="50dp"
@@ -85,8 +90,9 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edit_text_verification"
                 android:gravity="center"
-                android:text="4"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:autofillHints=""
+                android:inputType="number" />
 
         </LinearLayout>
 

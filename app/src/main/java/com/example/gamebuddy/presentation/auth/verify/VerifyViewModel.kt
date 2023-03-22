@@ -19,7 +19,7 @@ import javax.inject.Inject
 class VerifyViewModel @Inject constructor(
     private val verifyUseCase: VerifyUseCase,
     private val sessionManager: SessionManager,
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState: MutableLiveData<VerifyState> = MutableLiveData(VerifyState())
     val uiState: MutableLiveData<VerifyState> get() = _uiState
@@ -33,20 +33,18 @@ class VerifyViewModel @Inject constructor(
 
     private fun approveAccount(verificationCode: String) {
         _uiState.value.let { state ->
-            verifyUseCase.execute(
-                pk = sessionManager.sessionState.value.authToken!!.pk,
-                verificationCode = verificationCode,
-            ).onEach { datastate ->
-                _uiState.value = state?.copy(isLoading = datastate.isLoading)
+            verifyUseCase.execute(verificationCode = verificationCode)
+                .onEach { datastate ->
+                    _uiState.value = state?.copy(isLoading = datastate.isLoading)
 
-                datastate.data?.let { authToken ->
-                    sessionManager.onTriggerEvent(SessionEvents.Login(authToken = authToken))
-                }
+                    datastate.data?.let { authToken ->
+                        sessionManager.onTriggerEvent(SessionEvents.Login(authToken = authToken))
+                    }
 
-                datastate.stateMessage?.let { stateMessage ->
-                    appendToMessageQueue(stateMessage)
-                }
-            }.launchIn(viewModelScope)
+                    datastate.stateMessage?.let { stateMessage ->
+                        appendToMessageQueue(stateMessage)
+                    }
+                }.launchIn(viewModelScope)
         }
     }
 

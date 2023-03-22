@@ -5,4 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class VerifyData(
     @SerializedName("accessToken")
     val accessToken: String,
+    @SerializedName("userId")
+    val pk: String
 )

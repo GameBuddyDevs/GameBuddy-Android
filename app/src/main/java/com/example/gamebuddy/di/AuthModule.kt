@@ -6,6 +6,7 @@ import com.example.gamebuddy.data.local.account.AccountDao
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.domain.usecase.auth.RegisterUseCase
+import com.example.gamebuddy.domain.usecase.auth.VerifyUseCase
 import com.example.gamebuddy.domain.usecase.session.CheckPreviousAuthUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -41,6 +42,20 @@ object AuthModule {
             service = service,
             accountDao = accountDao,
             //authTokenDao = authTokenDao,
+            appDataStore = dataStore
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideVerifyUseCase(
+        service: GameBuddyApiAuthService,
+        authTokenDao: AuthTokenDao,
+        dataStore: AppDataStore
+    ): VerifyUseCase {
+        return VerifyUseCase(
+            service = service,
+            authTokenDao = authTokenDao,
             appDataStore = dataStore
         )
     }
