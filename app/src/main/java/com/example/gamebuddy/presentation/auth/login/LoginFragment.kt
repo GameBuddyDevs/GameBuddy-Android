@@ -4,19 +4,63 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.gamebuddy.R
+import androidx.fragment.app.viewModels
+import com.example.gamebuddy.databinding.FragmentLoginBinding
+import com.example.gamebuddy.presentation.auth.BaseAuthFragment
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.processQueue
+import timber.log.Timber
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseAuthFragment() {
+
+    private val viewModel : LoginViewModel by viewModels()
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+        _binding = FragmentLoginBinding.inflate(inflater,container,false)
 
+        Timber.d("Login Fragmenttt")
+
+        binding.btnLogin.setOnClickListener {
+            login()
+        }
+        return binding.root
+    }
+    private fun login(){
+        viewModel.OnTriggerEvent(
+            LoginEvent.Login(
+                email = "testke@gmail.com",
+                password = "123456",
+            )
+        )
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        collectState()
+    }
+    private fun collectState(){
+        viewModel.uiState.observe(viewLifecycleOwner){state ->
+            uiCommunicationListener.displayProgressBar(state.isLoading)
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback{
+                    override fun removeMessageFromStack() {
+                        viewModel.OnTriggerEvent(LoginEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+        }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
 }
