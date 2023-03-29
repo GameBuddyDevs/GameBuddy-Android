@@ -2,8 +2,11 @@ package com.example.gamebuddy
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.gamebuddy.databinding.ActivityMainBinding
 import com.example.gamebuddy.session.SessionEvents
+import com.example.gamebuddy.util.SplashViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,9 +17,14 @@ class AuthActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val splashViewModel: SplashViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
         setContentView(binding.root)
 
         collectState()
