@@ -2,11 +2,9 @@ package com.example.gamebuddy.domain.usecase.auth
 
 import com.example.gamebuddy.data.datastore.AppDataStore
 import com.example.gamebuddy.data.local.account.AccountDao
-import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.request.RegisterRequest
 import com.example.gamebuddy.domain.model.account.Account
-import com.example.gamebuddy.domain.model.account.AuthToken
 import com.example.gamebuddy.util.Constants
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
@@ -41,7 +39,7 @@ class RegisterUseCase(
 
         accountDao.insertAccount(
             accountEntity = Account(
-                pk = registerResponse.authBody.authData.userId,
+                pk = registerResponse.registerBody.registerData.userId,
                 email = email,
             ).toEntity()
         )

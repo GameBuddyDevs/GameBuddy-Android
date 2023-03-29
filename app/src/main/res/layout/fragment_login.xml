@@ -10,34 +10,66 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/background"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
+            android:paddingTop="32dp"
             android:text="Login to your Account"
-            android:textSize="40dp"
+            android:textColor="@color/text"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextUsername"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameContainer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Username" />
+            android:layout_marginTop="32dp"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/baseline_email_24">
 
-        <EditText
-            android:id="@+id/editTextPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordContainer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Password" />
+            android:layout_marginTop="32dp"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/baseline_lock_24">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvForgotThePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingTop="20dp"
+            android:text="Forgot the password?"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
@@ -48,5 +80,15 @@
             app:cornerRadius="32dp"
             app:layout_anchor="@+id/container"
             app:layout_anchorGravity="center" />
+
+        <TextView
+            android:id="@+id/tvSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Don't you have an account? Sign Up"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

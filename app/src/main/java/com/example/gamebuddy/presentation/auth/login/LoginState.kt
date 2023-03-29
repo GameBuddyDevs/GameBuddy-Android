@@ -8,5 +8,6 @@ data class LoginState(
     val email: String = "",
     val password: String = "",
     val confirmPassword: String = "",
+    val isLoginCompleted: Boolean = false,
     val queue: Queue<StateMessage> = Queue(mutableListOf()),
 )

@@ -1,9 +1,9 @@
-package com.example.gamebuddy.data.remote.model.auth
+package com.example.gamebuddy.data.remote.model.register
 
 
 import com.google.gson.annotations.SerializedName
 
-data class AuthData(
+data class RegisterData(
     @SerializedName("userId")
     val userId: String,
 )

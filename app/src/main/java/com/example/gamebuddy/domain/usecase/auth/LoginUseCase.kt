@@ -28,7 +28,7 @@ class LoginUseCase (
         emit(DataState.loading())
         val loginResponse = service.login(
             loginRequest = LoginRequest(
-                email = email,
+                usernameOrEmail = email,
                 password = password,
             )
         )
@@ -38,13 +38,13 @@ class LoginUseCase (
 
         accountDao.insertOrIgnore(
             accountEntity = Account(
-                pk = loginResponse.authBody.authData.userId,
-                email = email,
+                pk = loginResponse.body.loginData.pk,
+                email = email
             ).toEntity()
         )
         val authToken = AuthToken(
-            pk = loginResponse.authBody.authData.userId,
-            token = loginResponse.authBody.authData.token
+            pk = loginResponse.body.loginData.pk,
+            token = loginResponse.body.loginData.accessToken
         )
 
         val result = authTokenDao.insertAuthToken(authToken.toEntity())

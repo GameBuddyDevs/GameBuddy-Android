@@ -22,12 +22,12 @@
 
         <TextView
             android:id="@+id/txtTitle"
-            android:layout_width="350dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:gravity="start"
             android:text="@string/create_account"
-            android:textColor="@color/black"
+            android:textColor="@color/text"
             android:textSize="56sp"
             android:textStyle="bold" />
 
@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
+                android:textColorHint="@color/text"
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>

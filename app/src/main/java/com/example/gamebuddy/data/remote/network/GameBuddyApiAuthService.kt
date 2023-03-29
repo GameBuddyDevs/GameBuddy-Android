@@ -1,7 +1,9 @@
 package com.example.gamebuddy.data.remote.network
 
-import com.example.gamebuddy.data.remote.model.auth.AuthResponse
+import com.example.gamebuddy.data.remote.model.login.LoginResponse
+import com.example.gamebuddy.data.remote.model.register.RegisterResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
+import com.example.gamebuddy.data.remote.request.LoginRequest
 import com.example.gamebuddy.data.remote.request.RegisterRequest
 import com.example.gamebuddy.data.remote.request.VerifyRequest
 import retrofit2.http.Body
@@ -12,10 +14,15 @@ import retrofit2.http.POST
 interface GameBuddyApiAuthService {
 
 
+    @POST("auth/login")
+    suspend fun login(
+        @Body loginRequest: LoginRequest,
+    ): LoginResponse
+
     @POST("auth/register")
     suspend fun register(
         @Body registerRequest: RegisterRequest,
-    ): AuthResponse
+    ): RegisterResponse
 
     @POST("auth/verify")
     suspend fun verify(
@@ -27,6 +34,6 @@ interface GameBuddyApiAuthService {
     suspend fun setUsername(
         @Field("email") userId: String,
         @Field("username") username: String,
-    ): AuthResponse
+    ): RegisterResponse
 
 }
