@@ -8,11 +8,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.example.gamebuddy.presentation.UICommunicationListener
+import com.example.gamebuddy.session.SessionManager
 import com.example.gamebuddy.util.Constants.PERMISSIONS_REQUEST_READ_STORAGE
+import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), UICommunicationListener {
 
     private var dialogInView: MaterialDialog? = null
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     override fun displayProgressBar(isLoading: Boolean) {
         if (currentFocus != null) {
