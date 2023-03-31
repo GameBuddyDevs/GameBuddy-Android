@@ -2,12 +2,15 @@ package com.example.gamebuddy.presentation.auth.forgotpassword
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.auth.ForgotPasswordUseCase
 import com.example.gamebuddy.session.SessionManager
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,8 +18,9 @@ import javax.inject.Inject
 class ForgotPasswordViewModel @Inject constructor(
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
     private val sessionManager: SessionManager,
-) :ViewModel(){
-    private val _uiState: MutableLiveData<ForgotPasswordState> = MutableLiveData(ForgotPasswordState())
+) : ViewModel() {
+    private val _uiState: MutableLiveData<ForgotPasswordState> =
+        MutableLiveData(ForgotPasswordState())
     val uiState: MutableLiveData<ForgotPasswordState> get() = _uiState
 
     fun onTriggerEvent(event: ForgotPasswordEvent) {
@@ -30,6 +34,7 @@ class ForgotPasswordViewModel @Inject constructor(
             }
         }
     }
+
     private fun removeHeadFromQueue() {
         _uiState.value?.let {
             try {
@@ -42,6 +47,7 @@ class ForgotPasswordViewModel @Inject constructor(
             }
         }
     }
+
     private fun appendToMessageQueue(stateMessage: StateMessage) {
         _uiState.value?.let { state ->
             val queue = state.queue
@@ -54,15 +60,23 @@ class ForgotPasswordViewModel @Inject constructor(
             }
         }
     }
+
     private fun forgotPassword(
         email: String,
     ) {
-        /*uiState.value?.let { state ->
+        uiState.value?.let { state ->
             forgotPasswordUseCase.execute(
                 email = email,
-            ).onEach{ dataState ->
+            ).onEach { dataState ->
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
-            }
-        }*/
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+                if (dataState.data != null) {
+                    _uiState.value = state.copy(isForgotPasswordCompleted = true)
+                }
+            }.launchIn(viewModelScope)
+
+        }
     }
 }

@@ -1,8 +1,10 @@
 package com.example.gamebuddy.data.remote.network
 
+import com.example.gamebuddy.data.remote.model.forgotPassword.ForgotPasswordResponse
 import com.example.gamebuddy.data.remote.model.login.LoginResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
+import com.example.gamebuddy.data.remote.request.ForgotPasswordRequest
 import com.example.gamebuddy.data.remote.request.LoginRequest
 import com.example.gamebuddy.data.remote.request.RegisterRequest
 import com.example.gamebuddy.data.remote.request.VerifyRequest
@@ -23,6 +25,11 @@ interface GameBuddyApiAuthService {
     suspend fun register(
         @Body registerRequest: RegisterRequest,
     ): RegisterResponse
+
+    @POST("auth/forgotPassword")
+    suspend fun forgotPassword(
+        @Body forgotPasswordRequest: ForgotPasswordRequest,
+    ): ForgotPasswordResponse
 
     @POST("auth/verify")
     suspend fun verify(
