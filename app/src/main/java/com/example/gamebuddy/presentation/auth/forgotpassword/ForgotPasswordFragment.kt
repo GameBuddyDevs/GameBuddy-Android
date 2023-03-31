@@ -33,7 +33,8 @@ class ForgotPasswordFragment : BaseAuthFragment() {
     private fun forgotPassword() {
         viewModel.onTriggerEvent(
             ForgotPasswordEvent.ForgotPassword(
-                email = binding.emailContainer.editText?.text.toString()
+                email = binding.emailContainer.editText?.text.toString(),
+                isRegister = false,
             )
         )
     }

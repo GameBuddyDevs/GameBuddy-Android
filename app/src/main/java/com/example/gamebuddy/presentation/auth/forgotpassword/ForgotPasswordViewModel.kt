@@ -30,6 +30,7 @@ class ForgotPasswordViewModel @Inject constructor(
             is ForgotPasswordEvent.ForgotPassword -> {
                 forgotPassword(
                     email = event.email,
+                    isRegister = event.isRegister
                 )
             }
         }
@@ -63,10 +64,12 @@ class ForgotPasswordViewModel @Inject constructor(
 
     private fun forgotPassword(
         email: String,
+        isRegister: Boolean,
     ) {
         uiState.value?.let { state ->
             forgotPasswordUseCase.execute(
                 email = email,
+                isRegister = isRegister,
             ).onEach { dataState ->
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
                 dataState.stateMessage?.let { stateMessage ->

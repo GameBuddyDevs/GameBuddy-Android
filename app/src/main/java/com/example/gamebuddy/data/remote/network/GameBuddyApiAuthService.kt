@@ -26,7 +26,7 @@ interface GameBuddyApiAuthService {
         @Body registerRequest: RegisterRequest,
     ): RegisterResponse
 
-    @POST("auth/forgotPassword")
+    @POST("auth/sendCode")
     suspend fun forgotPassword(
         @Body forgotPasswordRequest: ForgotPasswordRequest,
     ): ForgotPasswordResponse
