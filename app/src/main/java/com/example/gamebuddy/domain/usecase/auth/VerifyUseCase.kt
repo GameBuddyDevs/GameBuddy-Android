@@ -26,7 +26,7 @@ class VerifyUseCase(
 
         val verifyResponse = service.verify(
             VerifyRequest(
-                email = "karadumanburak000@gmail.com",
+                email = email,
                 verificationCode = verificationCode
             )
         )

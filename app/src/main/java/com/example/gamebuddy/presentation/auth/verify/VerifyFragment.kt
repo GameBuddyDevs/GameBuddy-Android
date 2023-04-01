@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentRegisterBinding
 import com.example.gamebuddy.databinding.FragmentVerifyBinding
@@ -36,11 +37,11 @@ class VerifyFragment : BaseAuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        collectState()
+        val fromRegister = VerifyFragmentArgs.fromBundle(requireArguments()).fromRegister
+        collectState(fromRegister)
     }
 
-    private fun collectState() {
+    private fun collectState(fromRegister:Boolean) {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
             processQueue(
@@ -52,7 +53,18 @@ class VerifyFragment : BaseAuthFragment() {
                     }
                 }
             )
+            if(state.isVerifyCompleted){
+                if(fromRegister)
+                {
+                    //detailse gidicek
+                }else{
+                    val action = VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
+                    findNavController().navigate(action)
+                }
+            }
+
         }
+
     }
 
     private fun setClickListeners() {

@@ -64,7 +64,8 @@ class RegisterFragment : BaseAuthFragment() {
             )
 
             if (state.isRegistrationCompleted) {
-                findNavController().navigate(R.id.action_registerFragment_to_verifyFragment)
+                val action = RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment(true)
+                findNavController().navigate(action)
             }
         }
     }

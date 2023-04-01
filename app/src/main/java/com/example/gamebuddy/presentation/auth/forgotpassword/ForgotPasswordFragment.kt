@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentForgotPasswordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.util.StateMessageCallback
@@ -57,7 +56,8 @@ class ForgotPasswordFragment : BaseAuthFragment() {
             )
 
             if (state.isForgotPasswordCompleted) {
-                //findNavController().navigate(R.id.action_registerFragment_to_verifyFragment) forgot to verify
+                val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToVerifyFragment(false)
+                findNavController().navigate(action)
             }
         }
     }
