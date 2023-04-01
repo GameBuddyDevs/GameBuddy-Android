@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/baseline_email_24">
+            app:startIconDrawable="@drawable/ic_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameEditText"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:errorEnabled="true"
-            app:startIconDrawable="@drawable/baseline_lock_24">
+            app:startIconDrawable="@drawable/ic_lock_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"

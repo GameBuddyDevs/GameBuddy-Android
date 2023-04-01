@@ -19,4 +19,8 @@
     <string name="create_account">Create a new Account</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="register_remember">Remember me</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_community">Community</string>
+    <string name="menu_message">Message</string>
+    <string name="menu_profile">Profile</string>
 </resources>

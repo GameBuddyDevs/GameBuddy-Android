@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.gamebuddy.HomeActivity
+import com.example.gamebuddy.MainActivity
 import com.example.gamebuddy.databinding.FragmentLoginBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.util.StateMessageCallback
@@ -65,7 +64,7 @@ class LoginFragment : BaseAuthFragment() {
             )
 
             if(state.isLoginCompleted){
-                val intent = Intent(context, HomeActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }
