@@ -11,6 +11,7 @@ import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.observeOn
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
@@ -41,13 +42,17 @@ class AuthActivity : BaseActivity() {
                     }
                 })
 
-            if (state.authToken != null) {
+            Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
+
+            if (state.authToken != null && state.didCheckForPreviousAuthUser) {
                 navMainActivity()
             }
         }
     }
 
     private fun navMainActivity() {
+        val token =
+        Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

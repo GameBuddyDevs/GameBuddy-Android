@@ -49,15 +49,11 @@ object AuthModule {
     @Provides
     fun provideNewPasswordUseCase(
         service: GameBuddyApiAuthService,
-        accountDao: AccountDao,
-        //authTokenDao: AuthTokenDao,
-        dataStore: AppDataStore
+        authTokenDao: AuthTokenDao,
     ): NewPasswordUseCase {
         return NewPasswordUseCase(
             service = service,
-            accountDao = accountDao,
-            //authTokenDao = authTokenDao,
-            appDataStore = dataStore
+            authTokenDao = authTokenDao,
         )
     }
 
@@ -80,11 +76,13 @@ object AuthModule {
     @Provides
     fun provideVerifyUseCase(
         service: GameBuddyApiAuthService,
+        accountDao: AccountDao,
         authTokenDao: AuthTokenDao,
         dataStore: AppDataStore
     ): VerifyUseCase {
         return VerifyUseCase(
             service = service,
+            accountDao = accountDao,
             authTokenDao = authTokenDao,
             appDataStore = dataStore
         )

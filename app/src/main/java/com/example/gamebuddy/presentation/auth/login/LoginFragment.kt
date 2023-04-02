@@ -17,7 +17,7 @@ import timber.log.Timber
 
 class LoginFragment : BaseAuthFragment() {
 
-    private val viewModel : LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -27,17 +27,28 @@ class LoginFragment : BaseAuthFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentLoginBinding.inflate(inflater,container,false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         Timber.d("Login Fragmenttt")
 
-        binding.btnLogin.setOnClickListener {
-            login()
+        binding.apply {
+            btnLogin.setOnClickListener {
+                login()
+            }
+
+            tvForgotThePassword.setOnClickListener {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+            }
+
+            tvSignUp.setOnClickListener {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+            }
         }
 
         return binding.root
     }
-    private fun login(){
+
+    private fun login() {
         viewModel.onTriggerEvent(
             LoginEvent.Login(
                 email = binding.usernameContainer.editText?.text.toString(),
@@ -45,26 +56,27 @@ class LoginFragment : BaseAuthFragment() {
             )
         )
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         collectState()
     }
 
-    private fun collectState(){
-        viewModel.uiState.observe(viewLifecycleOwner){ state ->
+    private fun collectState() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
             processQueue(
                 context = context,
                 queue = state.queue,
-                stateMessageCallback = object : StateMessageCallback{
+                stateMessageCallback = object : StateMessageCallback {
                     override fun removeMessageFromStack() {
                         viewModel.onTriggerEvent(LoginEvent.OnRemoveHeadFromQueue)
                     }
                 }
             )
 
-            if(state.isLoginCompleted){
+            if (state.isLoginCompleted) {
                 val intent = Intent(context, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)

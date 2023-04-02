@@ -14,6 +14,7 @@ import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 
 class NewPasswordFragment : BaseAuthFragment() {
+
     private val viewModel: NewPasswordViewModel by viewModels()
 
     private var _binding: FragmentNewPasswordBinding? = null
@@ -29,8 +30,8 @@ class NewPasswordFragment : BaseAuthFragment() {
     private fun newPassword(){
         viewModel.onTriggerEvent(
             NewPasswordEvent.NewPassword(
-                password = "1234",
-                confirmPassword = "1234",
+                password = binding.passwordContainer.editText?.text.toString(),
+                confirmPassword = binding.confirmPasswordContainer.editText?.text.toString(),
             )
         )
     }
@@ -53,7 +54,7 @@ class NewPasswordFragment : BaseAuthFragment() {
             )
 
             if (state.isNewPasswordCompleted) {
-                // logine gönder
+                findNavController().navigate(R.id.action_newPasswordFragment_to_loginFragment)
             }
         }
     }

@@ -2,9 +2,10 @@ package com.example.gamebuddy.domain.usecase.auth
 
 import com.example.gamebuddy.data.datastore.AppDataStore
 import com.example.gamebuddy.data.local.account.AccountDao
+import com.example.gamebuddy.data.local.auth.AuthTokenDao
+import com.example.gamebuddy.data.local.auth.toAuthToken
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.request.NewPasswordRequest
-import com.example.gamebuddy.util.Constants
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
@@ -14,18 +15,18 @@ import timber.log.Timber
 
 class NewPasswordUseCase(
     private val service: GameBuddyApiAuthService,
-    private val accountDao: AccountDao,
-    private val appDataStore: AppDataStore,
+    private val authTokenDao: AuthTokenDao,
 ) {
     fun execute(
         password: String,
         confirmPassword:String,
     ):Flow<DataState<Boolean>> = flow {
         emit(DataState.loading())
+        val authToken = authTokenDao.getAuthToken()?.toAuthToken()
+        Timber.d("Tokensss: ${authToken?.token}")
         val newPasswordResponse = service.newPassword(
-            newPasswordRequest = NewPasswordRequest(
-                password = password,
-            )
+            token = "Bearer ${authToken?.token}",
+            newPasswordRequest = NewPasswordRequest(password = password)
         )
         if (!newPasswordResponse.status.success) {
             throw Exception(newPasswordResponse.status.message)

@@ -41,7 +41,7 @@ class VerifyFragment : BaseAuthFragment() {
         collectState(fromRegister)
     }
 
-    private fun collectState(fromRegister:Boolean) {
+    private fun collectState(fromRegister: Boolean) {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
             processQueue(
@@ -53,12 +53,12 @@ class VerifyFragment : BaseAuthFragment() {
                     }
                 }
             )
-            if(state.isVerifyCompleted){
-                if(fromRegister)
-                {
+            if (state.isVerifyCompleted) {
+                if (fromRegister) {
                     //detailse gidicek
-                }else{
-                    val action = VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
+                } else {
+                    val action =
+                        VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
                     findNavController().navigate(action)
                 }
             }

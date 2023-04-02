@@ -15,12 +15,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class NewPasswordViewModel@Inject constructor(
+class NewPasswordViewModel @Inject constructor(
     private val newPasswordUseCase: NewPasswordUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel()  {
-    private val _uiState: MutableLiveData<NewPasswordState> =
-        MutableLiveData(NewPasswordState())
+    private val _uiState: MutableLiveData<NewPasswordState> = MutableLiveData(NewPasswordState())
     val uiState: MutableLiveData<NewPasswordState> get() = _uiState
 
     fun onTriggerEvent(event: NewPasswordEvent) {

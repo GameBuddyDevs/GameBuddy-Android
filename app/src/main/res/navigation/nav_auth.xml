@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_auth"
-    app:startDestination="@id/forgotPasswordFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -51,5 +51,11 @@
         android:id="@+id/newPasswordFragment"
         android:name="com.example.gamebuddy.presentation.auth.newpassword.NewPasswordFragment"
         android:label="fragment_new_password"
-        tools:layout="@layout/fragment_new_password" />
+        tools:layout="@layout/fragment_new_password" >
+        <action
+            android:id="@+id/action_newPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

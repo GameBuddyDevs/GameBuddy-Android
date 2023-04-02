@@ -33,6 +33,7 @@ interface GameBuddyApiAuthService {
 
     @PUT("auth/change/pwd")
     suspend fun newPassword(
+        @Header("Authorization") token: String,
         @Body newPasswordRequest: NewPasswordRequest,
     ): NewPasswordResponse
 
