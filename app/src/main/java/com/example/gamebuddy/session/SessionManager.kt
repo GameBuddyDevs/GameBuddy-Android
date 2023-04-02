@@ -66,18 +66,15 @@ class SessionManager @Inject constructor(
                 _sessionState.value = state?.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { authToken ->
-                    Timber.d("AHAA Found previous auth user token: $authToken")
+                    Timber.d("AHAA Found previous auth user: $authToken")
                     _sessionState.value = state?.copy(authToken = authToken)
                     onTriggerEvent(SessionEvents.Login(authToken = authToken))
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
-                    Timber.d("AHAA not null ${stateMessage.response.message}")
                     if (stateMessage.response.message == "Done checking for previously authenticated user.") {
-                        Timber.d("AHAA Done checking for previously authenticated user. ${stateMessage.response.message}")
                         onFinishedCheckingForPreviousAuthUser()
                     } else {
-                        Timber.d("AHAA ${stateMessage.response.message}")
                         appendToMessageQueue(stateMessage)
                     }
                 }

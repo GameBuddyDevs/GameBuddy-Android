@@ -77,6 +77,7 @@ class LoginFragment : BaseAuthFragment() {
             )
 
             if (state.isLoginCompleted) {
+                Timber.d("Login completed $state")
                 val intent = Intent(context, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)

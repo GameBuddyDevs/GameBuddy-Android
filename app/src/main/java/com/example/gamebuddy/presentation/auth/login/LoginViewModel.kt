@@ -80,7 +80,9 @@ class LoginViewModel @Inject constructor(
                     appendToMessageQueue(stateMessage)
                 }
 
-                _uiState.value = state.copy(isLoginCompleted = true)
+                if (dataState.data != null)
+                    _uiState.value = state.copy(isLoginCompleted = true)
+
             }.launchIn(viewModelScope)
         }
     }

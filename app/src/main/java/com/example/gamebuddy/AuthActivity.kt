@@ -33,6 +33,7 @@ class AuthActivity : BaseActivity() {
 
     private fun collectState() {
         sessionManager.sessionState.observe(this) { state ->
+            Timber.d("AuthActivityke: $state")
             displayProgressBar(state.isLoading)
             processQueue(context = this,
                 queue = state.queue,
@@ -44,14 +45,14 @@ class AuthActivity : BaseActivity() {
 
             Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
 
-            if (state.authToken != null && state.didCheckForPreviousAuthUser) {
+            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
                 navMainActivity()
             }
         }
     }
 
     private fun navMainActivity() {
-        val token =
+
         Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
