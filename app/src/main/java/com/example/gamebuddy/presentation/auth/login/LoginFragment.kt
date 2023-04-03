@@ -28,8 +28,6 @@ class LoginFragment : BaseAuthFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater,container,false)
 
-        Timber.d("Login Fragmenttt")
-
         binding.btnLogin.setOnClickListener {
             login()
         }
