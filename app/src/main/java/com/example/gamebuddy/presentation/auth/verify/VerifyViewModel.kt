@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.auth.VerifyUseCase
-import com.example.gamebuddy.session.SessionEvents
-import com.example.gamebuddy.session.SessionManager
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
@@ -18,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class VerifyViewModel @Inject constructor(
     private val verifyUseCase: VerifyUseCase,
-    private val sessionManager: SessionManager,
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<VerifyState> = MutableLiveData(VerifyState())
@@ -34,16 +31,13 @@ class VerifyViewModel @Inject constructor(
     private fun approveAccount(verificationCode: String) {
         _uiState.value.let { state ->
             verifyUseCase.execute(verificationCode = verificationCode)
-                .onEach { datastate ->
-                    _uiState.value = state?.copy(isLoading = datastate.isLoading)
+                .onEach { dataState ->
+                    _uiState.value = state?.copy(isLoading = dataState.isLoading)
 
-                    datastate.data?.let { authToken ->
-                        sessionManager.onTriggerEvent(SessionEvents.Login(authToken = authToken))
-                    }
-
-                    datastate.stateMessage?.let { stateMessage ->
+                    dataState.stateMessage?.let { stateMessage ->
                         appendToMessageQueue(stateMessage)
                     }
+                    _uiState.value = state?.copy(isVerifyCompleted = true)
                 }.launchIn(viewModelScope)
         }
     }

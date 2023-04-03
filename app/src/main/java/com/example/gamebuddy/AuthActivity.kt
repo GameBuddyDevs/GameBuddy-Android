@@ -11,6 +11,7 @@ import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.observeOn
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
@@ -32,6 +33,7 @@ class AuthActivity : BaseActivity() {
 
     private fun collectState() {
         sessionManager.sessionState.observe(this) { state ->
+            Timber.d("AuthActivityke: $state")
             displayProgressBar(state.isLoading)
             processQueue(context = this,
                 queue = state.queue,
@@ -41,7 +43,9 @@ class AuthActivity : BaseActivity() {
                     }
                 })
 
-            if (state.authToken != null) {
+            Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
+
+            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
                 navMainActivity()
             }
         }

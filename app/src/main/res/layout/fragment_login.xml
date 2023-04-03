@@ -66,10 +66,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:paddingTop="20dp"
-            android:text="Forgot the password?"
+            android:text="Forgot password?"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/text"
+            android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
@@ -88,7 +88,8 @@
             android:layout_marginTop="12dp"
             android:text="Don't you have an account? Sign Up"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/text"
+            android:textSize="18sp" />
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

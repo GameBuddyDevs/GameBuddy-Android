@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.auth.forgotpassword
+package com.example.gamebuddy.presentation.auth.newpassword
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,34 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.gamebuddy.databinding.FragmentForgotPasswordBinding
+import com.example.gamebuddy.R
+import com.example.gamebuddy.databinding.FragmentNewPasswordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
+import com.example.gamebuddy.presentation.auth.register.RegisterEvent
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 
+class NewPasswordFragment : BaseAuthFragment() {
 
-class ForgotPasswordFragment : BaseAuthFragment() {
-    private val viewModel: ForgotPasswordViewModel by viewModels()
+    private val viewModel: NewPasswordViewModel by viewModels()
 
-    private var _binding: FragmentForgotPasswordBinding? = null
+    private var _binding: FragmentNewPasswordBinding? = null
     private val binding get() = _binding!!
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentForgotPasswordBinding.inflate(inflater,container,false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        _binding = FragmentNewPasswordBinding.inflate(inflater,container,false)
         binding.btnPassword.setOnClickListener {
-            forgotPassword()
+            newPassword()
         }
         return binding.root
     }
-
-    private fun forgotPassword() {
+    private fun newPassword(){
         viewModel.onTriggerEvent(
-            ForgotPasswordEvent.ForgotPassword(
-                email = binding.emailContainer.editText?.text.toString(),
-                isRegister = false,
+            NewPasswordEvent.NewPassword(
+                password = binding.passwordContainer.editText?.text.toString(),
+                confirmPassword = binding.confirmPasswordContainer.editText?.text.toString(),
             )
         )
     }
@@ -50,14 +48,13 @@ class ForgotPasswordFragment : BaseAuthFragment() {
                 queue = state.queue,
                 stateMessageCallback = object : StateMessageCallback {
                     override fun removeMessageFromStack() {
-                        viewModel.onTriggerEvent(ForgotPasswordEvent.OnRemoveHeadFromQueue)
+                        viewModel.onTriggerEvent(NewPasswordEvent.OnRemoveHeadFromQueue)
                     }
                 }
             )
 
-            if (state.isForgotPasswordCompleted) {
-                val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToVerifyFragment(false)
-                findNavController().navigate(action)
+            if (state.isNewPasswordCompleted) {
+                findNavController().navigate(R.id.action_newPasswordFragment_to_loginFragment)
             }
         }
     }
