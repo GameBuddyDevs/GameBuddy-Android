@@ -1,9 +1,11 @@
 package com.example.gamebuddy.domain.usecase.auth
 
 import com.example.gamebuddy.data.datastore.AppDataStore
+import com.example.gamebuddy.data.local.account.AccountDao
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.request.VerifyRequest
+import com.example.gamebuddy.domain.model.account.Account
 import com.example.gamebuddy.domain.model.account.AuthToken
 import com.example.gamebuddy.util.Constants
 import com.example.gamebuddy.util.DataState
@@ -15,6 +17,7 @@ import timber.log.Timber
 
 class VerifyUseCase(
     private val service: GameBuddyApiAuthService,
+    private val accountDao: AccountDao,
     private val authTokenDao: AuthTokenDao,
     private val appDataStore: AppDataStore
 ) {
@@ -26,7 +29,7 @@ class VerifyUseCase(
 
         val verifyResponse = service.verify(
             VerifyRequest(
-                email = "karadumanburak000@gmail.com",
+                email = email,
                 verificationCode = verificationCode
             )
         )
@@ -34,6 +37,13 @@ class VerifyUseCase(
         if (!verifyResponse.status.success) {
             throw Exception(verifyResponse.status.message)
         }
+
+        accountDao.insertAccount(
+            accountEntity = Account(
+                pk = verifyResponse.verifyBody.verifyData.pk,
+                email = email,
+            ).toEntity()
+        )
 
         val authToken = AuthToken(
             pk = verifyResponse.verifyBody.verifyData.pk,

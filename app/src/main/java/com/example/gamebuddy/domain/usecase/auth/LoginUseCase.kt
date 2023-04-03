@@ -33,8 +33,11 @@ class LoginUseCase (
             )
         )
         if(!loginResponse.status.success){
+            Timber.e("Login Use Case errorrr: ${loginResponse.status.message}")
             throw Exception(loginResponse.status.message)
         }
+
+        Timber.d("Login Use Case success: ${loginResponse.body.loginData.accessToken}")
 
         accountDao.insertOrIgnore(
             accountEntity = Account(

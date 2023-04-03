@@ -23,10 +23,10 @@ class CheckPreviousAuthUserUseCase(
         emit(DataState.loading())
         var authToken: AuthToken? = null
         val account = accountDao.searchByEmail(email)
+
         if (account != null) {
             authToken = authTokenDao.searchByPk(account.pk)?.toAuthToken()
             if (authToken != null) {
-                Timber.d("Found previous auth token ${authToken.token} for user ${authToken.pk}")
                 emit(DataState.success(response = null, data = authToken))
             } else {
                 throw Exception("Error retrieving auth token. No previous user found")
