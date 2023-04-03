@@ -2,7 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main"
-    app:startDestination="@+id/nav_auth">
+    app:startDestination="@id/nav_home">
 
-    <include app:graph="@navigation/nav_auth" />
+    <include app:graph="@navigation/nav_home" />
+    <include app:graph="@navigation/nav_community" />
+    <include app:graph="@navigation/nav_message" />
+    <include app:graph="@navigation/nav_profile" />
+
 </navigation>

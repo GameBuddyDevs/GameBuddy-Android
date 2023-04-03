@@ -17,4 +17,18 @@
     <string name="create_account">Create a new Account</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="register_remember">Remember me</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_community">Community</string>
+    <string name="menu_message">Message</string>
+    <string name="menu_profile">Profile</string>
+    <string name="popular">Popular</string>
+    <string name="see_all">See all</string>
+    <string name="home_header">Let\'s play game together!</string>
+    <string name="categories">Categories</string>
+    <string name="matching">Matching</string>
+    <string name="home_matching_desc">Find out if the game you are thinking of playing is popular among other gamers</string>
+    <string name="home_matching_btn">Start matching</string>
+    <string name="pending_requests">Pending requests</string>
+    <string name="accept_request">accept_request</string>
+    <string name="decline_request">decline_request</string>
 </resources>

@@ -22,4 +22,7 @@
     <color name="edit_text_background">#E1E1E1</color>
     <color name="edit_text_background_focus">#FFF1F3</color>
     <color name="text">#FF000000</color>
+    <color name="text_primary">@color/pink_500</color>
+    <color name="bottom_nav_bar_background">#fff</color>
+
 </resources>

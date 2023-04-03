@@ -18,4 +18,7 @@
     <color name="edit_text_background">#23252F</color>
     <color name="edit_text_background_focus">#2C1F27</color>
     <color name="text">#FFFFFFFF</color>
+    <color name="text_primary">@color/pink_500</color>
+    <color name="bottom_nav_bar_background">@color/black_700</color>
+
 </resources>
