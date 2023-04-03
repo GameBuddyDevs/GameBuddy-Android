@@ -32,6 +32,7 @@ class SessionManager @Inject constructor(
     init {
         sessionScope.launch {
             appDataStore.getValue(Constants.LAST_AUTH_USER)?.let { email ->
+                Timber.d("AHAA Found previous auth user: $email")
                 onTriggerEvent(SessionEvents.CheckPreviousAuthUser(email))
             } ?: onFinishedCheckingForPreviousAuthUser()
         }
@@ -39,6 +40,7 @@ class SessionManager @Inject constructor(
 
     private fun onFinishedCheckingForPreviousAuthUser() {
         _sessionState.value.let { state ->
+            Timber.d("Finished checking for previous auth user")
             _sessionState.value = state?.copy(didCheckForPreviousAuthUser = true)
         }
     }
@@ -62,28 +64,32 @@ class SessionManager @Inject constructor(
         _sessionState.value.let { state ->
             checkPreviousAuthUser.execute(email = email).onEach { dataState ->
                 _sessionState.value = state?.copy(isLoading = dataState.isLoading)
+
                 dataState.data?.let { authToken ->
+                    Timber.d("AHAA Found previous auth user: $authToken")
                     _sessionState.value = state?.copy(authToken = authToken)
                     onTriggerEvent(SessionEvents.Login(authToken = authToken))
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
-                    if (stateMessage.response.message == "Done checking for previously authenticated user.")
+                    if (stateMessage.response.message == "Done checking for previously authenticated user.") {
                         onFinishedCheckingForPreviousAuthUser()
-                    else
+                    } else {
                         appendToMessageQueue(stateMessage)
+                    }
                 }
+
             }.launchIn(sessionScope)
         }
     }
 
-    private fun removeHeadFromQueue(){
+    private fun removeHeadFromQueue() {
         _sessionState.value?.let { state ->
             try {
                 val queue = state.queue
                 queue.remove() // can throw exception if empty
                 _sessionState.value = state.copy(queue = queue)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Timber.d("Removed head from queue. Nothing to remove: ${e.message}.")
             }
         }
@@ -102,7 +108,7 @@ class SessionManager @Inject constructor(
     }
 
     private fun login(authToken: AuthToken) {
-        _sessionState.value.let { state ->
+        _sessionState?.value.let { state ->
             _sessionState.value = state?.copy(authToken = authToken)
         }
     }
