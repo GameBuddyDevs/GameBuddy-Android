@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.MainActivity
 import com.example.gamebuddy.databinding.FragmentLoginBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment

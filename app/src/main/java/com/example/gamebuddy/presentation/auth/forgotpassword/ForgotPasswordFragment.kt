@@ -13,6 +13,7 @@ import com.example.gamebuddy.util.processQueue
 
 
 class ForgotPasswordFragment : BaseAuthFragment() {
+
     private val viewModel: ForgotPasswordViewModel by viewModels()
 
     private var _binding: FragmentForgotPasswordBinding? = null
