@@ -33,4 +33,6 @@
     <string name="pending_requests">Pending requests</string>
     <string name="accept_request">accept_request</string>
     <string name="decline_request">decline_request</string>
+    <string name="search">Search</string>
+    <string name="search_bar_view">Search Bar View</string>
 </resources>

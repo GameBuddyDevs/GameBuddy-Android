@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="80dp"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_home" />
+            app:navGraph="@navigation/nav_main" />
 
         <ProgressBar
             android:layout_width="wrap_content"

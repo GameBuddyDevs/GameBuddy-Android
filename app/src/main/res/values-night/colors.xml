@@ -20,5 +20,6 @@
     <color name="text">#FFFFFFFF</color>
     <color name="text_primary">@color/pink_500</color>
     <color name="bottom_nav_bar_background">@color/black_700</color>
+    <color name="bottom_nav_selector">@color/pink_500</color>
 
 </resources>
