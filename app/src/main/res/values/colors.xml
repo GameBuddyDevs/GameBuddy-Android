@@ -12,8 +12,6 @@
     <color name="pink_200">#E98090</color>
     <color name="black_500">#23252F</color>
 
-
-
     <!-- Dark -->
     <color name="black_700">#1A1B22</color>
 
@@ -24,5 +22,6 @@
     <color name="text">#FF000000</color>
     <color name="text_primary">@color/pink_500</color>
     <color name="bottom_nav_bar_background">#fff</color>
+    <color name="bottom_nav_selector">@color/pink_500</color>
 
 </resources>
