@@ -46,6 +46,9 @@
         <argument
             android:name="fromRegister"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_verifyFragment_to_detailsUserFragment"
+            app:destination="@id/detailsUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPasswordFragment"
@@ -58,4 +61,18 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/detailsUserFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.detailsUser.DetailsUserFragment"
+        android:label="fragment_details_user"
+        tools:layout="@layout/fragment_details_user" >
+        <action
+            android:id="@+id/action_detailsUserFragment_to_gamesFragment"
+            app:destination="@id/gamesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.detailsGames.GamesFragment"
+        android:label="fragment_games"
+        tools:layout="@layout/fragment_games" />
 </navigation>
