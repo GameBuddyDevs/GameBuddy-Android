@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.gamebuddy.databinding.ActivityAuthBinding
 import com.example.gamebuddy.databinding.ActivityMainBinding
 import com.example.gamebuddy.session.SessionEvents
 import com.example.gamebuddy.util.SplashViewModel
@@ -16,7 +17,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityAuthBinding
 
     private val splashViewModel: SplashViewModel by viewModels()
 
@@ -24,7 +25,7 @@ class AuthActivity : BaseActivity() {
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityAuthBinding.inflate(layoutInflater)
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
         setContentView(binding.root)
 
@@ -45,9 +46,9 @@ class AuthActivity : BaseActivity() {
 
             Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
 
-            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
-                navMainActivity()
-            }
+//            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
+//                navMainActivity()
+//            }
         }
     }
 
