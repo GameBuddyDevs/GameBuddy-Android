@@ -74,6 +74,21 @@ object AuthModule {
     }
     @Singleton
     @Provides
+    fun provideUsernameUseCase(
+        service: GameBuddyApiAuthService,
+        accountDao: AccountDao,
+        authTokenDao: AuthTokenDao,
+        dataStore: AppDataStore
+    ): UsernameUseCase {
+        return UsernameUseCase(
+            service = service,
+            accountDao = accountDao,
+            authTokenDao = authTokenDao,
+            appDataStore = dataStore
+        )
+    }
+    @Singleton
+    @Provides
     fun provideVerifyUseCase(
         service: GameBuddyApiAuthService,
         accountDao: AccountDao,

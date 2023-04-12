@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.remote.model.forgotPassword.ForgotPasswordResp
 import com.example.gamebuddy.data.remote.model.login.LoginResponse
 import com.example.gamebuddy.data.remote.model.newPassword.NewPasswordResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
+import com.example.gamebuddy.data.remote.model.username.UsernameResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
 import com.example.gamebuddy.data.remote.request.*
 import retrofit2.http.*
@@ -26,6 +27,12 @@ interface GameBuddyApiAuthService {
         @Body forgotPasswordRequest: ForgotPasswordRequest,
     ): ForgotPasswordResponse
 
+    @POST("auth/username")
+    suspend fun username(
+        @Header("Authorization") token: String,
+        @Body usernameRequest: usernameRequest,
+    ): UsernameResponse
+
     @POST("auth/verify")
     suspend fun verify(
         @Body verifyRequest: VerifyRequest,
@@ -37,11 +44,5 @@ interface GameBuddyApiAuthService {
         @Body newPasswordRequest: NewPasswordRequest,
     ): NewPasswordResponse
 
-    @POST("auth/username")
-    @FormUrlEncoded
-    suspend fun setUsername(
-        @Field("email") userId: String,
-        @Field("username") username: String,
-    ): RegisterResponse
 
 }

@@ -1,18 +1,13 @@
 package com.example.gamebuddy.presentation.auth.verify
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.FragmentRegisterBinding
 import com.example.gamebuddy.databinding.FragmentVerifyBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
-import com.example.gamebuddy.presentation.auth.register.RegisterEvent
-import com.example.gamebuddy.presentation.auth.register.RegisterViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 
@@ -55,7 +50,8 @@ class VerifyFragment : BaseAuthFragment() {
             )
             if (state.isVerifyCompleted) {
                 if (fromRegister) {
-                    //detailse gidicek
+                    val action = VerifyFragmentDirections.actionVerifyFragmentToUsernameFragment()
+                    findNavController().navigate(action)
                 } else {
                     val action =
                         VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
