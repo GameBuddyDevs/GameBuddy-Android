@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.auth.details.detailsGames.GamesFragment">
+    tools:context=".presentation.auth.details.detailsKeyword.KeywordFragment">
 
     <LinearLayout
         android:id="@+id/container"
@@ -17,21 +17,21 @@
             android:layout_margin="12dp"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:text="Select Games"
+            android:text="Select Keywords"
             android:textColor="@color/text"
             android:textSize="40sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_games"
+            android:id="@+id/recycler_view_keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
             tools:itemCount="6"
-            tools:listitem="@layout/item_games"
+            tools:listitem="@layout/item_keyword"
             />
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDetailsUser"
+            android:id="@+id/btnContunie"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:layout_marginTop="32dp"

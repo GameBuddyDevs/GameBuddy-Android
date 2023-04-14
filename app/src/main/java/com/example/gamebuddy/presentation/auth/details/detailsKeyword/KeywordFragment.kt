@@ -1,27 +1,26 @@
-package com.example.gamebuddy.presentation.auth.details.detailsGames
+package com.example.gamebuddy.presentation.auth.details.detailsKeyword
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.example.gamebuddy.databinding.FragmentGamesBinding
+import com.example.gamebuddy.databinding.FragmentKeywordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.presentation.auth.details.detailsUser.DetailsViewModel
 
-class GamesFragment : BaseAuthFragment() {
+class KeywordFragment : BaseAuthFragment() {
     private val sharedViewModel: DetailsViewModel by activityViewModels()
 
-    private var gamesAdapter: GamesAdapter? = null
-
-    private var _binding: FragmentGamesBinding? = null
+    private var _binding: FragmentKeywordBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGamesBinding.inflate(inflater, container, false)
+        _binding = FragmentKeywordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
