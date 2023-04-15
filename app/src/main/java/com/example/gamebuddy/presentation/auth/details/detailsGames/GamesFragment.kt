@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.gamebuddy.databinding.FragmentGamesBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.presentation.auth.details.detailsUser.DetailsViewModel
+import kotlinx.coroutines.launch
 
 class GamesFragment : BaseAuthFragment() {
     private val sharedViewModel: DetailsViewModel by activityViewModels()
-
     private var gamesAdapter: GamesAdapter? = null
+
 
     private var _binding: FragmentGamesBinding? = null
     private val binding get() = _binding!!
@@ -22,12 +25,17 @@ class GamesFragment : BaseAuthFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGamesBinding.inflate(inflater, container, false)
+
+        getGames()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // Access the views using the binding object here
+    private fun getGames(){
+        lifecycleScope.launch{
+            sharedViewModel.getGame()
+        }
+
     }
 
     override fun onDestroyView() {

@@ -90,25 +90,17 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/button1"
+                android:id="@+id/Male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="radioButtonhandler"
                 android:text="M" />
 
             <RadioButton
-                android:id="@+id/button2"
+                android:id="@+id/Female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="radioButtonhandler"
                 android:text="F" />
 
-            <RadioButton
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="radioButtonhandler"
-                android:text="O" />
         </RadioGroup>
 
         <com.google.android.material.button.MaterialButton

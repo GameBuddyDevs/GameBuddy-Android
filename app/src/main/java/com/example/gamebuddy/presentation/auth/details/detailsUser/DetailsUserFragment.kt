@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.gamebuddy.R
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.databinding.FragmentDetailsUserBinding
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +28,7 @@ class DetailsUserFragment : BaseAuthFragment() {
         binding.apply {
             btnDetailsUser.setOnClickListener {
                 detailsUser()
-                findNavController().navigate(com.example.gamebuddy.presentation.auth.details.detailsUser.DetailsUserFragmentDirections.actionDetailsUserFragmentToGamesFragment())
+                findNavController().navigate(DetailsUserFragmentDirections.actionDetailsUserFragmentToGamesFragment())
             }
         }
         return binding.root
@@ -39,11 +38,12 @@ class DetailsUserFragment : BaseAuthFragment() {
         val age = binding.ageEditText.text.toString()
         val country = binding.ccp.selectedCountryName
         val avatar = "" //  add the logic to get the user's avatar here
-        val gender = when (binding.genderRG.checkedRadioButtonId) {
-            R.id.button1 -> "M"
-            R.id.button2 -> "F"
-            R.id.button3 -> "O"
-            else -> "" // handle the case when no button is selected
+
+        var gender = ""
+        gender = if(binding.Female.isChecked){
+            "F"
+        }else{
+            "M"
         }
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -52,11 +52,6 @@ class DetailsUserFragment : BaseAuthFragment() {
             )
         }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
