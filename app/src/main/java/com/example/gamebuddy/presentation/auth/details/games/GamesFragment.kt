@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.auth.details.detailsGames
+package com.example.gamebuddy.presentation.auth.details.games
 
 import android.os.Bundle
 import android.view.LayoutInflater

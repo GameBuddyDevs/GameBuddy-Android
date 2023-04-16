@@ -75,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/gamesFragment"
-        android:name="com.example.gamebuddy.presentation.auth.details.detailsGames.GamesFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.games.GamesFragment"
         android:label="fragment_games"
         tools:layout="@layout/fragment_games" />
     <fragment

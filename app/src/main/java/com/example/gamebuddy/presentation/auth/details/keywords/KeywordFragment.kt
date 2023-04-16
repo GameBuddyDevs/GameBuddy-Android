@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.auth.details.detailsKeyword
+package com.example.gamebuddy.presentation.auth.details.keywords
 
 import android.os.Bundle
 import android.view.LayoutInflater
