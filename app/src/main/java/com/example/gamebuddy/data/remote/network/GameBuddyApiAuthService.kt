@@ -1,7 +1,7 @@
 package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.forgotPassword.ForgotPasswordResponse
-import com.example.gamebuddy.data.remote.model.games.GamesResponse
+import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.login.LoginResponse
 import com.example.gamebuddy.data.remote.model.newPassword.NewPasswordResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
@@ -46,5 +46,5 @@ interface GameBuddyApiAuthService {
     ): NewPasswordResponse
 
     @GET("application/get/games")
-    suspend fun getGames():GamesResponse
+    suspend fun getGames(): GameResponse
 }

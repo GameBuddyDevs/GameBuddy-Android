@@ -2,7 +2,7 @@ package com.example.gamebuddy.data.remote.model.games
 
 import com.google.gson.annotations.SerializedName
 
-data class GamesBody (
-    @SerializedName("data")
-    val gamesData: GamesData
-    )
+data class GameData(
+    @SerializedName("games")
+    val gameDto: List<GameDto>
+)

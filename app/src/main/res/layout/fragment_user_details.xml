@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.auth.details.detailsUser.DetailsUserFragment">
+    tools:context=".presentation.auth.details.userdetails.UserDetailsFragment">
 
     <LinearLayout
         android:id="@+id/container"

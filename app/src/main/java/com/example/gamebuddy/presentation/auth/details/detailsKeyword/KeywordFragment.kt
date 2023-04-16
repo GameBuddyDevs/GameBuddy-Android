@@ -1,16 +1,16 @@
 package com.example.gamebuddy.presentation.auth.details.detailsKeyword
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.gamebuddy.databinding.FragmentKeywordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
-import com.example.gamebuddy.presentation.auth.details.detailsUser.DetailsViewModel
+import com.example.gamebuddy.presentation.auth.details.DetailsViewModel
 
 class KeywordFragment : BaseAuthFragment() {
+
     private val sharedViewModel: DetailsViewModel by activityViewModels()
 
     private var _binding: FragmentKeywordBinding? = null
