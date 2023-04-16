@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.gamebuddy.databinding.FragmentKeywordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
+import com.example.gamebuddy.presentation.auth.details.DetailsEvent
 import com.example.gamebuddy.presentation.auth.details.DetailsViewModel
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.processQueue
 
 class KeywordFragment : BaseAuthFragment() {
 
-    private val sharedViewModel: DetailsViewModel by activityViewModels()
+    private val detailsViewModel: DetailsViewModel by activityViewModels()
+
+    private var keywordAdapter: KeywordAdapter? = null
 
     private var _binding: FragmentKeywordBinding? = null
     private val binding get() = _binding!!
@@ -26,7 +31,33 @@ class KeywordFragment : BaseAuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Access the views using the binding object here
+
+        initRecyclerView()
+        collectState()
+    }
+
+    private fun collectState() {
+        detailsViewModel.detailsUiState.observe(viewLifecycleOwner) { state ->
+            uiCommunicationListener.displayProgressBar(state.isLoading)
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        detailsViewModel.onTriggerEvent(DetailsEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+
+
+            keywordAdapter?.apply {
+                submitList(state.games)
+            }
+        }
+    }
+
+    private fun initRecyclerView() {
+        TODO("Not yet implemented")
     }
 
     override fun onDestroyView() {
