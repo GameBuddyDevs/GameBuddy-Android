@@ -7,24 +7,22 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.ItemGamesBinding
-import com.example.gamebuddy.domain.model.game.Game
+import com.example.gamebuddy.data.remote.model.keyword.Keyword
+import com.example.gamebuddy.databinding.ItemKeywordBinding
 
 class KeywordAdapter(
     private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, gameId: String)
+        fun onItemClick(position: Int, keywordId: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MessageViewHolder(
-            ItemGamesBinding.inflate(
+            ItemKeywordBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -37,24 +35,20 @@ class KeywordAdapter(
     }
 
     class MessageViewHolder constructor(
-        private val binding: ItemGamesBinding,
+        private val binding: ItemKeywordBinding,
         private val requestOptions: RequestOptions,
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Game) {
+        fun bind(item: Keyword) {
             binding.apply {
 
-                root.setOnClickListener {
+                binding.selectKeywordRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
                 }
+                txtKeyword.text = item.keywordName
 
-                Glide.with(itemView)
-                    .load(item.icon)
-                    .apply(requestOptions)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.imgGames)
-                txtGames.text = item.name
+
 
             }
         }
@@ -70,18 +64,18 @@ class KeywordAdapter(
 
     override fun getItemCount() = differ.currentList.size
 
-    fun submitList(blogList: List<Game>?) {
+    fun submitList(blogList: List<Keyword>?) {
         val newList = blogList?.toMutableList()
         differ.submitList(newList)
     }
 
-    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Keyword>() {
 
-        override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+        override fun areItemsTheSame(oldItem: Keyword, newItem: Keyword): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+        override fun areContentsTheSame(oldItem: Keyword, newItem: Keyword): Boolean {
             return oldItem == newItem
         }
 

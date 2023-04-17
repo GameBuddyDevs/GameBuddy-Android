@@ -28,7 +28,15 @@ class DetailsViewModel @Inject constructor(
             is DetailsEvent.OnSetGender -> onSetGender(gender = event.gender)
             DetailsEvent.GetGames -> getGames()
             is DetailsEvent.AddGameToSelected -> addGameToSelected(id = event.id)
+            is DetailsEvent.AddKeywordToSelected -> addKeywordToSelected(id = event.id)
             DetailsEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
+        }
+    }
+
+    private fun addKeywordToSelected(id: String) {
+        _detailsUiState.value?.let { state ->
+            _detailsUiState.value = state.copy(selectedKeywords = state.selectedKeywords + id)
+            Timber.d("Selected keywords: ${_detailsUiState.value!!.selectedKeywords}")
         }
     }
 

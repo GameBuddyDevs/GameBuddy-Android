@@ -17,13 +17,13 @@
             android:layout_margin="12dp"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:text="Select Keywords"
+            android:text="Select Keywords That Fit Your Taste"
             android:textColor="@color/text"
             android:textSize="40sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_keywords"
+            android:id="@+id/recycler_view_games"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
@@ -31,7 +31,7 @@
             tools:listitem="@layout/item_keyword"
             />
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnContunie"
+            android:id="@+id/btnDetailsUser"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:layout_marginTop="32dp"

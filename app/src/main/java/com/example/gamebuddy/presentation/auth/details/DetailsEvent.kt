@@ -15,5 +15,7 @@ sealed class DetailsEvent {
 
     data class AddGameToSelected(val id: String) : DetailsEvent()
 
+    data class AddKeywordToSelected(val id: String) : DetailsEvent()
+
     object OnRemoveHeadFromQueue : DetailsEvent()
 }
