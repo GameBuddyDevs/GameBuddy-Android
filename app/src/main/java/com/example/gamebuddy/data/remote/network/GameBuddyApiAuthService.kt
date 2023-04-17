@@ -9,6 +9,7 @@ import com.example.gamebuddy.data.remote.model.register.RegisterResponse
 import com.example.gamebuddy.data.remote.model.username.UsernameResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
 import com.example.gamebuddy.data.remote.request.*
+import com.example.gamebuddy.data.remote.request.setdetails.SetProfileDetailsRequest
 import retrofit2.http.*
 
 interface GameBuddyApiAuthService {
@@ -49,6 +50,13 @@ interface GameBuddyApiAuthService {
     @GET("application/get/games")
     suspend fun getGames(): GameResponse
 
-    @GET("application/get/keywords")
+    @GET("get/keywords")
     suspend fun getKeywords(): KeywordResponse
+
+    // TODO("Create a response class and finish the use case")
+//    @POST("auth/details")
+//    suspend fun sendProfileDetails(
+//        @Header("Authorization") token: String,
+//        @Body profileDetailsRequest: SetProfileDetailsRequest,
+//    ):
 }

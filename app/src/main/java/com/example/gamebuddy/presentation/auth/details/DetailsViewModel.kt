@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.auth.details
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.data.remote.request.setdetails.SetProfileDetailsRequest
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.util.StateMessage
@@ -10,6 +11,7 @@ import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,7 +35,30 @@ class DetailsViewModel @Inject constructor(
             DetailsEvent.GetKeywords -> getKeywords()
             is DetailsEvent.AddGameToSelected -> addGameToSelected(id = event.id)
             is DetailsEvent.AddKeywordToSelected -> addKeywordToSelected(id = event.id)
+            DetailsEvent.SendProfileDetail -> sendProfileDetails()
             DetailsEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
+        }
+    }
+
+    private fun sendProfileDetails() {
+        val age = _detailsUiState.value?.age
+        val gender = _detailsUiState.value?.gender
+        val avatar = _detailsUiState.value?.avatar
+        val country = _detailsUiState.value?.country
+        val selectedGames = _detailsUiState.value?.selectedGames
+        val selectedKeywords = _detailsUiState.value?.selectedKeywords
+
+        val profileDetailsRequest = SetProfileDetailsRequest(
+            age = age?.toInt() ?: 0,
+            avatar = avatar ?: "",
+            country = country ?: "",
+            gender = gender ?: "",
+            favoriteGames = selectedGames ?: listOf(),
+            keywords = selectedKeywords ?: listOf()
+        )
+
+        _detailsUiState.value?.let { state ->
+            _detailsUiState.value = state.copy(isLoading = true)
         }
     }
 

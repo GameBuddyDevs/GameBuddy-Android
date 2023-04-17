@@ -15,6 +15,8 @@ sealed class DetailsEvent {
 
     object GetKeywords: DetailsEvent()
 
+    object SendProfileDetail : DetailsEvent()
+
     data class AddGameToSelected(val id: String) : DetailsEvent()
 
     data class AddKeywordToSelected(val id: String) : DetailsEvent()

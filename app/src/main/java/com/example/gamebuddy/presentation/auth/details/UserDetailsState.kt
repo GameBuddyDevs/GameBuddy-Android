@@ -17,5 +17,6 @@ data class UserDetailsState(
     val selectedGames: List<String> = listOf(),
     val selectedKeywords: List<String> = listOf(),
     val currentFragment: Int = 0,
+    val isProfileSetupDone: Boolean = false,
     val queue: Queue<StateMessage> = Queue(mutableListOf()),
 )

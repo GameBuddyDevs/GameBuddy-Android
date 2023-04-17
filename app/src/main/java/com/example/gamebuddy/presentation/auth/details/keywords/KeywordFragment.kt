@@ -42,7 +42,7 @@ class KeywordFragment : BaseAuthFragment(), KeywordAdapter.OnClickListener {
 
     private fun setClickListeners() {
         binding.btnFinishDetail.setOnClickListener {
-            // navigate to home. Before sending it to the server trigger an event to save the data
+            detailsViewModel.onTriggerEvent(DetailsEvent.SendProfileDetail)
         }
     }
 
