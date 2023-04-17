@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.auth.details.games.GamesFragment">
+    tools:context=".presentation.auth.details.keywords.KeywordFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
+            android:id="@+id/txt_games"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:text="Select Games"
+            android:text="Select Your Favorite Games"
             android:textColor="@color/text"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -25,19 +30,22 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_games"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btnDetailsUser"
+            android:layout_below="@id/txt_games"
             android:padding="4dp"
             tools:itemCount="6"
-            tools:listitem="@layout/item_games"
-            />
+            tools:listitem="@layout/item_games" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDetailsUser"
             android:layout_width="match_parent"
             android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="32dp"
             android:text="Continue"
             app:cornerRadius="32dp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentGamesBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
@@ -37,8 +38,15 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
 
         detailsViewModel.onTriggerEvent(DetailsEvent.GetGames)
 
+        setClickListeners()
         initRecyclerView()
         collectState()
+    }
+
+    private fun setClickListeners() {
+        binding.btnDetailsUser.setOnClickListener {
+            findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToKeywordFragment())
+        }
     }
 
     private fun initRecyclerView() {

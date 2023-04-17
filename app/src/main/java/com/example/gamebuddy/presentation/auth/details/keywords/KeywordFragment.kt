@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentKeywordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
@@ -33,8 +34,16 @@ class KeywordFragment : BaseAuthFragment(), KeywordAdapter.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        detailsViewModel.onTriggerEvent(DetailsEvent.GetKeywords)
+        setClickListeners()
         initRecyclerView()
         collectState()
+    }
+
+    private fun setClickListeners() {
+        binding.btnFinishDetail.setOnClickListener {
+            // navigate to home. Before sending it to the server trigger an event to save the data
+        }
     }
 
     private fun collectState() {

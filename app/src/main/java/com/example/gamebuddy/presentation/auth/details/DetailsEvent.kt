@@ -13,6 +13,8 @@ sealed class DetailsEvent {
 
     object GetGames : DetailsEvent()
 
+    object GetKeywords: DetailsEvent()
+
     data class AddGameToSelected(val id: String) : DetailsEvent()
 
     data class AddKeywordToSelected(val id: String) : DetailsEvent()

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
+import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
@@ -15,9 +16,11 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val gamesUseCase: GamesUseCase,
+    private val keywordsUseCase: KeywordsUseCase
 ) : ViewModel() {
 
-    private val _detailsUiState: MutableLiveData<UserDetailsState> = MutableLiveData(UserDetailsState())
+    private val _detailsUiState: MutableLiveData<UserDetailsState> =
+        MutableLiveData(UserDetailsState())
     val detailsUiState: MutableLiveData<UserDetailsState> get() = _detailsUiState
 
     fun onTriggerEvent(event: DetailsEvent) {
@@ -27,6 +30,7 @@ class DetailsViewModel @Inject constructor(
             is DetailsEvent.OnSetCountry -> onSetCountry(country = event.country)
             is DetailsEvent.OnSetGender -> onSetGender(gender = event.gender)
             DetailsEvent.GetGames -> getGames()
+            DetailsEvent.GetKeywords -> getKeywords()
             is DetailsEvent.AddGameToSelected -> addGameToSelected(id = event.id)
             is DetailsEvent.AddKeywordToSelected -> addKeywordToSelected(id = event.id)
             DetailsEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
@@ -98,13 +102,30 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun getGames() {
-        Timber.d("DetailsViewModel getGames: ")
-        Timber.d("DetailsViewModel getGames: ${detailsUiState.value}")
         _detailsUiState.value?.let { state ->
-            gamesUseCase.execute().onEach {
-                Timber.d("DetailsViewModel getGames: ${it.data}")
-                _detailsUiState.value = state.copy(games = it.data)
+            gamesUseCase.execute().onEach { dataState ->
+                Timber.d("DetailsViewModel getGames: ${dataState.data}")
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+                _detailsUiState.value = state.copy(games = dataState.data)
             }.launchIn(viewModelScope)
         }
     }
+
+    private fun getKeywords() {
+        _detailsUiState.value.let { state ->
+            keywordsUseCase.execute().onEach { dataState ->
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+                _detailsUiState.value = state?.copy(keywords = dataState.data?.body?.data?.keywords)
+            }.launchIn(viewModelScope)
+        }
+    }
+
 }

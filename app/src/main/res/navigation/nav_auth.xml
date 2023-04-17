@@ -77,7 +77,11 @@
         android:id="@+id/gamesFragment"
         android:name="com.example.gamebuddy.presentation.auth.details.games.GamesFragment"
         android:label="fragment_games"
-        tools:layout="@layout/fragment_games" />
+        tools:layout="@layout/fragment_games" >
+        <action
+            android:id="@+id/action_gamesFragment_to_keywordFragment"
+            app:destination="@id/keywordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/usernameFragment"
         android:name="com.example.gamebuddy.presentation.auth.username.UsernameFragment"
@@ -87,4 +91,9 @@
             android:id="@+id/action_usernameFragment_to_detailsUserFragment"
             app:destination="@id/userDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/keywordFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.keywords.KeywordFragment"
+        android:label="fragment_keyword"
+        tools:layout="@layout/fragment_keyword" />
 </navigation>

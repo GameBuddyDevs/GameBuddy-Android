@@ -127,4 +127,15 @@ object AuthModule {
             service = service
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideKeywordsUseCase(
+        service: GameBuddyApiAuthService,
+    ): KeywordsUseCase{
+        return KeywordsUseCase(
+            service = service
+        )
+    }
+
 }
