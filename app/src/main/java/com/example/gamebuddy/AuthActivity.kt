@@ -46,9 +46,15 @@ class AuthActivity : BaseActivity() {
 
             Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
 
+
             if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
                 //navMainActivity()
             }
+
+//            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
+//                navMainActivity()
+//            }
+
         }
     }
 
