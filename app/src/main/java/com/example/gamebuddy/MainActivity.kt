@@ -31,5 +31,6 @@ class MainActivity: BaseActivity() {
     private fun setupNavigation() {
         bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
+
     }
 }
