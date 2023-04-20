@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.data.remote.request.setdetails.SetProfileDetailsRequest
+import com.example.gamebuddy.domain.usecase.auth.CompleteProfileDetailsUseCase
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.util.StateMessage
@@ -11,14 +12,14 @@ import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val gamesUseCase: GamesUseCase,
-    private val keywordsUseCase: KeywordsUseCase
+    private val keywordsUseCase: KeywordsUseCase,
+    private val completeProfileDetailsUseCase: CompleteProfileDetailsUseCase,
 ) : ViewModel() {
 
     private val _detailsUiState: MutableLiveData<UserDetailsState> =
@@ -57,9 +58,21 @@ class DetailsViewModel @Inject constructor(
             keywords = selectedKeywords ?: listOf()
         )
 
-        _detailsUiState.value?.let { state ->
-            _detailsUiState.value = state.copy(isLoading = true)
-        }
+        completeProfileDetailsUseCase.execute(profileDetailsRequest)
+            .onEach { dataState ->
+                _detailsUiState.value = detailsUiState.value?.copy(isLoading = dataState.isLoading)
+
+                dataState?.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+                dataState?.data?.let { data ->
+                    _detailsUiState.value = detailsUiState.value?.copy(isProfileSetupDone = true)
+                }
+
+
+            }.launchIn(viewModelScope)
+
     }
 
     private fun addKeywordToSelected(id: String) {

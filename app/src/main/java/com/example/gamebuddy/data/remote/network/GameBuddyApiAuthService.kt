@@ -6,6 +6,7 @@ import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.login.LoginResponse
 import com.example.gamebuddy.data.remote.model.newPassword.NewPasswordResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
+import com.example.gamebuddy.data.remote.model.setprofile.SetDetailsResponse
 import com.example.gamebuddy.data.remote.model.username.UsernameResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
 import com.example.gamebuddy.data.remote.request.*
@@ -53,10 +54,10 @@ interface GameBuddyApiAuthService {
     @GET("get/keywords")
     suspend fun getKeywords(): KeywordResponse
 
-    // TODO("Create a response class and finish the use case")
-//    @POST("auth/details")
-//    suspend fun sendProfileDetails(
-//        @Header("Authorization") token: String,
-//        @Body profileDetailsRequest: SetProfileDetailsRequest,
-//    ):
+    @POST("auth/details")
+    suspend fun sendProfileDetails(
+        @Header("Authorization") token: String,
+        @Body profileDetailsRequest: SetProfileDetailsRequest,
+    ): SetDetailsResponse
+
 }

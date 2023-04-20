@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentKeywordBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
@@ -42,7 +41,11 @@ class KeywordFragment : BaseAuthFragment(), KeywordAdapter.OnClickListener {
 
     private fun setClickListeners() {
         binding.btnFinishDetail.setOnClickListener {
-            detailsViewModel.onTriggerEvent(DetailsEvent.SendProfileDetail)
+            /*
+            * TODO: Navigate to loading screen.
+            * TODO: Send profile details to server. (Event: SendProfileDetail) There is a code in the view model for sending request
+            * */
+
         }
     }
 
