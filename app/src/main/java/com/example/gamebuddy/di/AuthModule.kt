@@ -138,4 +138,18 @@ object AuthModule {
         )
     }
 
+    @Singleton
+    @Provides
+    fun provideCompleteProfileDetailsUseCase(
+        service: GameBuddyApiAuthService,
+        authTokenDao: AuthTokenDao,
+        dataStore: AppDataStore
+    ): CompleteProfileDetailsUseCase {
+        return CompleteProfileDetailsUseCase(
+            service = service,
+            authTokenDao = authTokenDao,
+            appDataStore = dataStore
+        )
+    }
+
 }
