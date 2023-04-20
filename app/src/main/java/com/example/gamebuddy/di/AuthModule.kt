@@ -118,6 +118,17 @@ object AuthModule {
             appDataStore = dataStore
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideVerifyTokenUseCase(
+        service: GameBuddyApiAuthService,
+    ): ValidateTokenUseCase{
+        return ValidateTokenUseCase(
+            service = service,
+        )
+    }
+
     @Singleton
     @Provides
     fun provideGamesUseCase(

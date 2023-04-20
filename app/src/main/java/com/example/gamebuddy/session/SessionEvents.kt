@@ -4,11 +4,11 @@ import com.example.gamebuddy.domain.model.account.AuthToken
 
 sealed class SessionEvents {
 
-    object Logout: SessionEvents()
-
     data class Login(val authToken: AuthToken): SessionEvents()
 
-    data class Register(val email: String, val password: String): SessionEvents()
+    object Logout: SessionEvents()
+
+    data class ValidateToken(val authToken: AuthToken): SessionEvents()
 
     data class CheckPreviousAuthUser(val email: String): SessionEvents()
 

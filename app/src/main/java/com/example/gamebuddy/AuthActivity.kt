@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.findNavController
 import com.example.gamebuddy.databinding.ActivityAuthBinding
-import com.example.gamebuddy.databinding.ActivityMainBinding
 import com.example.gamebuddy.session.SessionEvents
+import com.example.gamebuddy.util.AuthActionType
 import com.example.gamebuddy.util.SplashViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.observeOn
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -34,7 +34,6 @@ class AuthActivity : BaseActivity() {
 
     private fun collectState() {
         sessionManager.sessionState.observe(this) { state ->
-            Timber.d("AuthActivityke: $state")
             displayProgressBar(state.isLoading)
             processQueue(context = this,
                 queue = state.queue,
@@ -44,18 +43,38 @@ class AuthActivity : BaseActivity() {
                     }
                 })
 
-            Timber.d("authToken: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
 
-
-            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
-                //navMainActivity()
+            if (state.authToken != null && state.authToken.pk != "-1" && state.didCheckForPreviousAuthUser) {
+                splashViewModel.finishSplashScreen()
+                decideNavigation(state.actionType)
             }
 
-//            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
-//                navMainActivity()
-//            }
-
         }
+    }
+
+    private fun decideNavigation(actionType: AuthActionType?) {
+        when (actionType) {
+            AuthActionType.LOGIN -> {
+                Timber.d("startup-logic: Navigating to login fragment")
+                navLoginFragment()
+            }
+            AuthActionType.DETAILS -> {
+                Timber.d("startup-logic: Navigating to details fragment")
+                navDetailsFragment()
+            }
+            else -> {
+                Timber.d("startup-logic: Navigating to main activity")
+                navMainActivity()
+            }
+        }
+    }
+
+    private fun navDetailsFragment() {
+        findNavController(R.id.auth_fragments_container).navigate(R.id.usernameFragment)
+    }
+
+    private fun navLoginFragment() {
+        findNavController(R.id.auth_fragments_container).navigate(R.id.loginFragment)
     }
 
     private fun navMainActivity() {

@@ -60,6 +60,7 @@ class DetailsViewModel @Inject constructor(
 
         completeProfileDetailsUseCase.execute(profileDetailsRequest)
             .onEach { dataState ->
+                Timber.d("startup-logic: Collecting data: $dataState")
                 _detailsUiState.value = detailsUiState.value?.copy(isLoading = dataState.isLoading)
 
                 dataState?.stateMessage?.let { stateMessage ->
