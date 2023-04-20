@@ -8,6 +8,7 @@ import com.example.gamebuddy.data.remote.model.newPassword.NewPasswordResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
 import com.example.gamebuddy.data.remote.model.setprofile.SetDetailsResponse
 import com.example.gamebuddy.data.remote.model.username.UsernameResponse
+import com.example.gamebuddy.data.remote.model.validate.ValidateResponse
 import com.example.gamebuddy.data.remote.model.verify.VerifyResponse
 import com.example.gamebuddy.data.remote.request.*
 import com.example.gamebuddy.data.remote.request.setdetails.SetProfileDetailsRequest
@@ -47,6 +48,11 @@ interface GameBuddyApiAuthService {
         @Header("Authorization") token: String,
         @Body newPasswordRequest: NewPasswordRequest,
     ): NewPasswordResponse
+
+    @POST("auth/validateToken")
+    suspend fun validateToken(
+        @Header("Authorization") token: String,
+    ): ValidateResponse
 
     @GET("application/get/games")
     suspend fun getGames(): GameResponse

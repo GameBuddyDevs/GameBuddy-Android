@@ -3,7 +3,9 @@ package com.example.gamebuddy.session
 import androidx.lifecycle.MutableLiveData
 import com.example.gamebuddy.data.datastore.AppDataStore
 import com.example.gamebuddy.domain.model.account.AuthToken
+import com.example.gamebuddy.domain.usecase.auth.ValidateTokenUseCase
 import com.example.gamebuddy.domain.usecase.session.CheckPreviousAuthUserUseCase
+import com.example.gamebuddy.util.AuthActionType
 import com.example.gamebuddy.util.Constants
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
@@ -20,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class SessionManager @Inject constructor(
     private val checkPreviousAuthUser: CheckPreviousAuthUserUseCase,
-    //private val logout: SessionEvents.Logout,
+    private val validateTokenUseCase: ValidateTokenUseCase,
     private val appDataStore: AppDataStore,
 ) {
 
@@ -32,43 +34,90 @@ class SessionManager @Inject constructor(
     init {
         sessionScope.launch {
             appDataStore.getValue(Constants.LAST_AUTH_USER)?.let { email ->
-                Timber.d("AHAA Found previous auth user: $email")
-                onTriggerEvent(SessionEvents.CheckPreviousAuthUser(email))
-            } ?: onFinishedCheckingForPreviousAuthUser()
+                Timber.d("startup-logic: Found previous auth user: $email")
+                onTriggerEvent(SessionEvents.CheckPreviousAuthUser(email = email))
+            } ?: onUserNotFound()
+        }
+    }
+
+    private fun onUserNotFound() {
+        _sessionState.value.let { state ->
+            Timber.d("startup-logic: User not registered")
+            _sessionState.value = state?.copy(
+                didCheckForPreviousAuthUser = true,
+                actionType = AuthActionType.LOGIN
+            )
         }
     }
 
     private fun onFinishedCheckingForPreviousAuthUser() {
         _sessionState.value.let { state ->
-            Timber.d("Finished checking for previous auth user")
+            Timber.d("startup-logic: Finished checking for previous auth user")
             _sessionState.value = state?.copy(didCheckForPreviousAuthUser = true)
         }
     }
 
-
     fun onTriggerEvent(event: SessionEvents) {
         when (event) {
             is SessionEvents.CheckPreviousAuthUser -> checkPreviousAuthUser(email = event.email)
-            is SessionEvents.Login -> {
-                login(event.authToken)
-            }
+            is SessionEvents.Login -> login(event.authToken)
             SessionEvents.Logout -> TODO()
+            is SessionEvents.ValidateToken -> validateToken(event.authToken)
             SessionEvents.OnRemoveHeadFromQueue -> TODO()
-            is SessionEvents.Register -> {
-
-            }
         }
     }
 
-    private fun checkPreviousAuthUser(email: String) {
+    private fun validateToken(authToken: AuthToken) {
+        _sessionState.value.let { state ->
+            validateTokenUseCase.execute(authToken = authToken.token!!)
+                .onEach { dataState ->   // authToken.token is not null guaranteed
+                    _sessionState.value = state?.copy(isLoading = dataState.isLoading)
+
+                    dataState.data?.let { isVerified ->
+                        Timber.d("startup-logic: Validated token: $isVerified")
+                        if (isVerified) {
+                            // User is registered, logged in and completed profile setup
+                            _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
+
+                            val isProfileSetupComplete = appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "F"
+                            if (isProfileSetupComplete == "T") {
+                                Timber.d("startup-logic: Profile setup complete")
+                                _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
+                            } else {
+                                Timber.d("startup-logic: Profile setup incomplete")
+                                _sessionState.value = state?.copy(actionType = AuthActionType.DETAILS)
+                            }
+                        } else {
+                            // User is registered, but token is invalid
+                            _sessionState.value = state?.copy(actionType = AuthActionType.LOGIN)
+                        }
+                    }
+
+                    dataState.stateMessage?.let { stateMessage ->
+                        Timber.d("startup-logic: Done validating tokenke ${stateMessage.response.message}")
+                        if (stateMessage.response.message == "Done validating token.") {
+                            onFinishedCheckingForPreviousAuthUser()
+                        } else {
+                            Timber.d("startup-logic: Not done validating tokenke ${stateMessage.response.message}")
+                            appendToMessageQueue(stateMessage)
+                        }
+                    }
+
+                }.launchIn(sessionScope)
+        }
+    }
+
+    private fun checkPreviousAuthUser(
+        email: String
+    ) {
         _sessionState.value.let { state ->
             checkPreviousAuthUser.execute(email = email).onEach { dataState ->
                 _sessionState.value = state?.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { authToken ->
-                    Timber.d("AHAA Found previous auth user: $authToken")
+                    Timber.d("startup-logic: Found previous auth user: $authToken")
                     _sessionState.value = state?.copy(authToken = authToken)
-                    onTriggerEvent(SessionEvents.Login(authToken = authToken))
+                    onTriggerEvent(SessionEvents.ValidateToken(authToken = authToken))
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
@@ -90,7 +139,7 @@ class SessionManager @Inject constructor(
                 queue.remove() // can throw exception if empty
                 _sessionState.value = state.copy(queue = queue)
             } catch (e: Exception) {
-                Timber.d("Removed head from queue. Nothing to remove: ${e.message}.")
+                Timber.d("startup-logic: Removed head from queue. Nothing to remove: ${e.message}.")
             }
         }
     }
@@ -109,7 +158,17 @@ class SessionManager @Inject constructor(
 
     private fun login(authToken: AuthToken) {
         _sessionState?.value.let { state ->
+
+
             _sessionState.value = state?.copy(authToken = authToken)
+
+//            // If the user has already completed their profile, then go to the home screen
+//            if (isProfileSetupDone == "T") {
+//                _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
+//            } else {
+//                // Otherwise, go to the profile setup screen. "Details" in this case
+//                _sessionState.value = state?.copy(actionType = AuthActionType.DETAILS)
+//            }
         }
     }
 
