@@ -40,76 +40,17 @@ class SessionManager @Inject constructor(
         }
     }
 
-    private fun onUserNotFound() {
-        _sessionState.value.let { state ->
-            Timber.d("startup-logic: User not registered")
-            _sessionState.value = state?.copy(
-                didCheckForPreviousAuthUser = true,
-                actionType = AuthActionType.LOGIN
-            )
-        }
-    }
-
-    private fun onFinishedCheckingForPreviousAuthUser() {
-        _sessionState.value.let { state ->
-            Timber.d("startup-logic: Finished checking for previous auth user")
-            _sessionState.value = state?.copy(didCheckForPreviousAuthUser = true)
-        }
-    }
-
     fun onTriggerEvent(event: SessionEvents) {
         when (event) {
             is SessionEvents.CheckPreviousAuthUser -> checkPreviousAuthUser(email = event.email)
             is SessionEvents.Login -> login(event.authToken)
             SessionEvents.Logout -> TODO()
             is SessionEvents.ValidateToken -> validateToken(event.authToken)
-            SessionEvents.OnRemoveHeadFromQueue -> TODO()
+            SessionEvents.OnRemoveHeadFromQueue -> removeHeadFromQueue()
         }
     }
 
-    private fun validateToken(authToken: AuthToken) {
-        _sessionState.value.let { state ->
-            validateTokenUseCase.execute(authToken = authToken.token!!)
-                .onEach { dataState ->   // authToken.token is not null guaranteed
-                    _sessionState.value = state?.copy(isLoading = dataState.isLoading)
-
-                    dataState.data?.let { isVerified ->
-                        Timber.d("startup-logic: Validated token: $isVerified")
-                        if (isVerified) {
-                            // User is registered, logged in and completed profile setup
-                            _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
-
-                            val isProfileSetupComplete = appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "F"
-                            if (isProfileSetupComplete == "T") {
-                                Timber.d("startup-logic: Profile setup complete")
-                                _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
-                            } else {
-                                Timber.d("startup-logic: Profile setup incomplete")
-                                _sessionState.value = state?.copy(actionType = AuthActionType.DETAILS)
-                            }
-                        } else {
-                            // User is registered, but token is invalid
-                            _sessionState.value = state?.copy(actionType = AuthActionType.LOGIN)
-                        }
-                    }
-
-                    dataState.stateMessage?.let { stateMessage ->
-                        Timber.d("startup-logic: Done validating tokenke ${stateMessage.response.message}")
-                        if (stateMessage.response.message == "Done validating token.") {
-                            onFinishedCheckingForPreviousAuthUser()
-                        } else {
-                            Timber.d("startup-logic: Not done validating tokenke ${stateMessage.response.message}")
-                            appendToMessageQueue(stateMessage)
-                        }
-                    }
-
-                }.launchIn(sessionScope)
-        }
-    }
-
-    private fun checkPreviousAuthUser(
-        email: String
-    ) {
+    private fun checkPreviousAuthUser(email: String) {
         _sessionState.value.let { state ->
             checkPreviousAuthUser.execute(email = email).onEach { dataState ->
                 _sessionState.value = state?.copy(isLoading = dataState.isLoading)
@@ -129,6 +70,49 @@ class SessionManager @Inject constructor(
                 }
 
             }.launchIn(sessionScope)
+        }
+    }
+
+    private fun onUserNotFound() {
+        _sessionState.value.let { state ->
+            Timber.d("startup-logic: User not registered")
+            _sessionState.value = state?.copy(
+                didCheckForPreviousAuthUser = true,
+                actionType = AuthActionType.LOGIN
+            )
+        }
+    }
+
+    private fun onFinishedCheckingForPreviousAuthUser() {
+        _sessionState.value.let { state ->
+            Timber.d("startup-logic: Finished checking for previous auth user")
+            _sessionState.value = state?.copy(didCheckForPreviousAuthUser = true)
+        }
+    }
+
+    private fun validateToken(authToken: AuthToken) {
+        _sessionState.value?.let { state ->
+            validateTokenUseCase.execute(authToken.token!!)
+                .onEach { dataState ->
+                    _sessionState.value = state.copy(isLoading = dataState.isLoading)
+                    dataState.data?.let { isVerified ->
+                        if (isVerified) {
+                            val isProfileSetupComplete =
+                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "F"
+                            _sessionState.value =
+                                state.copy(actionType = if (isProfileSetupComplete == "T") AuthActionType.HOME else AuthActionType.DETAILS)
+                        } else {
+                            _sessionState.value = state.copy(actionType = AuthActionType.LOGIN)
+                        }
+                    }
+                    dataState.stateMessage?.let { stateMessage ->
+                        if (stateMessage.response.message == "Done validating token.") {
+                            onFinishedCheckingForPreviousAuthUser()
+                        } else {
+                            appendToMessageQueue(stateMessage)
+                        }
+                    }
+                }.launchIn(sessionScope)
         }
     }
 
@@ -158,17 +142,7 @@ class SessionManager @Inject constructor(
 
     private fun login(authToken: AuthToken) {
         _sessionState?.value.let { state ->
-
-
             _sessionState.value = state?.copy(authToken = authToken)
-
-//            // If the user has already completed their profile, then go to the home screen
-//            if (isProfileSetupDone == "T") {
-//                _sessionState.value = state?.copy(actionType = AuthActionType.HOME)
-//            } else {
-//                // Otherwise, go to the profile setup screen. "Details" in this case
-//                _sessionState.value = state?.copy(actionType = AuthActionType.DETAILS)
-//            }
         }
     }
 

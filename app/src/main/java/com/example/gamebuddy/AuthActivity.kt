@@ -34,7 +34,6 @@ class AuthActivity : BaseActivity() {
 
     private fun collectState() {
         sessionManager.sessionState.observe(this) { state ->
-            Timber.d("startup-logic: Collecting session state: $state")
             displayProgressBar(state.isLoading)
             processQueue(context = this,
                 queue = state.queue,
@@ -44,16 +43,11 @@ class AuthActivity : BaseActivity() {
                     }
                 })
 
-            Timber.d("startup-logic: Auth token for previous user: ${state.authToken}, didCheckForPreviousAuthUser: ${state.didCheckForPreviousAuthUser}")
 
             if (state.authToken != null && state.authToken.pk != "-1" && state.didCheckForPreviousAuthUser) {
                 splashViewModel.finishSplashScreen()
                 decideNavigation(state.actionType)
             }
-
-//            if (state.authToken != null /*&& state.didCheckForPreviousAuthUser*/) {
-//                navMainActivity()
-//            }
 
         }
     }
