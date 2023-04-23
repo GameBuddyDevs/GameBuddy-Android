@@ -4,6 +4,7 @@ import com.example.gamebuddy.BuildConfig
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
+import com.example.gamebuddy.util.BaseUrlInterceptor
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -30,11 +31,19 @@ object ApiModule {
 
     @Singleton
     @Provides
+    fun provideBaseUrlInterceptor(): BaseUrlInterceptor {
+        return BaseUrlInterceptor()
+    }
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        baseUrlInterceptor: BaseUrlInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(baseUrlInterceptor)
             .connectTimeout(500L, TimeUnit.SECONDS)
             .build()
     }

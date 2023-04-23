@@ -1,5 +1,7 @@
 package com.example.gamebuddy.util
 
+import timber.log.Timber
+
 data class EnvironmentModel(
     val apiType: ApiType,
     val deploymentType: DeploymentType
@@ -8,6 +10,7 @@ data class EnvironmentModel(
     var baseUrl = ""
 
     init {
+        Timber.d("apiType: ${apiType.url}, deploymentType: $deploymentType")
         setBaseUrl(
             apiType = apiType,
             deploymentType = deploymentType
@@ -20,6 +23,7 @@ data class EnvironmentModel(
             DeploymentType.BETA -> "beta-"
             DeploymentType.PRODUCTION -> ""
         }
+        Timber.d("prefix: $prefix")
         baseUrl = "http://${prefix}${apiType.url}"
     }
 
