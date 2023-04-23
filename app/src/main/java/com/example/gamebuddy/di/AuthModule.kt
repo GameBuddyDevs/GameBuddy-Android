@@ -132,26 +132,6 @@ object AuthModule {
 
     @Singleton
     @Provides
-    fun provideGamesUseCase(
-        service: GameBuddyApiAppService,
-    ): GamesUseCase{
-        return GamesUseCase(
-            service = service
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideKeywordsUseCase(
-        service: GameBuddyApiAuthService,
-    ): KeywordsUseCase{
-        return KeywordsUseCase(
-            service = service
-        )
-    }
-
-    @Singleton
-    @Provides
     fun provideCompleteProfileDetailsUseCase(
         service: GameBuddyApiAuthService,
         authTokenDao: AuthTokenDao,
