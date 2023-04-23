@@ -1,7 +1,9 @@
 package com.example.gamebuddy.di
 
 import com.example.gamebuddy.BuildConfig
+import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -58,10 +60,26 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideGoogleMapsApi(
+    fun provideGameBuddyAuthService(
         retrofit: Retrofit
     ): GameBuddyApiAuthService {
         return retrofit.create(GameBuddyApiAuthService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGameBuddyAppService(
+        retrofit: Retrofit
+    ): GameBuddyApiAppService {
+        return retrofit.create(GameBuddyApiAppService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGameBuddyMatchService(
+        retrofit: Retrofit
+    ): GameBuddyApiMatchService {
+        return retrofit.create(GameBuddyApiMatchService::class.java)
     }
 
 }

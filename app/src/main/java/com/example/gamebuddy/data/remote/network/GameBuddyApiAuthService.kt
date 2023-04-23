@@ -16,7 +16,6 @@ import retrofit2.http.*
 
 interface GameBuddyApiAuthService {
 
-
     @POST("auth/login")
     suspend fun login(
         @Body loginRequest: LoginRequest,
@@ -53,12 +52,6 @@ interface GameBuddyApiAuthService {
     suspend fun validateToken(
         @Header("Authorization") token: String,
     ): ValidateResponse
-
-    @GET("application/get/games")
-    suspend fun getGames(): GameResponse
-
-    @GET("get/keywords")
-    suspend fun getKeywords(): KeywordResponse
 
     @POST("auth/details")
     suspend fun sendProfileDetails(
