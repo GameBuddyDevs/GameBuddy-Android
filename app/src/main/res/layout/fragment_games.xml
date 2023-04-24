@@ -19,9 +19,9 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="4dp"
             android:paddingTop="32dp"
-            android:paddingBottom="32dp"
+            android:paddingBottom="8dp"
             android:text="Select Your Favorite Games"
             android:textColor="@color/text"
             android:textSize="40sp"
@@ -31,8 +31,9 @@
             android:id="@+id/recycler_view_games"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/btnDetailsUser"
+            android:layout_above="@+id/btnDetailsUser"
             android:layout_below="@id/txt_games"
+            android:layout_marginBottom="20dp"
             android:padding="4dp"
             tools:itemCount="6"
             tools:listitem="@layout/item_games" />
@@ -40,10 +41,22 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDetailsUser"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/btnBack"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="72dp"
             android:text="Continue"
+            app:cornerRadius="32dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Previous"
             app:cornerRadius="32dp" />
 
     </RelativeLayout>
