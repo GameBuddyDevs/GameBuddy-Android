@@ -35,7 +35,7 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
         val newUrl = HttpUrl.Builder()
             .scheme(baseUrl.scheme)
             .host(baseUrl.host)
-            .addPathSegment("${baseUrl.encodedPathSegments[0]}/${request.url.encodedPathSegments[0]}")
+            .addPathSegment("${baseUrl.encodedPathSegments[0]}/${request.url.encodedPathSegments.joinToString("/")}")
             .port(baseUrl.port)
             .build()
 

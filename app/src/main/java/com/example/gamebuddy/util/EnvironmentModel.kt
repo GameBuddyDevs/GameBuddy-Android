@@ -31,6 +31,7 @@ data class EnvironmentModel(
         }
         Timber.d("prefix: $prefix")
         baseUrl = "http://${prefix}${apiType.url}${path}}"
+        Timber.d("baseUrlssssss: $baseUrl")
     }
 
     override fun toString(): String {

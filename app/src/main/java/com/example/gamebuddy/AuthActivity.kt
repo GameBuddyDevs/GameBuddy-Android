@@ -10,8 +10,6 @@ import com.example.gamebuddy.session.SessionEvents
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.AuthActionType
 import com.example.gamebuddy.util.DeploymentType
-import com.example.gamebuddy.util.EnvironmentManager
-import com.example.gamebuddy.util.EnvironmentModel
 import com.example.gamebuddy.util.SplashViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
@@ -91,17 +89,6 @@ class AuthActivity : BaseActivity() {
 
     private fun navLoginFragment() {
         findNavController(R.id.auth_fragments_container).navigate(R.id.loginFragment)
-    }
-
-    private fun updateEnvironment(
-        apiType: ApiType,
-        deploymentType: DeploymentType
-    ) {
-        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
-        EnvironmentManager.environments[index] = EnvironmentModel(
-            apiType = apiType,
-            deploymentType = deploymentType
-        )
     }
 
     private fun navMainActivity() {

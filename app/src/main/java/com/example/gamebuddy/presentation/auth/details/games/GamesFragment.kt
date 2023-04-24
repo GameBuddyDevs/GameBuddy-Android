@@ -105,7 +105,8 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
             EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
         EnvironmentManager.environments[index] = EnvironmentModel(
             apiType = apiType,
-            deploymentType = deploymentType
+            deploymentType = deploymentType,
+            path = "application/"
         )
     }
 }
