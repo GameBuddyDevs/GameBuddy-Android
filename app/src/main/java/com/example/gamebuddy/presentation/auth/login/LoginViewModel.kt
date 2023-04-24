@@ -7,6 +7,8 @@ import com.example.gamebuddy.domain.usecase.auth.LoginUseCase
 import com.example.gamebuddy.session.SessionEvents
 import com.example.gamebuddy.session.SessionManager
 import com.example.gamebuddy.util.*
+import com.example.gamebuddy.util.Constants.USER_DETAILS_NOT_FINISHED
+import com.example.gamebuddy.util.Constants.USER_NOT_VERIFIED
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -77,6 +79,10 @@ class LoginViewModel @Inject constructor(
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
+                    when (stateMessage.response.message) {
+                        USER_DETAILS_NOT_FINISHED -> _uiState.value = state.copy(actionType = AuthActionType.DETAILS)
+                        USER_NOT_VERIFIED -> _uiState.value = state.copy(actionType = AuthActionType.VERIFY)
+                    }
                     appendToMessageQueue(stateMessage)
                 }
 

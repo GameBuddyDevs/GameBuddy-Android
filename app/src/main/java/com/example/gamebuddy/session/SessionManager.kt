@@ -97,8 +97,8 @@ class SessionManager @Inject constructor(
                     _sessionState.value = state.copy(isLoading = dataState.isLoading)
                     dataState.data?.let { isVerified ->
                         if (isVerified) {
-                            val isProfileSetupComplete =
-                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
+                            val isProfileSetupComplete = appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
+                            Timber.d("startup-logic: Is profile setup complete? $isProfileSetupComplete")
                             _sessionState.value =
                                 state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.DETAILS)
                         } else {

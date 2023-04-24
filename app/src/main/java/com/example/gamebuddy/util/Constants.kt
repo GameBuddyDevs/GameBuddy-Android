@@ -15,4 +15,8 @@ object Constants {
     // Permissions
     const val PERMISSIONS_REQUEST_READ_STORAGE: Int = 301
 
+    // Error Messages
+    const val USER_DETAILS_NOT_FINISHED: String = "User details not finished"
+    const val USER_NOT_VERIFIED: String = "User not verified"
+
 }
