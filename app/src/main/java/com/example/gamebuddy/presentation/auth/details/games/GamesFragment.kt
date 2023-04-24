@@ -34,10 +34,7 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
     ): View {
         _binding = FragmentGamesBinding.inflate(inflater, container, false)
 
-        updateEnvironment(
-            apiType = ApiType.APPLICATION,
-            deploymentType = DeploymentType.PRODUCTION
-        )
+        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
 
@@ -79,7 +76,6 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
                 }
             )
 
-
             gamesAdapter?.apply {
                 submitList(state.games)
             }
@@ -97,16 +93,4 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
         detailsViewModel.onTriggerEvent(DetailsEvent.AddGameToSelected(gameId))
     }
 
-    private fun updateEnvironment(
-        apiType: ApiType,
-        deploymentType: DeploymentType
-    ) {
-        val index =
-            EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
-        EnvironmentManager.environments[index] = EnvironmentModel(
-            apiType = apiType,
-            deploymentType = deploymentType,
-            path = "application/"
-        )
-    }
 }
