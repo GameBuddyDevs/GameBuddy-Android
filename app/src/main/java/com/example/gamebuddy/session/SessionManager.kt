@@ -95,9 +95,32 @@ class SessionManager @Inject constructor(
             validateTokenUseCase.execute(authToken.token!!)
                 .onEach { dataState ->
                     _sessionState.value = state.copy(isLoading = dataState.isLoading)
+
                     dataState.data?.let { isVerified ->
                         if (isVerified) {
-                            val isProfileSetupComplete = appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
+                            val isProfileSetupComplete =
+                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
+                            Timber.d("startup-logic: Is profile setup complete? $isProfileSetupComplete")
+                            _sessionState.value =
+                                state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.LOGIN)
+                        } else {
+                            _sessionState.value = state.copy(actionType = AuthActionType.LOGIN)
+                        }
+                    }
+                }.launchIn(sessionScope)
+        }
+    }
+
+
+    private fun validateTokenS(authToken: AuthToken) {
+        _sessionState.value?.let { state ->
+            validateTokenUseCase.execute(authToken.token!!)
+                .onEach { dataState ->
+                    _sessionState.value = state.copy(isLoading = dataState.isLoading)
+                    dataState.data?.let { isVerified ->
+                        if (isVerified) {
+                            val isProfileSetupComplete =
+                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
                             Timber.d("startup-logic: Is profile setup complete? $isProfileSetupComplete")
                             _sessionState.value =
                                 state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.DETAILS)
