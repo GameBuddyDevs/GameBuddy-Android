@@ -11,6 +11,10 @@ import com.example.gamebuddy.databinding.FragmentGamesBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.presentation.auth.details.DetailsEvent
 import com.example.gamebuddy.presentation.auth.details.DetailsViewModel
+import com.example.gamebuddy.util.ApiType
+import com.example.gamebuddy.util.DeploymentType
+import com.example.gamebuddy.util.EnvironmentManager
+import com.example.gamebuddy.util.EnvironmentModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
@@ -30,6 +34,7 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
     ): View {
         _binding = FragmentGamesBinding.inflate(inflater, container, false)
 
+        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
 
@@ -71,7 +76,6 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
                 }
             )
 
-
             gamesAdapter?.apply {
                 submitList(state.games)
             }
@@ -88,4 +92,5 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
         Timber.d("onItemClick: $position")
         detailsViewModel.onTriggerEvent(DetailsEvent.AddGameToSelected(gameId))
     }
+
 }

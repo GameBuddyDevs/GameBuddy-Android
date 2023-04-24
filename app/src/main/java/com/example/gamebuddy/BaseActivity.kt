@@ -7,12 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.gamebuddy.presentation.EnvironmentChangingListener
 import com.example.gamebuddy.presentation.UICommunicationListener
 import com.example.gamebuddy.session.SessionManager
+import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.Constants.PERMISSIONS_REQUEST_READ_STORAGE
+import com.example.gamebuddy.util.DeploymentType
+import com.example.gamebuddy.util.EnvironmentManager
+import com.example.gamebuddy.util.EnvironmentModel
 import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity(), UICommunicationListener {
+abstract class BaseActivity : AppCompatActivity(), UICommunicationListener, EnvironmentChangingListener {
 
     private var dialogInView: MaterialDialog? = null
 
@@ -46,11 +51,19 @@ abstract class BaseActivity : AppCompatActivity(), UICommunicationListener {
      * */
 
     override fun isStoragePermissionGranted(): Boolean {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
             &&
-            ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(
+                this,
                 arrayOf(
                     android.Manifest.permission.READ_EXTERNAL_STORAGE,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -63,6 +76,14 @@ abstract class BaseActivity : AppCompatActivity(), UICommunicationListener {
             // Permission has already been granted
             return true
         }
+    }
+
+    override fun updateEnvironment(apiType: ApiType, deploymentType: DeploymentType) {
+        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
+        EnvironmentManager.environments[index] = EnvironmentModel(
+            apiType = apiType,
+            deploymentType = deploymentType
+        )
     }
 
     override fun onPause() {

@@ -42,10 +42,6 @@ class KeywordFragment : BaseAuthFragment(), KeywordAdapter.OnClickListener {
     private fun setClickListeners() {
         binding.btnFinishDetail.setOnClickListener {
             detailsViewModel.onTriggerEvent(DetailsEvent.SendProfileDetail)
-            /*
-            * TODO: Navigate to loading screen.
-            * TODO: Send profile details to server. (Event: SendProfileDetail) There is a code in the view model for sending request
-            * */
 
         }
     }

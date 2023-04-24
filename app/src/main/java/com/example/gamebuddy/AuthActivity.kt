@@ -7,7 +7,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
 import com.example.gamebuddy.databinding.ActivityAuthBinding
 import com.example.gamebuddy.session.SessionEvents
+import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.AuthActionType
+import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.SplashViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
@@ -29,6 +31,11 @@ class AuthActivity : BaseActivity() {
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
         setContentView(binding.root)
 
+        updateEnvironment(
+            apiType = ApiType.APPLICATION,
+            deploymentType = DeploymentType.PRODUCTION
+        )
+
         collectState()
     }
 
@@ -44,10 +51,15 @@ class AuthActivity : BaseActivity() {
                 })
 
 
-            if (state.authToken != null && state.authToken.pk != "-1" && state.didCheckForPreviousAuthUser) {
+            if (state.didCheckForPreviousAuthUser) {
                 splashViewModel.finishSplashScreen()
                 decideNavigation(state.actionType)
             }
+
+//            if (state.authToken != null && state.authToken.pk != "-1" && state.didCheckForPreviousAuthUser) {
+//                //splashViewModel.finishSplashScreen()
+//                decideNavigation(state.actionType)
+//            }
 
         }
     }
@@ -58,10 +70,12 @@ class AuthActivity : BaseActivity() {
                 Timber.d("startup-logic: Navigating to login fragment")
                 navLoginFragment()
             }
+
             AuthActionType.DETAILS -> {
                 Timber.d("startup-logic: Navigating to details fragment")
                 navDetailsFragment()
             }
+
             else -> {
                 Timber.d("startup-logic: Navigating to main activity")
                 navMainActivity()

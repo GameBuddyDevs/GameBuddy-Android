@@ -98,9 +98,9 @@ class SessionManager @Inject constructor(
                     dataState.data?.let { isVerified ->
                         if (isVerified) {
                             val isProfileSetupComplete =
-                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "F"
+                                appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
                             _sessionState.value =
-                                state.copy(actionType = if (isProfileSetupComplete == "T") AuthActionType.HOME else AuthActionType.DETAILS)
+                                state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.DETAILS)
                         } else {
                             _sessionState.value = state.copy(actionType = AuthActionType.LOGIN)
                         }
