@@ -5,15 +5,18 @@ object EnvironmentManager {
     val environments = mutableListOf(
         EnvironmentModel(
             apiType = ApiType.AUTH,
-            deploymentType = DeploymentType.PRODUCTION
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "auth/"
         ),
         EnvironmentModel(
             apiType = ApiType.APPLICATION,
-            deploymentType = DeploymentType.PRODUCTION
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "application/"
         ),
         EnvironmentModel(
             apiType = ApiType.MATCH,
-            deploymentType = DeploymentType.PRODUCTION
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "match/"
         )
     )
 

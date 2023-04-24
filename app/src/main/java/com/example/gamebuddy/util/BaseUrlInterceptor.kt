@@ -1,5 +1,7 @@
 package com.example.gamebuddy.util
 
+import android.net.Uri
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -18,26 +20,33 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
             ?.getAnnotation(Api::class.java)?.value
             ?: throw IllegalStateException("ApiType not found. Please add @Api annotation to your method.")
 
-        Timber.d("apiType: ${apiType.url}")
-
-        Timber.d("EnvironmentManager.getBaseUrl(apiType): ${EnvironmentManager.getBaseUrl(apiType)}")
-
         val baseUrl = EnvironmentManager.getBaseUrl(apiType).toHttpUrl()
 
-        Timber.d("baseUrl: $baseUrl")
+        Timber.d("requestUrl: ${request.url}, baseUrl: ${EnvironmentManager.getBaseUrl(apiType)}, baseUrlInHttp: $baseUrl")
+        Timber.d("path of request url: ${request.url.encodedPathSegments}, path of baseUrl: ${baseUrl.encodedPathSegments}, path of baseUrlInHttp: ${baseUrl.encodedPathSegments}")
 
-        val newUrl = request.url.newBuilder()
+//        val newUrl = baseUrl.newBuilder()
+//            .scheme(baseUrl.scheme)
+//            .host(baseUrl.host)
+//            .addPathSegment(request.url.encodedPathSegments[0])
+//            .port(baseUrl.port)
+//            .build()
+
+        val newUrl = HttpUrl.Builder()
             .scheme(baseUrl.scheme)
             .host(baseUrl.host)
+            .addPathSegment("${baseUrl.encodedPathSegments[0]}/${request.url.encodedPathSegments[0]}")
             .port(baseUrl.port)
             .build()
 
-        val newRequest = request.newBuilder()
-            .url(newUrl)
-            .build()
+        val decoded = Uri.decode(newUrl.toString())
 
-        Timber.d("request.url: ${request.url}, request.url.host: ${request.url.host}, request.url.port: ${request.url.port}, request.url.scheme: ${request.url.scheme}, request.url.encodedPath: ${request.url.encodedPath}")
-        Timber.d("newRequest.url: ${newRequest.url}, newRequest.url.host: ${newRequest.url.host}, newRequest.url.port: ${newRequest.url.port}, newRequest.url.scheme: ${newRequest.url.scheme}, newRequest.url.encodedPath: ${newRequest.url.encodedPath}")
+        Timber.d("newUrl: $newUrl, newUrlTest: $newUrl, decoded: $decoded")
+
+        val newRequest = request.newBuilder()
+            //.url(newUrl)
+            .url(decoded)
+            .build()
 
         return chain.proceed(newRequest)
     }
