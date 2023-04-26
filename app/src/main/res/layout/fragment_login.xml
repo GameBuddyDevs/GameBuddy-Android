@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_lock_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -56,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
