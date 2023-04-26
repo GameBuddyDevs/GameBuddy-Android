@@ -25,6 +25,7 @@ class UsernameUseCase(
     ):Flow<DataState<Boolean>> = flow {
         emit(DataState.loading())
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
+        Timber.d("LOA $username")
         val usernameResponse =service.username(
             token = "Bearer ${authToken?.token}",
             usernameRequest = usernameRequest(

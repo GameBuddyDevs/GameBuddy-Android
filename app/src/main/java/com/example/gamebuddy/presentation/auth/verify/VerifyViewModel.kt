@@ -37,7 +37,11 @@ class VerifyViewModel @Inject constructor(
                     dataState.stateMessage?.let { stateMessage ->
                         appendToMessageQueue(stateMessage)
                     }
-                    _uiState.value = state?.copy(isVerifyCompleted = true)
+
+                    if (dataState.data != null) {
+                        _uiState.value = state?.copy(isVerifyCompleted = true)
+                    }
+
                 }.launchIn(viewModelScope)
         }
     }

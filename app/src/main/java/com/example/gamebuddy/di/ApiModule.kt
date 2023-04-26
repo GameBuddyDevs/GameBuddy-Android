@@ -45,6 +45,8 @@ object ApiModule {
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(baseUrlInterceptor)
             .connectTimeout(500L, TimeUnit.SECONDS)
+            .writeTimeout(300L, TimeUnit.SECONDS)
+            .readTimeout(300L, TimeUnit.SECONDS)
             .build()
     }
 

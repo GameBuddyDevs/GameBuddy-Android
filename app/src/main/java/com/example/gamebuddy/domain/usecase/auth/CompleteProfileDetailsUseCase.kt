@@ -25,15 +25,19 @@ class CompleteProfileDetailsUseCase(
 
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
 
-//        val response = service.sendProfileDetails(
-//            token = "Bearer ${authToken?.token}",
-//            profileDetailsRequest = profileDetails
-//        )
-//
-//        if (!response.status.success) {
-//            throw Exception(response.status.message)
-//        }
+        val response = service.sendProfileDetails(
+            token = "Bearer ${authToken?.token}",
+            profileDetailsRequest = profileDetails
+        )
 
+        Timber.d("LOAAA ${response.status.message}")
+
+        if (!response.status.success) {
+            Timber.e("LOAAA ${response.status.message}")
+            throw Exception(response.status.message)
+        }
+
+        Timber.d("LOAAA befpre ${response.status.message}")
         appDataStore.setValue(Constants.PROFILE_COMPLETED, "1")
         emit(DataState.success(response = null, data = true))
     }.catch { e ->

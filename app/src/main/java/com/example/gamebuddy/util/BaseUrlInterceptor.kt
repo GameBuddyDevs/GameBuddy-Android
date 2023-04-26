@@ -22,9 +22,6 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
 
         val baseUrl = EnvironmentManager.getBaseUrl(apiType).toHttpUrl()
 
-        Timber.d("requestUrl: ${request.url}, baseUrl: ${EnvironmentManager.getBaseUrl(apiType)}, baseUrlInHttp: $baseUrl")
-        Timber.d("path of request url: ${request.url.encodedPathSegments}, path of baseUrl: ${baseUrl.encodedPathSegments}, path of baseUrlInHttp: ${baseUrl.encodedPathSegments}")
-
 //        val newUrl = baseUrl.newBuilder()
 //            .scheme(baseUrl.scheme)
 //            .host(baseUrl.host)

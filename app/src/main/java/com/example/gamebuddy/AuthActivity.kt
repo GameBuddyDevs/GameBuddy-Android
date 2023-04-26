@@ -76,11 +76,20 @@ class AuthActivity : BaseActivity() {
                 navDetailsFragment()
             }
 
+            AuthActionType.VERIFY -> {
+                Timber.d("startup-logic: Navigating to verify fragment")
+                navVerifyFragment()
+            }
+
             else -> {
                 Timber.d("startup-logic: Navigating to main activity")
                 navMainActivity()
             }
         }
+    }
+
+    private fun navVerifyFragment() {
+        findNavController(R.id.auth_fragments_container).navigate(R.id.verifyFragment)
     }
 
     private fun navDetailsFragment() {

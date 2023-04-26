@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.MainActivity
 import com.example.gamebuddy.databinding.FragmentLoginBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
+import com.example.gamebuddy.util.AuthActionType
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
@@ -72,6 +73,7 @@ class LoginFragment : BaseAuthFragment() {
                 stateMessageCallback = object : StateMessageCallback {
                     override fun removeMessageFromStack() {
                         viewModel.onTriggerEvent(LoginEvent.OnRemoveHeadFromQueue)
+                        navigate()
                     }
                 }
             )
@@ -81,6 +83,15 @@ class LoginFragment : BaseAuthFragment() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }
+        }
+    }
+
+    private fun navigate() {
+        Timber.d("LoginFragment navigate: ${viewModel.uiState.value?.actionType}")
+        when (viewModel.uiState.value?.actionType) {
+            AuthActionType.DETAILS -> findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToUsernameFragment())
+            AuthActionType.VERIFY -> findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToVerifyFragment(true))
+            else -> Unit
         }
     }
 

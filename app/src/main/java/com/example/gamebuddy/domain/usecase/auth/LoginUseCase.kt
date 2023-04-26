@@ -8,6 +8,7 @@ import com.example.gamebuddy.data.remote.request.LoginRequest
 import com.example.gamebuddy.domain.model.account.Account
 import com.example.gamebuddy.domain.model.account.AuthToken
 import com.example.gamebuddy.util.Constants
+import com.example.gamebuddy.util.Constants.USER_NOT_VERIFIED
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
 import kotlinx.coroutines.flow.catch
@@ -34,6 +35,11 @@ class LoginUseCase (
         )
         if(!loginResponse.status.success){
             Timber.e("Login Use Case errorrr: ${loginResponse.status.message}")
+            when (loginResponse.status.message) {
+                USER_NOT_VERIFIED -> {appDataStore.setValue(Constants.LAST_AUTH_USER, email)
+                Timber.d("Saved email to data store: $email")}
+                else -> Unit
+            }
             throw Exception(loginResponse.status.message)
         }
 

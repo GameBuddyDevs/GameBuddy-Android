@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_usernameFragment"
+            app:destination="@id/usernameFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_verifyFragment"
+            app:destination="@id/verifyFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -81,6 +87,9 @@
         <action
             android:id="@+id/action_gamesFragment_to_keywordFragment"
             app:destination="@id/keywordFragment" />
+        <action
+            android:id="@+id/action_gamesFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/usernameFragment"
@@ -95,5 +104,17 @@
         android:id="@+id/keywordFragment"
         android:name="com.example.gamebuddy.presentation.auth.details.keywords.KeywordFragment"
         android:label="fragment_keyword"
-        tools:layout="@layout/fragment_keyword" />
+        tools:layout="@layout/fragment_keyword" >
+        <action
+            android:id="@+id/action_keywordFragment_to_gamesFragment"
+            app:destination="@id/gamesFragment" />
+        <action
+            android:id="@+id/action_keywordFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.loading.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" />
 </navigation>

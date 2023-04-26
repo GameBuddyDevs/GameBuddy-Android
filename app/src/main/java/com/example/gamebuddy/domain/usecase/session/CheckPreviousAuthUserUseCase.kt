@@ -21,6 +21,7 @@ class CheckPreviousAuthUserUseCase(
         email: String,
     ): Flow<DataState<AuthToken>> = flow {
         emit(DataState.loading())
+
         var authToken: AuthToken? = null
         val account = accountDao.searchByEmail(email)
 
@@ -31,8 +32,11 @@ class CheckPreviousAuthUserUseCase(
             } else {
                 throw Exception("Error retrieving auth token. No previous user found")
             }
+        } else {
+            throw Exception("Error retrieving account properties. No previous user found")
         }
     }.catch { exception ->
+        Timber.e("ALOOOO exceptionske $exception")
         exception.printStackTrace()
         emit(
             DataState.error<AuthToken>(
