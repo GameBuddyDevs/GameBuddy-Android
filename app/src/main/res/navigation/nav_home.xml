@@ -9,5 +9,23 @@
         android:id="@+id/homeFragment"
         android:name="com.example.gamebuddy.presentation.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_matchFragment"
+            app:destination="@id/matchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.example.gamebuddy.presentation.main.match.MatchFragment"
+        android:label="fragment_match"
+        tools:layout="@layout/fragment_match" >
+        <action
+            android:id="@+id/action_matchFragment_to_sendMessageFragment"
+            app:destination="@id/sendMessageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendMessageFragment"
+        android:name="com.example.gamebuddy.SendMessageFragment"
+        android:label="fragment_send_message"
+        tools:layout="@layout/fragment_send_message" />
 </navigation>

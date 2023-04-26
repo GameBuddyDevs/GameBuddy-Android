@@ -1,9 +1,10 @@
 package com.example.gamebuddy.di
 
+import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
-import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
+import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,18 @@ object AppModule {
     ): KeywordsUseCase {
         return KeywordsUseCase(
             service = service
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMatchUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MatchUseCase {
+        return MatchUseCase(
+            service = service,
+            authTokenDao = authTokenDao
         )
     }
 }
