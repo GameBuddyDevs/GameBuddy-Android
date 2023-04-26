@@ -32,8 +32,13 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         detailsViewModel.onTriggerEvent(DetailsEvent.SendProfileDetail)
+
+        collectState()
+    }
+
+    private fun collectState() {
         detailsViewModel.detailsUiState.observe(viewLifecycleOwner) { state ->
-            if (state.isLoading) {
+            if (!state.isProfileSetupDone) {
                 // Show the animation when loading
                 binding.animationView.visibility = View.VISIBLE
             } else {
