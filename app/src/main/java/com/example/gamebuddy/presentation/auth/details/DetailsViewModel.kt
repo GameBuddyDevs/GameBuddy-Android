@@ -50,8 +50,9 @@ class DetailsViewModel @Inject constructor(
         val selectedKeywords = _detailsUiState.value?.selectedKeywords
 
         val profileDetailsRequest = SetProfileDetailsRequest(
-            age = age?.toInt() ?: 0,
-            avatar = avatar ?: "",
+            age = age?.toIntOrNull() ?: 0,
+            //avatar = avatar ?: "",
+            avatar = "3484fb61-3d44-4500-915d-3b1bb6b57c49",
             country = country ?: "",
             gender = gender ?: "",
             favoriteGames = selectedGames ?: listOf(),
@@ -84,6 +85,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun addGameToSelected(id: String) {
+        Timber.d("LOAA $id")
         _detailsUiState.value?.let { state ->
             _detailsUiState.value = state.copy(selectedGames = state.selectedGames + id)
             Timber.d("Selected games: ${_detailsUiState.value!!.selectedGames}")

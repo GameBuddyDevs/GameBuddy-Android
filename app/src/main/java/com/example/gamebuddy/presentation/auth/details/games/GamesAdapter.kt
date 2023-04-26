@@ -45,7 +45,7 @@ class GamesAdapter(
         fun bind(item: Game) {
             binding.apply {
 
-                root.setOnClickListener {
+                selectGamesRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
                 }
 

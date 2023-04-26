@@ -31,7 +31,7 @@ class CompleteProfileDetailsUseCase(
         )
 
         if (!response.status.success) {
-
+            Timber.e("LOAAA ${response.status.message}")
             throw Exception(response.status.message)
         }
 
