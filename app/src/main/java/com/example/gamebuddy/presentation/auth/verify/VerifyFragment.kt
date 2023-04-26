@@ -48,13 +48,13 @@ class VerifyFragment : BaseAuthFragment() {
                     }
                 }
             )
+
             if (state.isVerifyCompleted) {
                 if (fromRegister) {
                     val action = VerifyFragmentDirections.actionVerifyFragmentToUsernameFragment()
                     findNavController().navigate(action)
                 } else {
-                    val action =
-                        VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
+                    val action = VerifyFragmentDirections.actionVerifyFragmentToNewPasswordFragment()
                     findNavController().navigate(action)
                 }
             }

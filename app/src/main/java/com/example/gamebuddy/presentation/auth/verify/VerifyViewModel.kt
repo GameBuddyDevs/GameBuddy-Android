@@ -39,6 +39,7 @@ class VerifyViewModel @Inject constructor(
                     }
 
                     if (dataState.data != null) {
+                        Timber.d("VerifyViewModel not null: ${dataState.data}")
                         _uiState.value = state?.copy(isVerifyCompleted = true)
                     }
 
