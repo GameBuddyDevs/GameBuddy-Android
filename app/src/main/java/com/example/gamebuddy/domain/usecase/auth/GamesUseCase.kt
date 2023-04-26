@@ -1,5 +1,6 @@
 package com.example.gamebuddy.domain.usecase.auth
 
+import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.domain.model.game.Game
 import com.example.gamebuddy.util.DataState
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class GamesUseCase(
-    private val service: GameBuddyApiAuthService,
+    private val service: GameBuddyApiAppService,
 ) {
     fun execute(): Flow<DataState<List<Game>>> = flow {
         Timber.d("Games Use Case: ")

@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.datastore.AppDataStore
 import com.example.gamebuddy.data.datastore.AppDataStoreManager
 import com.example.gamebuddy.data.local.account.AccountDao
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
+import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.domain.usecase.auth.*
 import com.example.gamebuddy.domain.usecase.session.CheckPreviousAuthUserUseCase
@@ -126,26 +127,6 @@ object AuthModule {
     ): ValidateTokenUseCase{
         return ValidateTokenUseCase(
             service = service,
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGamesUseCase(
-        service: GameBuddyApiAuthService,
-    ): GamesUseCase{
-        return GamesUseCase(
-            service = service
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideKeywordsUseCase(
-        service: GameBuddyApiAuthService,
-    ): KeywordsUseCase{
-        return KeywordsUseCase(
-            service = service
         )
     }
 

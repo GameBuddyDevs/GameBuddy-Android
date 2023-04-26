@@ -1,6 +1,7 @@
 package com.example.gamebuddy.domain.usecase.auth
 
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
+import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 
 class KeywordsUseCase(
-    private val service: GameBuddyApiAuthService,
+    private val service: GameBuddyApiAppService,
 ) {
     fun execute(): Flow<DataState<KeywordResponse>> = flow {
         emit(DataState.loading())
