@@ -34,7 +34,7 @@ class SessionManager @Inject constructor(
     init {
         sessionScope.launch {
             appDataStore.getValue(Constants.LAST_AUTH_USER)?.let { email ->
-                Timber.d("startup-logic: Found previous auth user: $email")
+                Timber.d("ALOOO managerke: Found previous auth user: $email")
                 onTriggerEvent(SessionEvents.CheckPreviousAuthUser(email = email))
             } ?: onUserNotFound()
         }
@@ -55,14 +55,19 @@ class SessionManager @Inject constructor(
             checkPreviousAuthUser.execute(email = email).onEach { dataState ->
                 _sessionState.value = state?.copy(isLoading = dataState.isLoading)
 
+                Timber.d("ALOOOO stateMessagesss $dataState")
+
                 dataState.data?.let { authToken ->
-                    Timber.d("startup-logic: Found previous auth user: $authToken")
+                    Timber.d("ALOOO S Found previous auth user: $authToken")
                     _sessionState.value = state?.copy(authToken = authToken)
                     onTriggerEvent(SessionEvents.ValidateToken(authToken = authToken))
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
+                    Timber.d("ALOOOO No previous auth user found ${stateMessage.response.message}")
                     if (stateMessage.response.message == "Done checking for previously authenticated user.") {
+                        Timber.d("ALOOOO No previous auth user found inside if")
+                        _sessionState.value = state?.copy(actionType = AuthActionType.LOGIN)
                         onFinishedCheckingForPreviousAuthUser()
                     } else {
                         appendToMessageQueue(stateMessage)
@@ -101,8 +106,8 @@ class SessionManager @Inject constructor(
                             val isProfileSetupComplete =
                                 appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
                             Timber.d("startup-logic: Is profile setup complete? $isProfileSetupComplete")
-                            _sessionState.value =
-                                state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.LOGIN)
+                            _sessionState.value = state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.LOGIN)
+                            onFinishedCheckingForPreviousAuthUser()
                         } else {
                             _sessionState.value = state.copy(actionType = AuthActionType.LOGIN)
                         }

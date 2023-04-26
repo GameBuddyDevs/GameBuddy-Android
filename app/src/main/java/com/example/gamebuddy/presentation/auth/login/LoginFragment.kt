@@ -90,7 +90,7 @@ class LoginFragment : BaseAuthFragment() {
         Timber.d("LoginFragment navigate: ${viewModel.uiState.value?.actionType}")
         when (viewModel.uiState.value?.actionType) {
             AuthActionType.DETAILS -> findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToUsernameFragment())
-            AuthActionType.VERIFY -> findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToVerifyFragment(false))
+            AuthActionType.VERIFY -> findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToVerifyFragment(true))
             else -> Unit
         }
     }
