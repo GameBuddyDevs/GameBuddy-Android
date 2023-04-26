@@ -25,14 +25,15 @@ class CompleteProfileDetailsUseCase(
 
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
 
-//        val response = service.sendProfileDetails(
-//            token = "Bearer ${authToken?.token}",
-//            profileDetailsRequest = profileDetails
-//        )
-//
-//        if (!response.status.success) {
-//            throw Exception(response.status.message)
-//        }
+        val response = service.sendProfileDetails(
+            token = "Bearer ${authToken?.token}",
+            profileDetailsRequest = profileDetails
+        )
+
+        if (!response.status.success) {
+
+            throw Exception(response.status.message)
+        }
 
         appDataStore.setValue(Constants.PROFILE_COMPLETED, "1")
         emit(DataState.success(response = null, data = true))
