@@ -11,6 +11,10 @@ import com.example.gamebuddy.databinding.FragmentLoadingBinding
 import com.example.gamebuddy.presentation.auth.details.DetailsEvent
 import com.example.gamebuddy.presentation.auth.details.DetailsViewModel
 import com.example.gamebuddy.MainActivity
+import com.example.gamebuddy.presentation.auth.login.LoginEvent
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.processQueue
+import timber.log.Timber
 
 
 class LoadingFragment : Fragment() {
@@ -36,8 +40,8 @@ class LoadingFragment : Fragment() {
         collectState()
     }
 
-    private fun collectState() {
-        detailsViewModel.detailsUiState.observe(viewLifecycleOwner) { state ->
+    /*
+    * detailsViewModel.detailsUiState.observe(viewLifecycleOwner) { state ->
             if (!state.isProfileSetupDone) {
                 // Show the animation when loading
                 binding.animationView.visibility = View.VISIBLE
@@ -46,6 +50,28 @@ class LoadingFragment : Fragment() {
                 binding.animationView.visibility = View.GONE
 
                 // Navigate to the home screen
+                navMainActivity()
+            }
+        }
+    * */
+
+    private fun collectState() {
+        detailsViewModel.detailsUiState.observe(viewLifecycleOwner) { state ->
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        Timber.d("removeMessageFromStack: ")
+                        detailsViewModel.onTriggerEvent(DetailsEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+
+            if (!state.isProfileSetupDone) {
+                binding.animationView.visibility = View.VISIBLE
+            } else {
+                binding.animationView.visibility = View.GONE
                 navMainActivity()
             }
         }

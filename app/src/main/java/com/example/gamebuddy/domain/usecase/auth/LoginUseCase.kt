@@ -61,6 +61,7 @@ class LoginUseCase (
             throw Exception("Error inserting auth token")
         }
 
+        appDataStore.setValue(Constants.PROFILE_COMPLETED, "1")
         appDataStore.setValue(Constants.LAST_AUTH_USER, email)
         emit(DataState.success(response = null, data = authToken))
     }.catch { e->
