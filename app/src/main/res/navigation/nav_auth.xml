@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_auth"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/keywordFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_gamesFragment_to_keywordFragment"
             app:destination="@id/keywordFragment" />
+        <action
+            android:id="@+id/action_gamesFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/usernameFragment"
@@ -101,5 +104,26 @@
         android:id="@+id/keywordFragment"
         android:name="com.example.gamebuddy.presentation.auth.details.keywords.KeywordFragment"
         android:label="fragment_keyword"
-        tools:layout="@layout/fragment_keyword" />
+        tools:layout="@layout/fragment_keyword" >
+        <action
+            android:id="@+id/action_keywordFragment_to_gamesFragment"
+            app:destination="@id/gamesFragment" />
+        <action
+            android:id="@+id/action_keywordFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.example.gamebuddy.presentation.auth.details.loading.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" >
+        <action
+            android:id="@+id/action_loadingFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.gamebuddy.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

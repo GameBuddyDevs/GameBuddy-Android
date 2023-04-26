@@ -52,6 +52,9 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
         binding.btnDetailsUser.setOnClickListener {
             findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToKeywordFragment())
         }
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToUserDetailsFragment())
+        }
     }
 
     private fun initRecyclerView() {
