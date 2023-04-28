@@ -12,23 +12,23 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.FragmentMessageBinding
+import com.example.gamebuddy.databinding.FragmentChatBoxBinding
 import com.example.gamebuddy.domain.model.message.Message
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
 
 
-class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var searchView: SearchView
     private lateinit var menu: Menu
 
-    private var messageAdapter: MessageAdapter? = null
+    private var chatBoxAdapter: ChatBoxAdapter? = null
 
-    private val viewModel: MessageViewModel by viewModels()
+    private val viewModel: ChatBoxViewModel by viewModels()
 
-    private var _binding: FragmentMessageBinding? = null
+    private var _binding: FragmentChatBoxBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,7 +36,7 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = FragmentChatBoxBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -53,6 +53,13 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
         collectState()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        this.menu = menu
+        inflater.inflate(R.menu.search_menu, this.menu)
+        initSearchView()
+    }
+
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
@@ -62,7 +69,7 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
                 queue = state.queue,
                 stateMessageCallback = object : StateMessageCallback {
                     override fun removeMessageFromStack() {
-                        viewModel.onTriggerEvent(MessageEvent.OnRemoveHeadFromQueue)
+                        viewModel.onTriggerEvent(ChatBoxEvent.OnRemoveHeadFromQueue)
                     }
                 }
             )
@@ -71,13 +78,6 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
 //                submitList(state.messages)
 //            }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        this.menu = menu
-        inflater.inflate(R.menu.search_menu, this.menu)
-        initSearchView()
     }
 
     private fun initSearchView() {
@@ -122,15 +122,15 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
 
     private fun initRecyclerView() {
         binding.recyclerViewMessage.apply {
-            layoutManager = LinearLayoutManager(this@MessageFragment.context)
-            messageAdapter = MessageAdapter(this@MessageFragment)
-            adapter = messageAdapter
+            layoutManager = LinearLayoutManager(this@ChatBoxFragment.context)
+            chatBoxAdapter = ChatBoxAdapter(this@ChatBoxFragment)
+            adapter = chatBoxAdapter
         }
     }
 
     private fun executeNewQuery(query: String){
-        viewModel.onTriggerEvent(MessageEvent.UpdateQuery(query))
-        viewModel.onTriggerEvent(MessageEvent.NewQuery)
+        viewModel.onTriggerEvent(ChatBoxEvent.UpdateQuery(query))
+        viewModel.onTriggerEvent(ChatBoxEvent.NewQuery)
         resetUI()
     }
 

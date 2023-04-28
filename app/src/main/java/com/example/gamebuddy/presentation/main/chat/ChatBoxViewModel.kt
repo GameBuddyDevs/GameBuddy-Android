@@ -10,25 +10,25 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MessageViewModel @Inject constructor(
+class ChatBoxViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _uiState: MutableLiveData<MessageState> = MutableLiveData(MessageState())
-    val uiState: MutableLiveData<MessageState> get() = _uiState
+    private val _uiState: MutableLiveData<ChatBoxState> = MutableLiveData(ChatBoxState())
+    val uiState: MutableLiveData<ChatBoxState> get() = _uiState
 
-    fun onTriggerEvent(event: MessageEvent) {
+    fun onTriggerEvent(event: ChatBoxEvent) {
         when (event) {
-            is MessageEvent.NewQuery -> {
+            is ChatBoxEvent.NewQuery -> {
                 newQuery()
             }
-            is MessageEvent.UpdateQuery -> {
+            is ChatBoxEvent.UpdateQuery -> {
                 updateQuery(event.query)
             }
-            is MessageEvent.Error -> {
+            is ChatBoxEvent.Error -> {
                 appendToMessageQueue(event.stateMessage)
             }
-            is MessageEvent.OnRemoveHeadFromQueue -> {
+            is ChatBoxEvent.OnRemoveHeadFromQueue -> {
                 removeHeadFromQueue()
             }
         }

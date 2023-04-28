@@ -10,7 +10,7 @@ import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.ItemMessageBinding
 import com.example.gamebuddy.domain.model.message.Message
 
-class MessageAdapter(
+class ChatBoxAdapter(
     private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -88,21 +88,21 @@ class MessageAdapter(
         AsyncDifferConfig.Builder(DIFF_CALLBACK).build()
     )
 
-    class BlogRecyclerChangeCallback(private val messageAdapter: MessageAdapter) : ListUpdateCallback {
+    class BlogRecyclerChangeCallback(private val chatBoxAdapter: ChatBoxAdapter) : ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {
-            messageAdapter.notifyItemRangeChanged(position, count)
+            chatBoxAdapter.notifyItemRangeChanged(position, count)
         }
 
         override fun onRemoved(position: Int, count: Int) {
-            messageAdapter.notifyItemRemoved(position)
+            chatBoxAdapter.notifyItemRemoved(position)
         }
 
         override fun onMoved(fromPosition: Int, toPosition: Int) {
-            messageAdapter.notifyItemMoved(fromPosition, toPosition)
+            chatBoxAdapter.notifyItemMoved(fromPosition, toPosition)
         }
 
         override fun onChanged(position: Int, count: Int, payload: Any?) {
-            messageAdapter.notifyItemRangeChanged(position, count, payload)
+            chatBoxAdapter.notifyItemRangeChanged(position, count, payload)
         }
     }
 }

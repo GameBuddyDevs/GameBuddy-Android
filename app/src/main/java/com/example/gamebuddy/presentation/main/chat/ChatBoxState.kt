@@ -4,7 +4,7 @@ import com.example.gamebuddy.domain.model.message.Message
 import com.example.gamebuddy.util.Queue
 import com.example.gamebuddy.util.StateMessage
 
-data class MessageState(
+data class ChatBoxState(
     val query: String = "",
     val isLoading: Boolean = false,
     val messages: List<Message> = listOf(),
