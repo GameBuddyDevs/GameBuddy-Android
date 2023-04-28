@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_friend"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/battlefield1"
+        app:circularflow_angles="32dp"
+        app:civ_border_color="@color/pink_500"
+        app:civ_border_width="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_friend_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="Dianne"
+        android:textColor="@color/black_500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/img_friend"
+        app:layout_constraintStart_toStartOf="@+id/img_friend"
+        app:layout_constraintTop_toBottomOf="@+id/img_friend" />
+
+    <TextView
+        android:id="@+id/txt_friend_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="19"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:textColor="@color/black_500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/img_friend"
+        app:layout_constraintStart_toStartOf="@+id/img_friend"
+        app:layout_constraintTop_toBottomOf="@+id/txt_friend_username" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
