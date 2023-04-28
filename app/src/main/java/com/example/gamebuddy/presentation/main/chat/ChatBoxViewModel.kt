@@ -2,10 +2,12 @@ package com.example.gamebuddy.presentation.main.chat
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
