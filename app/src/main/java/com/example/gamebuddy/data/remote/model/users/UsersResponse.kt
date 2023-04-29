@@ -8,7 +8,7 @@ data class UsersResponse(
     val status: Status
     ) {
 
-    fun toUsers(): List<User>{
-        return body.data.userDto.map { it.toUser() }
+    fun toUsers(): List<User>? {
+        return body?.data?.userDto?.map { it.toUser() }
     }
 }

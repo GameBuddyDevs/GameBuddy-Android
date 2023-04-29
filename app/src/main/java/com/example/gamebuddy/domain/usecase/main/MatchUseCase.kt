@@ -24,7 +24,7 @@ class MatchUseCase(
             token = "Bearer ${authToken?.token}"
         ).toUsers()
 
-        Timber.d("User Use Case success: ${users[0].gamerUsername}")
+        Timber.d("User Use Case success: ${users?.get(0)?.gamerUsername}")
         emit(DataState.success(response = null, data = users))
     }.catch {
         Timber.e("User Use Case hataa $it")

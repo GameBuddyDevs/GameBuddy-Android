@@ -29,6 +29,9 @@ interface GameBuddyApiAppService {
     @Api(ApiType.APPLICATION)
     suspend fun getFriends(
         @Header("Authorization") token: String,
+        @Header("Accept-Encoding") encoding: String = "gzip, deflate, br",
+        @Header("Accept") language: String = "*/*",
     ): FriendsResponse
+
 
 }

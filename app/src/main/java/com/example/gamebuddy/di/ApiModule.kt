@@ -42,8 +42,8 @@ object ApiModule {
         baseUrlInterceptor: BaseUrlInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(baseUrlInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(500L, TimeUnit.SECONDS)
             .writeTimeout(300L, TimeUnit.SECONDS)
             .readTimeout(300L, TimeUnit.SECONDS)

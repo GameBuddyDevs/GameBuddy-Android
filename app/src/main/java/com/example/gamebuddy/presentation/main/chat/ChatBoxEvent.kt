@@ -8,6 +8,10 @@ sealed class ChatBoxEvent {
 
     data class UpdateQuery(val query: String) : ChatBoxEvent()
 
+    object GetFriends : ChatBoxEvent()
+
+    object GetChatBox : ChatBoxEvent()
+
     data class Error(val stateMessage: StateMessage) : ChatBoxEvent()
 
     object OnRemoveHeadFromQueue : ChatBoxEvent()

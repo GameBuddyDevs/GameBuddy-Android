@@ -84,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     tools:itemCount="20"
+                    android:background="@drawable/custom_adapter"
                     tools:listitem="@layout/item_message" />
 
             </LinearLayout>

@@ -29,6 +29,8 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
 //            .port(baseUrl.port)
 //            .build()
 
+        Timber.d("baseUrl: ${baseUrl.encodedPathSegments}, request: ${request.url.encodedPathSegments}")
+
         val newUrl = HttpUrl.Builder()
             .scheme(baseUrl.scheme)
             .host(baseUrl.host)

@@ -13,18 +13,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentChatBoxBinding
+import com.example.gamebuddy.domain.model.Friend
 import com.example.gamebuddy.domain.model.message.Message
+import com.example.gamebuddy.util.ApiType
+import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
 
 
-class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, FriendsAdapter.OnFriendClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var searchView: SearchView
     private lateinit var menu: Menu
 
     private var chatBoxAdapter: ChatBoxAdapter? = null
+    private var friendsAdapter: FriendsAdapter? = null
 
     private val viewModel: ChatBoxViewModel by viewModels()
 
@@ -38,6 +42,7 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Swip
         // Inflate the layout for this fragment
         _binding = FragmentChatBoxBinding.inflate(inflater, container, false)
 
+        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
 
@@ -50,6 +55,8 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Swip
         setHasOptionsMenu(true)
         binding.swipeRefresh.setOnRefreshListener(this)
         initRecyclerView()
+        //viewModel.onTriggerEvent(ChatBoxEvent.GetFriends)
+        //viewModel.onTriggerEvent(ChatBoxEvent.GetChatBox)
         collectState()
     }
 
@@ -74,9 +81,13 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Swip
                 }
             )
 
-//            messageAdapter?.apply {
-//                submitList(state.messages)
-//            }
+            friendsAdapter?.apply {
+                submitList(state.friends)
+            }
+
+            chatBoxAdapter?.apply {
+                submitList(state.chatBox)
+            }
         }
     }
 
@@ -121,6 +132,12 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Swip
     }
 
     private fun initRecyclerView() {
+        binding.recyclerViewFriends.apply {
+            layoutManager = LinearLayoutManager(this@ChatBoxFragment.context, LinearLayoutManager.HORIZONTAL, false)
+            friendsAdapter = FriendsAdapter(this@ChatBoxFragment)
+            adapter = friendsAdapter
+        }
+
         binding.recyclerViewMessage.apply {
             layoutManager = LinearLayoutManager(this@ChatBoxFragment.context)
             chatBoxAdapter = ChatBoxAdapter(this@ChatBoxFragment)
@@ -149,7 +166,11 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Swip
     }
 
     override fun onItemClick(position: Int, item: Message) {
-        Timber.d("onItemClick: $position : $item")
+        Timber.d("onItemClick Message $position : $item")
+    }
+
+    override fun onItemClick(position: Int, item: Friend) {
+        Timber.d("onItemClick Friend $position : $item")
     }
 
 
