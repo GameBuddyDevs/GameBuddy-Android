@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import com.example.gamebuddy.util.StateMessage
 

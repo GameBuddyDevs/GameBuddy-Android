@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import android.content.Context
 import androidx.fragment.app.Fragment

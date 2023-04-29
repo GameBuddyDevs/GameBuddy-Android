@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.ItemMessageBinding
-import com.example.gamebuddy.domain.model.message.Message
 
 class ChatBoxAdapter(
     private val onClickListener: OnClickListener? = null

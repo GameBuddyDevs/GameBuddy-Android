@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import android.app.SearchManager
 import android.content.Context.SEARCH_SERVICE
@@ -15,7 +15,6 @@ import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.FragmentChatBoxBinding
 import com.example.gamebuddy.domain.model.Friend
-import com.example.gamebuddy.domain.model.message.Message
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.StateMessageCallback
