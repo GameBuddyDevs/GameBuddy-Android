@@ -23,7 +23,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_bold"
-
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,5 +129,7 @@
         android:background="#5AF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

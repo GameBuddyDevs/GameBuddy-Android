@@ -27,17 +27,20 @@ class MatchAdapter(
         val txtNameAndAge = view?.findViewById<TextView>(R.id.txt_name_and_age)
         val country = view?.findViewById<TextView>(R.id.Country_text)
         val imgView = view?.findViewById<ImageView>(R.id.img_matched_user)
-
         if (imgView != null) {
             Glide.with(context)
                 .load(user?.avatar)
                 .into(imgView)
         }
+
         txtNameAndAge?.text = String.format(
-                    "${user?.gamerUsername}",
-                    "${user?.age?.toString()}"
-                ) //"${item.gamerUsername}, ${item.age?.toString()}"
+            "${user?.gamerUsername}",
+            "${user?.age?.toString()}"
+        ) //"${item.gamerUsername}, ${item.age?.toString()}"
         country?.text = user?.country
+
+
+
 
         return view!!
     }
