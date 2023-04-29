@@ -1,5 +1,6 @@
 package com.example.gamebuddy.data.remote.network
 
+import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
@@ -23,4 +24,14 @@ interface GameBuddyApiAppService {
     suspend fun getUsers(
         @Header("Authorization") token: String,
     ): UsersResponse
+
+    @GET("get/friends")
+    @Api(ApiType.APPLICATION)
+    suspend fun getFriends(
+        @Header("Authorization") token: String,
+        @Header("Accept-Encoding") encoding: String = "gzip, deflate, br",
+        @Header("Accept") language: String = "*/*",
+    ): FriendsResponse
+
+
 }

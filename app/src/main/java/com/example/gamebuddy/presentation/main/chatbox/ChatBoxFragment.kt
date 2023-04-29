@@ -1,4 +1,4 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import android.app.SearchManager
 import android.content.Context.SEARCH_SERVICE
@@ -12,23 +12,27 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.FragmentMessageBinding
-import com.example.gamebuddy.domain.model.message.Message
+import com.example.gamebuddy.data.remote.model.chatbox.Inbox
+import com.example.gamebuddy.databinding.FragmentChatBoxBinding
+import com.example.gamebuddy.domain.model.Friend
+import com.example.gamebuddy.util.ApiType
+import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
 
 
-class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, FriendsAdapter.OnFriendClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var searchView: SearchView
     private lateinit var menu: Menu
 
-    private var messageAdapter: MessageAdapter? = null
+    private var chatBoxAdapter: ChatBoxAdapter? = null
+    private var friendsAdapter: FriendsAdapter? = null
 
-    private val viewModel: MessageViewModel by viewModels()
+    private val viewModel: ChatBoxViewModel by viewModels()
 
-    private var _binding: FragmentMessageBinding? = null
+    private var _binding: FragmentChatBoxBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,8 +40,9 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = FragmentChatBoxBinding.inflate(inflater, container, false)
 
+        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
 
@@ -53,6 +58,13 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
         collectState()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        this.menu = menu
+        inflater.inflate(R.menu.search_menu, this.menu)
+        initSearchView()
+    }
+
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
@@ -62,22 +74,19 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
                 queue = state.queue,
                 stateMessageCallback = object : StateMessageCallback {
                     override fun removeMessageFromStack() {
-                        viewModel.onTriggerEvent(MessageEvent.OnRemoveHeadFromQueue)
+                        viewModel.onTriggerEvent(ChatBoxEvent.OnRemoveHeadFromQueue)
                     }
                 }
             )
 
-//            messageAdapter?.apply {
-//                submitList(state.messages)
-//            }
-        }
-    }
+            friendsAdapter?.apply {
+                submitList(state.friends)
+            }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        this.menu = menu
-        inflater.inflate(R.menu.search_menu, this.menu)
-        initSearchView()
+            chatBoxAdapter?.apply {
+                submitList(state.chatBox)
+            }
+        }
     }
 
     private fun initSearchView() {
@@ -121,16 +130,22 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
     }
 
     private fun initRecyclerView() {
+        binding.recyclerViewFriends.apply {
+            layoutManager = LinearLayoutManager(this@ChatBoxFragment.context, LinearLayoutManager.HORIZONTAL, false)
+            friendsAdapter = FriendsAdapter(this@ChatBoxFragment)
+            adapter = friendsAdapter
+        }
+
         binding.recyclerViewMessage.apply {
-            layoutManager = LinearLayoutManager(this@MessageFragment.context)
-            messageAdapter = MessageAdapter(this@MessageFragment)
-            adapter = messageAdapter
+            layoutManager = LinearLayoutManager(this@ChatBoxFragment.context)
+            chatBoxAdapter = ChatBoxAdapter(this@ChatBoxFragment)
+            adapter = chatBoxAdapter
         }
     }
 
     private fun executeNewQuery(query: String){
-        viewModel.onTriggerEvent(MessageEvent.UpdateQuery(query))
-        viewModel.onTriggerEvent(MessageEvent.NewQuery)
+        viewModel.onTriggerEvent(ChatBoxEvent.UpdateQuery(query))
+        viewModel.onTriggerEvent(ChatBoxEvent.NewQuery)
         resetUI()
     }
 
@@ -140,7 +155,8 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
     }
 
     override fun onRefresh() {
-        TODO("Not yet implemented")
+        viewModel.onTriggerEvent(ChatBoxEvent.NewSearch)
+        binding.swipeRefresh.isRefreshing = false
     }
 
     override fun onDestroy() {
@@ -148,8 +164,12 @@ class MessageFragment : BaseChatFragment(), MessageAdapter.OnClickListener, Swip
         _binding = null
     }
 
-    override fun onItemClick(position: Int, item: Message) {
-        Timber.d("onItemClick: $position : $item")
+    override fun onItemClick(position: Int, item: Inbox) {
+        Timber.d("onItemClick Message $position : $item")
+    }
+
+    override fun onItemClick(position: Int, item: Friend) {
+        Timber.d("onItemClick Friend $position : $item")
     }
 
 

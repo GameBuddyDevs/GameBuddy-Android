@@ -111,8 +111,7 @@ dependencies {
     //card stack view
     implementation 'com.lorentzos.swipecards:library:1.0.9@aar'
 
-    //Lottie
-    def lottieVersion = "3.4.0"
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    // Circular Image View
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }

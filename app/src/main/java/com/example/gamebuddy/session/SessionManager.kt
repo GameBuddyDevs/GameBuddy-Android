@@ -107,10 +107,10 @@ class SessionManager @Inject constructor(
                                 appDataStore.getValue(Constants.PROFILE_COMPLETED) ?: "0"
                             Timber.d("startup-logic: Is profile setup complete? $isProfileSetupComplete")
                             _sessionState.value = state.copy(actionType = if (isProfileSetupComplete == "1") AuthActionType.HOME else AuthActionType.LOGIN)
-                            onFinishedCheckingForPreviousAuthUser()
                         } else {
                             _sessionState.value = state.copy(actionType = AuthActionType.LOGIN)
                         }
+                        onFinishedCheckingForPreviousAuthUser()
                     }
                 }.launchIn(sessionScope)
         }

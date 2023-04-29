@@ -35,4 +35,7 @@
     <string name="decline_request">decline_request</string>
     <string name="search">Search</string>
     <string name="search_bar_view">Search Bar View</string>
+    <string name="friends">Friends</string>
+    <string name="chat">Chat</string>
+    <string name="most_communicated">Most Communicated</string>
 </resources>

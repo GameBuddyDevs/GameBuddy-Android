@@ -1,26 +1,30 @@
-package com.example.gamebuddy.presentation.main.chat
+package com.example.gamebuddy.presentation.main.chatbox
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.ItemMessageBinding
-import com.example.gamebuddy.domain.model.message.Message
+import com.example.gamebuddy.databinding.ItemFriendBinding
+import com.example.gamebuddy.domain.model.Friend
 
-class MessageAdapter(
-    private val onClickListener: OnClickListener? = null
+class FriendsAdapter(
+    private val onClickListener: OnFriendClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface OnClickListener {
-        fun onItemClick(position: Int, item: Message)
+    interface OnFriendClickListener {
+        fun onItemClick(position: Int, item: Friend)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MessageViewHolder(
-            ItemMessageBinding.inflate(
+            ItemFriendBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -33,12 +37,12 @@ class MessageAdapter(
     }
 
     class MessageViewHolder constructor(
-        private val binding: ItemMessageBinding,
+        private val binding: ItemFriendBinding,
         private val requestOptions: RequestOptions,
-        private val onClickListener: OnClickListener?
+        private val onClickListener: OnFriendClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message) {
+        fun bind(item: Friend) {
             binding.apply {
 
                 root.setOnClickListener {
@@ -49,10 +53,9 @@ class MessageAdapter(
                     .setDefaultRequestOptions(requestOptions)
                     .load(item.avatar)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imgChatUsername)
-                txtChatUsername.text = item.username
-                txtLastMessage.text = item.lastMessage
-                txtTime.text = item.time
+                    .into(imgFriend)
+                txtFriendUsername.text = item.username
+                txtFriendAge.text = item.age.toString()
             }
         }
     }
@@ -67,18 +70,18 @@ class MessageAdapter(
 
     override fun getItemCount() = differ.currentList.size
 
-    fun submitList(blogList: List<Message>?) {
+    fun submitList(blogList: List<Friend>?) {
         val newList = blogList?.toMutableList()
         differ.submitList(newList)
     }
 
-    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Message>() {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Friend>() {
 
-        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+        override fun areItemsTheSame(oldItem: Friend, newItem: Friend): Boolean {
             return oldItem.username == newItem.username
         }
 
-        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+        override fun areContentsTheSame(oldItem: Friend, newItem: Friend): Boolean {
             return oldItem == newItem
         }
 
@@ -88,21 +91,22 @@ class MessageAdapter(
         AsyncDifferConfig.Builder(DIFF_CALLBACK).build()
     )
 
-    class BlogRecyclerChangeCallback(private val messageAdapter: MessageAdapter) : ListUpdateCallback {
+    class BlogRecyclerChangeCallback(private val friendsAdapter: FriendsAdapter) :
+        ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {
-            messageAdapter.notifyItemRangeChanged(position, count)
+            friendsAdapter.notifyItemRangeChanged(position, count)
         }
 
         override fun onRemoved(position: Int, count: Int) {
-            messageAdapter.notifyItemRemoved(position)
+            friendsAdapter.notifyItemRemoved(position)
         }
 
         override fun onMoved(fromPosition: Int, toPosition: Int) {
-            messageAdapter.notifyItemMoved(fromPosition, toPosition)
+            friendsAdapter.notifyItemMoved(fromPosition, toPosition)
         }
 
         override fun onChanged(position: Int, count: Int, payload: Any?) {
-            messageAdapter.notifyItemRangeChanged(position, count, payload)
+            friendsAdapter.notifyItemRangeChanged(position, count, payload)
         }
     }
 }

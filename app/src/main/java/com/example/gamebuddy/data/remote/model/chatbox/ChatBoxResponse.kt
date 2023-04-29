@@ -1,8 +1,8 @@
-package com.example.gamebuddy.data.remote.model.keyword
+package com.example.gamebuddy.data.remote.model.chatbox
 
 import com.example.gamebuddy.data.remote.model.Status
 
-data class KeywordResponse(
+data class ChatBoxResponse(
     val body: Body,
     val status: Status
 )

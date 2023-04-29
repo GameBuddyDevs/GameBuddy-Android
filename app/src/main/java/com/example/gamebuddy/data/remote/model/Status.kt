@@ -1,9 +1,9 @@
-package com.example.gamebuddy.data.remote.model.register
+package com.example.gamebuddy.data.remote.model
 
 
 import com.google.gson.annotations.SerializedName
 
-data class AuthStatus(
+data class Status(
     @SerializedName("code")
     val code: String,
     @SerializedName("message")
