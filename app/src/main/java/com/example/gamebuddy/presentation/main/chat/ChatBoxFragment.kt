@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.gamebuddy.R
+import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.FragmentChatBoxBinding
 import com.example.gamebuddy.domain.model.Friend
 import com.example.gamebuddy.domain.model.message.Message
@@ -55,8 +56,6 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Frie
         setHasOptionsMenu(true)
         binding.swipeRefresh.setOnRefreshListener(this)
         initRecyclerView()
-        //viewModel.onTriggerEvent(ChatBoxEvent.GetFriends)
-        //viewModel.onTriggerEvent(ChatBoxEvent.GetChatBox)
         collectState()
     }
 
@@ -157,7 +156,8 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Frie
     }
 
     override fun onRefresh() {
-        TODO("Not yet implemented")
+        viewModel.onTriggerEvent(ChatBoxEvent.NewSearch)
+        binding.swipeRefresh.isRefreshing = false
     }
 
     override fun onDestroy() {
@@ -165,7 +165,7 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Frie
         _binding = null
     }
 
-    override fun onItemClick(position: Int, item: Message) {
+    override fun onItemClick(position: Int, item: Inbox) {
         Timber.d("onItemClick Message $position : $item")
     }
 

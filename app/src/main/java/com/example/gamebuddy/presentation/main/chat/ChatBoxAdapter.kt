@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
+import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.ItemMessageBinding
 import com.example.gamebuddy.domain.model.message.Message
 
@@ -15,7 +16,7 @@ class ChatBoxAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, item: Message)
+        fun onItemClick(position: Int, item: Inbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,7 +39,7 @@ class ChatBoxAdapter(
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Message) {
+        fun bind(item: Inbox) {
             binding.apply {
 
                 root.setOnClickListener {
@@ -52,7 +53,7 @@ class ChatBoxAdapter(
                     .into(imgChatUsername)
                 txtChatUsername.text = item.username
                 txtLastMessage.text = item.lastMessage
-                txtTime.text = item.time
+                txtTime.text = item.lastMessageTime
             }
         }
     }
@@ -67,18 +68,18 @@ class ChatBoxAdapter(
 
     override fun getItemCount() = differ.currentList.size
 
-    fun submitList(blogList: List<Message>?) {
+    fun submitList(blogList: List<Inbox>?) {
         val newList = blogList?.toMutableList()
         differ.submitList(newList)
     }
 
-    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Message>() {
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Inbox>() {
 
-        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+        override fun areItemsTheSame(oldItem: Inbox, newItem: Inbox): Boolean {
             return oldItem.username == newItem.username
         }
 
-        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+        override fun areContentsTheSame(oldItem: Inbox, newItem: Inbox): Boolean {
             return oldItem == newItem
         }
 

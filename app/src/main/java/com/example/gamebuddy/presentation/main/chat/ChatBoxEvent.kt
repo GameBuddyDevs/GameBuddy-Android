@@ -6,6 +6,8 @@ sealed class ChatBoxEvent {
 
     object NewQuery : ChatBoxEvent() // Query will be passed by state
 
+    object NewSearch : ChatBoxEvent()
+
     data class UpdateQuery(val query: String) : ChatBoxEvent()
 
     object GetFriends : ChatBoxEvent()

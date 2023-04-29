@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
+import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import dagger.Module
@@ -59,4 +60,17 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideGetChatBoxUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetChatBoxUseCase{
+        return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
 }

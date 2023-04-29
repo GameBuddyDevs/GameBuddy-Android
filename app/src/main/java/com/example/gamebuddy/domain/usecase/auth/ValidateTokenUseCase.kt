@@ -40,6 +40,16 @@ class ValidateTokenUseCase(
         )
     }.catch { e ->
         Timber.e("ValidateTokenUseCase: $e")
-        emit(handleUseCaseException(exception = e))
+        emit(
+            DataState.success(
+                response = Response(
+                    message = "You must login",
+                    messageType = MessageType.None(),
+                    uiComponentType = UIComponentType.None()
+                ),
+                data = false
+            )
+        )
+        //emit(handleUseCaseException(exception = e))
     }
 }

@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.main.chat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
@@ -20,6 +21,7 @@ import kotlin.system.measureTimeMillis
 @HiltViewModel
 class ChatBoxViewModel @Inject constructor(
     private val getFriendsUseCase: GetFriendsUseCase,
+    private val getChatBoxUseCase: GetChatBoxUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<ChatBoxState> = MutableLiveData(ChatBoxState())
@@ -37,37 +39,11 @@ class ChatBoxViewModel @Inject constructor(
 //            Timber.d("job completed in $time ms")
 //        }
 
+        onTriggerEvent(ChatBoxEvent.GetFriends)
+        onTriggerEvent(ChatBoxEvent.GetChatBox)
+
     }
 
-    private fun getFriends() {
-        getFriendsUseCase.execute().onEach { dataState ->
-            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
-
-            dataState.data?.let { friends ->
-                Timber.d("getFriends: friends: ${friends.size}")
-                _uiState.value = uiState.value?.copy(friends = friends)
-            }
-
-            dataState.stateMessage?.let { stateMessage ->
-                appendToMessageQueue(stateMessage)
-            }
-        }.launchIn(viewModelScope)
-    }
-
-//    private fun getChatBox(): String {
-//        getChatBoxUseCase.execute().onEach { dataState ->
-//            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
-//
-//            dataState.data?.let { chatBox ->
-//                Timber.d("getFriends: friends: ${chatBox.size}")
-//                _uiState.value = uiState.value?.copy(chatBox = chatBox)
-//            }
-//
-//            dataState.stateMessage?.let { stateMessage ->
-//                appendToMessageQueue(stateMessage)
-//            }
-//        }.launchIn(viewModelScope)
-//    }
 
     fun onTriggerEvent(event: ChatBoxEvent) {
         when (event) {
@@ -87,10 +63,50 @@ class ChatBoxViewModel @Inject constructor(
                 removeHeadFromQueue()
             }
 
-            ChatBoxEvent.GetChatBox -> TODO()
+            ChatBoxEvent.GetChatBox -> getChatBox()
 
             ChatBoxEvent.GetFriends -> getFriends()
+
+            ChatBoxEvent.NewSearch -> searchChatBox()
         }
+    }
+
+    private fun searchChatBox() {
+        clearList()
+        getChatBox()
+    }
+
+    private fun clearList() { _uiState.value = uiState.value?.copy(chatBox = listOf()) }
+
+
+    private fun getChatBox() {
+        getChatBoxUseCase.execute().onEach { dataState ->
+            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
+
+            dataState.data?.let { chatBox ->
+                Timber.d("getFriends: friends: ${chatBox.size}")
+                _uiState.value = uiState.value?.copy(chatBox = chatBox)
+            }
+
+            dataState.stateMessage?.let { stateMessage ->
+                appendToMessageQueue(stateMessage)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getFriends() {
+        getFriendsUseCase.execute().onEach { dataState ->
+            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
+
+            dataState.data?.let { friends ->
+                Timber.d("getFriends: friends: ${friends.size}")
+                _uiState.value = uiState.value?.copy(friends = friends)
+            }
+
+            dataState.stateMessage?.let { stateMessage ->
+                appendToMessageQueue(stateMessage)
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun updateQuery(query: String) {
