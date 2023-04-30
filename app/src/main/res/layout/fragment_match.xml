@@ -7,11 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.main.match.MatchFragment">
+
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:rotation_degrees="18" />
+
     <include layout="@layout/buttons" />
 
 </FrameLayout>

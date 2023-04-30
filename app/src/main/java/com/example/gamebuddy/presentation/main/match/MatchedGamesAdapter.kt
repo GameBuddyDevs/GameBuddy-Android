@@ -35,7 +35,13 @@ class MatchedGamesAdapter(
 
         fun bind(item: String) {
             binding.apply {
-                txtMatchInfo.text = item
+                val items = item.split("\n")
+                val displayText = if (items.size > 4) {
+                    items[0] + "\n" + items[1] + "\nand more"
+                } else {
+                    item
+                }
+                txtMatchInfo.text = displayText
 
                 val randomColor = Color.rgb(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
                 container.strokeColor = randomColor
