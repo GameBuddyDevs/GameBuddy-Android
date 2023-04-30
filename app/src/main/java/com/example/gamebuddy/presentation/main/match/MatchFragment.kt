@@ -44,7 +44,7 @@ class MatchFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onTriggerEvent(MatchEvent.GetUsers)
-        matchedUsers.add(User("test","test",20,"Turkey", games = listOf("GTA","CSGO","PUBG","FIFA"), keywords = listOf("test","test")))
+        matchedUsers.add(User("1","Romero",20,"Italy", games = listOf("GTA","CSGO","PUBG"), keywords = listOf("aim master","clutch king","pro")))
         initAdapter()
         collectState()
 

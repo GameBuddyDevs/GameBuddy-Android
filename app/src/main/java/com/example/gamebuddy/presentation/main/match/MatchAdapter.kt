@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.domain.model.user.User
+import com.example.gamebuddy.presentation.main.chatbox.ChatBoxAdapter
 
 class MatchAdapter(
     context: Context, users: List<User>
@@ -22,11 +26,33 @@ class MatchAdapter(
             view = LayoutInflater.from(context).inflate(R.layout.item_match, parent, false)
         }
 
+        // Get user
         val user = getItem(position)
 
+        // Initialize views
         val txtNameAndAge = view?.findViewById<TextView>(R.id.txt_name_and_age)
         val country = view?.findViewById<TextView>(R.id.Country_text)
         val imgView = view?.findViewById<ImageView>(R.id.img_matched_user)
+        val gamesRecyclerView = view?.findViewById<RecyclerView>(R.id.rv_favorite_games)
+        val characterRecyclerView = view?.findViewById<RecyclerView>(R.id.rv_character)
+
+        // Initialize adapters
+        var characterAdapter: MatchedGamesAdapter? = null
+        var matchedGamesAdapter: MatchedGamesAdapter? = null
+
+        // Set up recycler view for games
+        gamesRecyclerView?.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
+        matchedGamesAdapter = MatchedGamesAdapter()
+        gamesRecyclerView?.adapter = matchedGamesAdapter
+        matchedGamesAdapter?.submitList(user?.games)
+
+        // Set up recycler view for keywords
+        characterRecyclerView?.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+        characterAdapter = MatchedGamesAdapter()
+        characterRecyclerView?.adapter = matchedGamesAdapter
+        characterAdapter?.submitList(user?.keywords)
+
+        // Load avatar of user
         if (imgView != null) {
             Glide.with(context)
                 .load(user?.avatar)
@@ -38,9 +64,6 @@ class MatchAdapter(
             "${user?.age?.toString()}"
         ) //"${item.gamerUsername}, ${item.age?.toString()}"
         country?.text = user?.country
-
-
-
 
         return view!!
     }

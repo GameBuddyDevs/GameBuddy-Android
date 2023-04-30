@@ -6,6 +6,7 @@
     android:padding="8dp">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
@@ -17,7 +18,7 @@
         app:strokeWidth="2dp">
 
         <TextView
-            android:id="@+id/txt_game"
+            android:id="@+id/txt_match_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
