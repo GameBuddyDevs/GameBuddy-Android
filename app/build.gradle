@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -114,6 +115,12 @@ dependencies {
     // Circular Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+    //implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+
+    //Firebase Bom
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+
+    //Firebase Messaging
+    implementation 'com.google.firebase:firebase-messaging'
 
 }
