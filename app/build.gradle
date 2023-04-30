@@ -40,7 +40,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
         dataBinding = true
     }
@@ -120,5 +120,8 @@ dependencies {
 
     //Firebase Messaging
     implementation 'com.google.firebase:firebase-messaging'
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 }

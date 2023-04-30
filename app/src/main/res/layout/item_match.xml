@@ -3,124 +3,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:backgroundTint="#FFCDD2"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="8dp">
 
-        <ImageView
-            android:id="@+id/img_matched_user"
+        <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:contentDescription="@string/matched_user_profile_photo"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/battlefield1" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/container_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_matched_user"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:contentDescription="@string/matched_user_profile_photo"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/battlefield1" />
+
+            <RelativeLayout
+                android:id="@+id/container_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Reomal"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txt_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_toEndOf="@id/txt_name"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="22"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/ic_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/txt_country"
+                    android:contentDescription="@string/location_icon"
+                    app:srcCompat="@drawable/ic_location_24" />
+
+                <TextView
+                    android:id="@+id/txt_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Italy"
+                    android:textColor="@color/text"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/txt_name_and_age"
+                android:id="@+id/txt_favorite_games"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/favorite_games"
+                android:textColor="@color/text"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_favorite_games"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_character_match" />
+
+            <TextView
+                android:id="@+id/txt_character"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Reomal, 22"
-                android:textColor="@color/text"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/ic_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@id/txt_country"
-                android:contentDescription="@string/location_icon"
-                app:srcCompat="@drawable/ic_location_24" />
-
-            <TextView
-                android:id="@+id/txt_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Italy"
+                android:text="@string/character"
                 android:textColor="@color/text"
                 android:textSize="16sp" />
 
-        </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_character"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_character_match" />
 
-        <TextView
-            android:id="@+id/txt_favorite_games"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/item_swipe_left_indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="@string/favorite_games"
-            android:textColor="@color/text"
-            android:textSize="16sp" />
+            android:alpha="0"
+            android:background="#A5F"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_favorite_games"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_character_match" />
-
-        <TextView
-            android:id="@+id/txt_character"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="@string/character"
-            android:textColor="@color/text"
-            android:textSize="16sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_character"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_character_match" />
-
-    </LinearLayout>
-
-
-    <View
-        android:id="@+id/item_swipe_left_indicator"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="10dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:alpha="0"
-        android:background="#A5F"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
 
     <View
         android:id="@+id/item_swipe_right_indicator"
