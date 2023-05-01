@@ -42,4 +42,6 @@
     <string name="favorite_games">Favorite Games</string>
     <string name="character">Character</string>
     <string name="location_icon">Location icon</string>
+    <string name="icon_to_turning_previous_page_which_is_chatbox_screen">Icon to turning previous page which is ChatBox screen</string>
+    <string name="message">Message</string>
 </resources>
