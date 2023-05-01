@@ -1,9 +1,9 @@
 package com.example.gamebuddy.data.remote.network
 
+import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
-import com.example.gamebuddy.data.remote.model.users.UsersResponse
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
 import retrofit2.http.GET
@@ -19,12 +19,6 @@ interface GameBuddyApiAppService {
     @Api(ApiType.APPLICATION)
     suspend fun getKeywords(): KeywordResponse
 
-    @GET("get/recommendations")
-    @Api(ApiType.MATCH)
-    suspend fun getUsers(
-        @Header("Authorization") token: String,
-    ): UsersResponse
-
     @GET("get/friends")
     @Api(ApiType.APPLICATION)
     suspend fun getFriends(
@@ -33,5 +27,10 @@ interface GameBuddyApiAppService {
         @Header("Accept") language: String = "*/*",
     ): FriendsResponse
 
+    @GET("send/friend")
+    @Api(ApiType.APPLICATION)
+    suspend fun sendFriendRequest(
+        @Header("Authorization") token: String,
+    ): BasicResponse
 
 }

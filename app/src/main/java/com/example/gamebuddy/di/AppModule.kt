@@ -39,18 +39,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMatchUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao,
-    ): MatchUseCase {
-        return MatchUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
     fun provideGetFriendsUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
