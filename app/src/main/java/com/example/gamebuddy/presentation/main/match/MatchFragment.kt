@@ -20,9 +20,10 @@ import timber.log.Timber
 
 class MatchFragment : BaseAuthFragment() {
 
+    private var matchedUsers: ArrayList<User> = ArrayList()
     private lateinit var flingContainer: SwipeFlingAdapterView
-    private var al: ArrayList<User> = ArrayList()
     private lateinit var arrayAdapter: ArrayAdapter<User>
+
     private val viewModel: MatchViewModel by activityViewModels()
 
     private var _binding:FragmentMatchBinding? = null
@@ -43,7 +44,7 @@ class MatchFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onTriggerEvent(MatchEvent.GetUsers)
-        al.add(User("test","test",20,"Turkey"))
+        matchedUsers.add(User("1","Romero",20,"Italy", games = listOf("GTA","CSGO","PUBG"), keywords = listOf("aim master","clutch king","pro")))
         initAdapter()
         collectState()
 
@@ -62,18 +63,18 @@ class MatchFragment : BaseAuthFragment() {
             )
             state.users?.let { users ->
                 for(user in users){
-                    al.add(user)
+                    matchedUsers.add(user)
                 }
             }
         }
 
     }
     private fun initAdapter(){
-        arrayAdapter = MatchAdapter(requireContext(),al)
+        arrayAdapter = MatchAdapter(requireContext(),matchedUsers)
         flingContainer.adapter = arrayAdapter
         flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener{
             override fun removeFirstObjectInAdapter() {
-                al.removeAt(0)
+                matchedUsers.removeAt(0)
                 arrayAdapter.notifyDataSetChanged()
             }
 

@@ -18,6 +18,9 @@ data class UserDto(
             gamerUsername = gamerUsername,
             age = age,
             country = country,
+            avatar = avatar,
+            games = favoriteGames.map { it.gameName },
+            keywords = selectedKeywords
         )
     }
 }

@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -39,7 +40,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
         dataBinding = true
     }
@@ -113,5 +114,14 @@ dependencies {
 
     // Circular Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Firebase Bom
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+
+    //Firebase Messaging
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 }

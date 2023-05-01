@@ -13,6 +13,7 @@ import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.SplashViewModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -31,12 +32,27 @@ class AuthActivity : BaseActivity() {
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
         setContentView(binding.root)
 
+        getTokenFromFirebase()
+
         updateEnvironment(
             apiType = ApiType.APPLICATION,
             deploymentType = DeploymentType.PRODUCTION
         )
 
         collectState()
+    }
+
+    fun getTokenFromFirebase() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            Timber.d("getTokenFromFirebase: $token")
+        }
     }
 
     private fun collectState() {

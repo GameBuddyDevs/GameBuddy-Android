@@ -36,4 +36,8 @@
     <string name="friends">Friends</string>
     <string name="chat">Chat</string>
     <string name="most_communicated">Most Communicated</string>
+    <string name="matched_user_profile_photo">Matched User Profile Photo</string>
+    <string name="favorite_games">Favorite Games</string>
+    <string name="character">Character</string>
+    <string name="location_icon">Location icon</string>
 </resources>
