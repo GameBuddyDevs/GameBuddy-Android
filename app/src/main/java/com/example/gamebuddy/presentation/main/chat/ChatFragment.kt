@@ -115,6 +115,7 @@ class ChatFragment : Fragment() {
 
     private fun setUI() {
         binding.apply {
+            Timber.d("username: $username avatarUrl: $avatarUrl")
             txtUsername.text = username
             imgUsernameAvatar.loadImageFromUrl(avatarUrl)
         }

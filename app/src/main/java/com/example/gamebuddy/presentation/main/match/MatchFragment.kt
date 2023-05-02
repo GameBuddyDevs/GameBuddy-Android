@@ -95,7 +95,7 @@ class MatchFragment : BaseAuthFragment() {
             override fun onRightCardExit(dataObject: Any?) {
                 Timber.d("Right")
                 val user = dataObject as User
-                val action = MatchFragmentDirections.actionMatchFragmentToChatFragment(user.userId, user.gamerUsername!!, user.avatar!!)
+                val action = MatchFragmentDirections.actionMatchFragmentToChatFragment(user.userId, user.avatar!!, user.gamerUsername!!)
                 findNavController().navigate(action)
             }
 

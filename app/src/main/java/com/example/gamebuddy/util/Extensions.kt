@@ -2,7 +2,9 @@ package com.example.gamebuddy.util
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -12,6 +14,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 
 // Retrofit Extensions
@@ -98,6 +104,21 @@ fun ImageView.loadImageFromDrawable(
         .load(id)
         .apply(options)
         .into(this)
+}
+
+// String Extensions
+@RequiresApi(Build.VERSION_CODES.O)
+fun String.formatDateTime(): String {
+    val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
+    val dateTime = LocalDateTime.parse(this, dateTimeFormatter)
+    val now = LocalDateTime.now(ZoneId.of("UTC"))
+    val duration = ChronoUnit.HOURS.between(dateTime, now)
+
+    return when {
+        duration < 1 -> "${dateTime.hour}:${String.format("%02d", dateTime.minute)}"
+        duration < 24 -> "${dateTime.hour}:${String.format("%02d", dateTime.minute)}"
+        else -> "${duration / 24}d"
+    }
 }
 
 private fun getMultiTransform(

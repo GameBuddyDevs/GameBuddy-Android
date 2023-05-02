@@ -1,7 +1,9 @@
 package com.example.gamebuddy.presentation.main.chat
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +14,7 @@ import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.message.Conversation
 import com.example.gamebuddy.databinding.ItemMessageReceiveBinding
 import com.example.gamebuddy.databinding.ItemMessageSendBinding
+import com.example.gamebuddy.util.formatDateTime
 
 class ChatAdapter(
     private val userId: String?
@@ -42,10 +45,11 @@ class ChatAdapter(
     class ReceivedMessageViewHolder(
         private val binding: ItemMessageReceiveBinding, requestOptions: RequestOptions
     ) : RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(item: Conversation) {
             binding.apply {
                 txtMessage.text = item.message
-                txtTime.text = item.date
+                txtTime.text = item.date.formatDateTime()
             }
         }
     }
@@ -55,14 +59,16 @@ class ChatAdapter(
         requestOptions: RequestOptions
     ) :
         RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(item: Conversation) {
             binding.apply {
                 txtMessage.text = item.message
-                txtTime.text = item.date
+                txtTime.text = item.date.formatDateTime()
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is SentMessageViewHolder -> holder.bind(differ.currentList[position])
