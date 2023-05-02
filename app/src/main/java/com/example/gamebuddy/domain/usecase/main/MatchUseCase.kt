@@ -2,7 +2,7 @@ package com.example.gamebuddy.domain.usecase.main
 
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.local.auth.toAuthToken
-import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
 import com.example.gamebuddy.domain.model.user.User
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class MatchUseCase(
-    private val service: GameBuddyApiAppService,
+    private val service: GameBuddyApiMatchService,
     private val authTokenDao: AuthTokenDao,
 ) {
     fun execute(): Flow<DataState<List<User>>> = flow {

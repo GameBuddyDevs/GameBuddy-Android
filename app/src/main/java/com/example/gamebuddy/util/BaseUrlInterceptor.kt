@@ -20,7 +20,12 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
             ?.getAnnotation(Api::class.java)?.value
             ?: throw IllegalStateException("ApiType not found. Please add @Api annotation to your method.")
 
+
+        Timber.d("ALOOOOOO apiType: $apiType")
+
         val baseUrl = EnvironmentManager.getBaseUrl(apiType).toHttpUrl()
+
+        Timber.d("ALOOOOOO baseUrl: $baseUrl")
 
 //        val newUrl = baseUrl.newBuilder()
 //            .scheme(baseUrl.scheme)

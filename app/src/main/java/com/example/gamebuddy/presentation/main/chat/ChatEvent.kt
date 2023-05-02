@@ -5,10 +5,18 @@ sealed class ChatEvent {
     data class SendMessage(
         val receiverId: String,
         val message: String
-    ): ChatEvent()
+    ) : ChatEvent()
 
     data class GetMessages(
         val receiverId: String
-    ): ChatEvent()
+    ) : ChatEvent()
+
+    data class AddFriend(
+        val matchedUserId: String?
+    ) : ChatEvent()
+
+    data class SetUserProperties(
+        val matchedUserId: String
+    ) : ChatEvent()
 
 }

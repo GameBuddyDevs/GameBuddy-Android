@@ -20,12 +20,16 @@
         android:label="fragment_match"
         tools:layout="@layout/fragment_match" >
         <action
-            android:id="@+id/action_matchFragment_to_sendMessageFragment"
-            app:destination="@id/sendMessageFragment" />
+            android:id="@+id/action_matchFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
-        android:id="@+id/sendMessageFragment"
-        android:name="com.example.gamebuddy.SendMessageFragment"
-        android:label="fragment_send_message"
-        tools:layout="@layout/fragment_send_message" />
+        android:id="@+id/chatFragment"
+        android:name="com.example.gamebuddy.presentation.main.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="matchedUserId"
+            app:argType="string" />
+    </fragment>
 </navigation>
