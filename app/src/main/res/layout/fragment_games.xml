@@ -20,44 +20,59 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="4dp"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/poppins_bold"
             android:paddingTop="32dp"
             android:paddingBottom="8dp"
-            android:text="Select Your Favorite Games"
+            android:text=" Select your min 3 Favorite Games"
             android:textColor="@color/text"
-            android:textSize="40sp"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_games"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btnDetailsUser"
+            android:layout_above="@+id/buttons_layout"
             android:layout_below="@id/txt_games"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="8dp"
             android:padding="4dp"
             tools:itemCount="6"
             tools:listitem="@layout/item_games" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDetailsUser"
+        <LinearLayout
+            android:id="@+id/buttons_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_above="@+id/btnBack"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="72dp"
-            android:text="Continue"
-            app:cornerRadius="32dp" />
+            android:layout_marginBottom="8dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBack"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Previous"
-            app:cornerRadius="32dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:textColor="@color/bottom_nav_selector"
+                android:text="Previous"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_details_user"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:text="Finish "
+                app:cornerRadius="32dp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -2,6 +2,7 @@ package com.example.gamebuddy.presentation.auth.details.games
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -41,12 +42,24 @@ class GamesAdapter(
         private val requestOptions: RequestOptions,
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
-
+        private var isRadioButtonSelected = false
         fun bind(item: Game) {
             binding.apply {
-
+                root.background = ContextCompat.getDrawable(itemView.context, R.drawable.border)
                 selectGamesRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
+                    isRadioButtonSelected = !isRadioButtonSelected
+                    selectGamesRB.isChecked =
+                        isRadioButtonSelected
+                    if (isRadioButtonSelected) {
+                        selectGamesRB.background =
+                            ContextCompat.getDrawable(root.context, R.drawable.border_custom)
+                    } else {
+                        selectGamesRB.background =
+                            ContextCompat.getDrawable(root.context, R.drawable.border)
+                    }
+                    itemView.background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.border)
                 }
 
                 Glide.with(itemView)
@@ -55,6 +68,7 @@ class GamesAdapter(
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.imgGames)
                 txtGames.text = item.name
+                desc.text = item.description
 
             }
         }

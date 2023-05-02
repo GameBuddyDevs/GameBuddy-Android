@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:background="@drawable/border"
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/img_games"
@@ -29,12 +32,25 @@
         app:layout_constraintStart_toEndOf="@id/img_games"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_light"
+        android:text="Description"
+        android:textColor="@color/desc"
+        app:layout_constraintEnd_toStartOf="@id/select_games_RB"
+        app:layout_constraintStart_toEndOf="@+id/img_games"
+        app:layout_constraintTop_toBottomOf="@+id/txt_games" />
+
 
     <RadioButton
         android:id="@+id/select_games_RB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
