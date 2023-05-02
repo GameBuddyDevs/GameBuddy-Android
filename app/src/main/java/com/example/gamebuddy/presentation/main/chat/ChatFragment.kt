@@ -6,13 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentChatBinding
+import com.example.gamebuddy.presentation.auth.login.LoginEvent
 import com.example.gamebuddy.presentation.auth.login.LoginViewModel
 import com.example.gamebuddy.presentation.auth.verify.VerifyFragmentArgs
+import com.example.gamebuddy.presentation.main.chatbox.FriendsAdapter
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.EnvironmentManager
 import com.example.gamebuddy.util.EnvironmentModel
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.loadImageFromUrl
+import com.example.gamebuddy.util.processQueue
 import com.example.gamebuddy.websocket.WebSocketClient
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.OkHttpClient
@@ -33,6 +39,12 @@ class ChatFragment : Fragment() {
     private val okHttpClient = OkHttpClient()
     private lateinit var webSocket: WebSocket
 
+    private var chatAdapter: ChatAdapter? = null
+
+    private var userId: String? = null
+    private var username: String? = null
+    private var avatarUrl: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,28 +60,89 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val matchedUserId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
-        Timber.d("matchedUserId: $matchedUserId")
-        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(matchedUserId))
-        viewModel.onTriggerEvent(ChatEvent.GetMessages(matchedUserId))
+        getArgs()
+        setUI()
+        setupState()
+        initRecyclerView()
+        collectState()
 
-//        webSocketClient = WebSocketClient(
-//            onConnectionOpened = {
-//                // code to execute when the WebSocket connection is opened
-//                println("WebSocket connection opened.")
-//            },
-//            onConnectionClosed = {
-//                // code to execute when the WebSocket connection is closed
-//                println("WebSocket connection closed.")
-//            },
-//            onMessageReceived = { message ->
-//                // code to execute when a WebSocket message is received
-//                println("WebSocket message received: $message")
-//            }
-//        )
+        webSocketClient = WebSocketClient(
+            onConnectionOpened = {
+                // code to execute when the WebSocket connection is opened
+                Timber.d("WebSocket connection opened.")
+            },
+            onConnectionClosed = {
+                // code to execute when the WebSocket connection is closed
+                Timber.d("WebSocket connection closed.")
+            },
+            onMessageReceived = { message ->
+                // code to execute when a WebSocket message is received
+                Timber.d("WebSocket message received: $message")
+            }
+        )
 
-        //connectWebSocket()
+        connectWebSocket()
         setClickListeners()
+    }
+
+    private fun collectState() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            //loading bar
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        viewModel.onTriggerEvent(ChatEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+
+            chatAdapter?.apply {
+                submitList(state.messages)
+            }
+
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.recyclerViewChat.apply {
+            layoutManager = LinearLayoutManager(this@ChatFragment.context, LinearLayoutManager.VERTICAL, false)
+            chatAdapter = ChatAdapter(userId = userId)
+            adapter = chatAdapter
+        }
+    }
+
+    private fun setUI() {
+        binding.apply {
+            txtUsername.text = username
+            imgUsernameAvatar.loadImageFromUrl(avatarUrl)
+        }
+    }
+
+    private fun setupState() {
+        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(userId!!))
+        viewModel.onTriggerEvent(ChatEvent.GetMessages(userId!!))
+    }
+
+    private fun connectWebSocket() {
+        webSocket = okHttpClient.newWebSocket(createRequest(), webSocketClient)
+    }
+
+    private fun createRequest(): Request {
+        val websocketURL = "http://l2.eren.wtf:4569/chat"
+
+        return Request.Builder()
+            .url(websocketURL)
+            .build()
+    }
+
+    private fun getArgs() {
+        with(ChatFragmentArgs.fromBundle(requireArguments())) {
+            userId = matchedUserId
+            username = matchedUsername
+            avatarUrl = matchedAvatar
+        }
     }
 
     private fun setClickListeners() {
@@ -82,18 +155,6 @@ class ChatFragment : Fragment() {
                 viewModel.onTriggerEvent(ChatEvent.AddFriend(viewModel.uiState.value?.matchedUserId))
             }
         }
-    }
-
-    private fun connectWebSocket() {
-        webSocket = okHttpClient.newWebSocket(createRequest(), webSocketClient)
-    }
-
-    private fun createRequest(): Request {
-        val websocketURL = "http://l2.eren.wtf:4568/chat"
-
-        return Request.Builder()
-            .url(websocketURL)
-            .build()
     }
 
     private fun updateEnvironment(

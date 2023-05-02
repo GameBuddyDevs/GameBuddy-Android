@@ -26,7 +26,7 @@ class GetMessagesUseCase(
 
         val response = service.getMessages(
             token = "Bearer ${authToken?.token}",
-            userId = SendFriendRequest(userId = matchedUserId)
+            userId = matchedUserId
         )
 
         if (!response.status.success)

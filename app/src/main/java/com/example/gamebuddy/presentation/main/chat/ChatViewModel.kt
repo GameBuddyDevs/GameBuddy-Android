@@ -31,6 +31,7 @@ class ChatViewModel @Inject constructor(
             is ChatEvent.SendMessage -> sendMessage(event.receiverId, event.message)
             is ChatEvent.AddFriend -> addFriend(event.matchedUserId)
             is ChatEvent.SetUserProperties -> setUserProperties(event.matchedUserId)
+            ChatEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
         }
     }
 
@@ -80,7 +81,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun removeHeadFromQueue() {
+    private fun onRemoveHeadFromQueue() {
         _uiState.value?.let {
             try {
                 val queue = it.queue

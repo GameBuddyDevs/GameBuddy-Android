@@ -31,5 +31,11 @@
         <argument
             android:name="matchedUserId"
             app:argType="string" />
+        <argument
+            android:name="matchedAvatar"
+            app:argType="string" />
+        <argument
+            android:name="matchedUsername"
+            app:argType="string" />
     </fragment>
 </navigation>

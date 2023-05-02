@@ -19,4 +19,6 @@ sealed class ChatEvent {
         val matchedUserId: String
     ) : ChatEvent()
 
+    object OnRemoveHeadFromQueue : ChatEvent()
+
 }

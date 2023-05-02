@@ -12,6 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GameBuddyApiAppService {
@@ -39,11 +40,11 @@ interface GameBuddyApiAppService {
         @Body userId: SendFriendRequest,
     ): BasicResponse
 
-    @GET("get/messages")
+    @GET("get/messages/{userId}")
     @Api(ApiType.APPLICATION)
     suspend fun getMessages(
         @Header("Authorization") token: String,
-        @Body userId: SendFriendRequest
+        @Path("userId") userId: String,
     ): MessageResponse
 
 }

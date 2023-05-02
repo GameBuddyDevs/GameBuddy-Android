@@ -1,5 +1,15 @@
 package com.example.gamebuddy.util
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.request.RequestOptions
+import com.example.gamebuddy.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 
@@ -50,12 +60,54 @@ fun StateMessage.isMessageExistInQueue(
     return false
 }
 
-//public inline fun <T> MutableStateFlow<T>.update(function: (T) -> T) {
-//    while (true) {
-//        val prevValue = value
-//        val nextValue = function(prevValue)
-//        if (compareAndSet(prevValue, nextValue)) {
-//            return
-//        }
-//    }
-//}
+
+// Glide Extensions
+fun ImageView.loadImageFromUrl(
+    string: String?,
+    fitCenter: Boolean = true,
+    centerCrop: Boolean = true,
+) {
+    if (string == null) {
+        loadImageFromDrawable(R.drawable.ic_launcher_foreground)
+    } else {
+        val url = string
+        val uri = Uri.parse(url)
+        val multiTransform = getMultiTransform(fitCenter, centerCrop)
+        val options = RequestOptions()
+            .transform(multiTransform)
+            .error(R.drawable.ic_launcher_background)//error imageID has to be here
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+
+        Glide.with(context)
+            .load(uri)
+            .apply(options)
+            .into(this)
+    }
+}
+
+fun ImageView.loadImageFromDrawable(
+    id: Int,
+) {
+    val multiTransformation = MultiTransformation(CenterCrop())
+    val options = RequestOptions()
+        .transform(multiTransformation)
+        .error(R.drawable.ic_launcher_background)//error imageID has to be here
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+
+    Glide.with(context)
+        .load(id)
+        .apply(options)
+        .into(this)
+}
+
+private fun getMultiTransform(
+    fitCenter: Boolean,
+    centerCrop: Boolean,
+): MultiTransformation<Bitmap> {
+    return when {
+        fitCenter && !centerCrop -> MultiTransformation(FitCenter())
+        !fitCenter && centerCrop -> MultiTransformation(CenterCrop())
+        fitCenter && centerCrop -> MultiTransformation(FitCenter(), CenterCrop())
+        else -> MultiTransformation()
+    }
+}

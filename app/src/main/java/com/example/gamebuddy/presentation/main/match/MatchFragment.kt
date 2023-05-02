@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentMatchBinding
 import com.example.gamebuddy.domain.model.user.User
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
-import com.example.gamebuddy.presentation.auth.register.RegisterFragmentDirections
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
@@ -97,7 +95,7 @@ class MatchFragment : BaseAuthFragment() {
             override fun onRightCardExit(dataObject: Any?) {
                 Timber.d("Right")
                 val user = dataObject as User
-                val action = MatchFragmentDirections.actionMatchFragmentToChatFragment(user.userId)
+                val action = MatchFragmentDirections.actionMatchFragmentToChatFragment(user.userId, user.gamerUsername!!, user.avatar!!)
                 findNavController().navigate(action)
             }
 
