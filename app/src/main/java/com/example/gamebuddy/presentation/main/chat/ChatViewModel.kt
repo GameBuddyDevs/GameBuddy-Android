@@ -1,11 +1,14 @@
 package com.example.gamebuddy.presentation.main.chat
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
+import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
     private val getMessagesUseCase: GetMessagesUseCase,
+    private val sendMessageUseCase: SendMessageUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -27,12 +31,17 @@ class ChatViewModel @Inject constructor(
 
     fun onTriggerEvent(event: ChatEvent) {
         when (event) {
-            is ChatEvent.GetMessages -> getMessages(event.receiverId)
+            is ChatEvent.GetMessagesFromApi -> getMessagesFromApi(event.receiverId)
             is ChatEvent.SendMessage -> sendMessage(event.receiverId, event.message)
             is ChatEvent.AddFriend -> addFriend(event.matchedUserId)
             is ChatEvent.SetUserProperties -> setUserProperties(event.matchedUserId)
+            is ChatEvent.OnMessageReceivedFromWebSocket -> getMessagesFromWebSocket(event.matchedUserId, event.message)
             ChatEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
         }
+    }
+
+    private fun getMessagesFromWebSocket(matchedUserId: String, message: String) {
+
     }
 
     private fun setUserProperties(matchedUserId: String) {
@@ -61,10 +70,24 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun sendMessage(receiverId: String, message: String) {
-        TODO("Not yet implemented")
+        _uiState.value?.let { state ->
+            sendMessageUseCase.execute(receiverId, message)
+                .onEach { dataState ->
+                    _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                    dataState.data?.let { messageData ->
+                        Timber.d("Message data: $messageData")
+                        _uiState.value = state.copy(messages = state.messages + messageData)
+                    }
+
+                    dataState.stateMessage?.let { stateMessage ->
+                        appendToMessageQueue(stateMessage)
+                    }
+                }.launchIn(viewModelScope)
+        }
     }
 
-    private fun getMessages(receiverId: String) {
+    private fun getMessagesFromApi(receiverId: String) {
         _uiState.value?.let { state ->
             getMessagesUseCase.execute(receiverId)
                 .onEach { dataState ->

@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentChatBinding
-import com.example.gamebuddy.presentation.auth.login.LoginEvent
-import com.example.gamebuddy.presentation.auth.login.LoginViewModel
-import com.example.gamebuddy.presentation.auth.verify.VerifyFragmentArgs
-import com.example.gamebuddy.presentation.main.chatbox.FriendsAdapter
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.EnvironmentManager
@@ -78,6 +75,7 @@ class ChatFragment : Fragment() {
             onMessageReceived = { message ->
                 // code to execute when a WebSocket message is received
                 Timber.d("WebSocket message received: $message")
+                viewModel.onTriggerEvent(ChatEvent.OnMessageReceivedFromWebSocket(userId!!, message))
             }
         )
 
@@ -107,23 +105,11 @@ class ChatFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerViewChat.apply {
-            layoutManager = LinearLayoutManager(this@ChatFragment.context, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@ChatFragment.context, LinearLayoutManager.VERTICAL, false)
             chatAdapter = ChatAdapter(userId = userId)
             adapter = chatAdapter
         }
-    }
-
-    private fun setUI() {
-        binding.apply {
-            Timber.d("username: $username avatarUrl: $avatarUrl")
-            txtUsername.text = username
-            imgUsernameAvatar.loadImageFromUrl(avatarUrl)
-        }
-    }
-
-    private fun setupState() {
-        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(userId!!))
-        viewModel.onTriggerEvent(ChatEvent.GetMessages(userId!!))
     }
 
     private fun connectWebSocket() {
@@ -138,6 +124,19 @@ class ChatFragment : Fragment() {
             .build()
     }
 
+    private fun setUI() {
+        binding.apply {
+            Timber.d("username: $username avatarUrl: $avatarUrl")
+            txtUsername.text = username
+            imgUsernameAvatar.loadImageFromUrl(avatarUrl)
+        }
+    }
+
+    private fun setupState() {
+        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(userId!!))
+        viewModel.onTriggerEvent(ChatEvent.GetMessagesFromApi(userId!!))
+    }
+
     private fun getArgs() {
         with(ChatFragmentArgs.fromBundle(requireArguments())) {
             userId = matchedUserId
@@ -150,11 +149,14 @@ class ChatFragment : Fragment() {
         binding.apply {
             btnSendMsg.setOnClickListener {
                 val message = editTxtMsg.text.toString()
-                webSocket.send(message)
+                if (userId?.isNotEmpty() == true && message.isNotEmpty()) {
+                    Timber.d("message: $message")
+                    webSocket.send(message)
+                    //viewModel.onTriggerEvent(ChatEvent.SendMessage(userId!!, message))
+                }
             }
-            icAddFriend.setOnClickListener {
-                viewModel.onTriggerEvent(ChatEvent.AddFriend(viewModel.uiState.value?.matchedUserId))
-            }
+            icAddFriend.setOnClickListener { viewModel.onTriggerEvent(ChatEvent.AddFriend(viewModel.uiState.value?.matchedUserId)) }
+            icBack.setOnClickListener { findNavController().popBackStack() }
         }
     }
 

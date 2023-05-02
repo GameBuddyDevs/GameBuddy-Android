@@ -7,8 +7,13 @@ sealed class ChatEvent {
         val message: String
     ) : ChatEvent()
 
-    data class GetMessages(
+    data class GetMessagesFromApi(
         val receiverId: String
+    ) : ChatEvent()
+
+    data class OnMessageReceivedFromWebSocket(
+        val matchedUserId: String,
+        val message: String
     ) : ChatEvent()
 
     data class AddFriend(

@@ -6,6 +6,7 @@ import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
+import com.example.gamebuddy.data.remote.request.SendMessageRequest
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
 import retrofit2.http.Body
@@ -13,7 +14,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface GameBuddyApiAppService {
 
@@ -46,5 +46,13 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
     ): MessageResponse
+
+    @POST("save/message")
+    @Api(ApiType.APPLICATION)
+    suspend fun sendMessage(
+        @Header("Authorization") token: String,
+        @Body request: SendMessageRequest
+    ): BasicResponse
+
 
 }
