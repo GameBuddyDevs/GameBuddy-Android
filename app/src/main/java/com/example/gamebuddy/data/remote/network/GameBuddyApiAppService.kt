@@ -3,11 +3,15 @@ package com.example.gamebuddy.data.remote.network
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
+import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
+import com.example.gamebuddy.data.remote.request.profileRequest
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 
 interface GameBuddyApiAppService {
 
@@ -32,6 +36,10 @@ interface GameBuddyApiAppService {
         @Header("Accept-Encoding") encoding: String = "gzip, deflate, br",
         @Header("Accept") language: String = "*/*",
     ): FriendsResponse
-
-
+    @GET("get/user/info/{userId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun getProfile(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+    ): ProfileResponse
 }

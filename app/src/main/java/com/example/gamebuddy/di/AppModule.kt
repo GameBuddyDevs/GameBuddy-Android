@@ -7,6 +7,7 @@ import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
+import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,6 +45,18 @@ object AppModule {
         authTokenDao: AuthTokenDao,
     ): MatchUseCase {
         return MatchUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): ProfileUseCase {
+        return ProfileUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
