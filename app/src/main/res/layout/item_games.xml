@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:background="@drawable/border"
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/img_games"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -24,18 +26,33 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/img_games"
         app:layout_constraintEnd_toStartOf="@id/select_games_RB"
         app:layout_constraintStart_toEndOf="@id/img_games"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/img_games" />
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_light"
+        android:text="Description"
+        android:textColor="@color/desc"
+        android:maxLines="3"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@id/select_games_RB"
+        app:layout_constraintStart_toEndOf="@+id/img_games"
+        app:layout_constraintTop_toBottomOf="@+id/img_games" />
 
 
     <RadioButton
         android:id="@+id/select_games_RB"
         android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/img_games"
+        app:layout_constraintTop_toTopOf="@+id/img_games"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,5 +23,5 @@
     <color name="text_primary">@color/pink_500</color>
     <color name="bottom_nav_bar_background">#fff</color>
     <color name="bottom_nav_selector">@color/pink_500</color>
-
+    <color name="desc">#9FA8DA</color>
 </resources>

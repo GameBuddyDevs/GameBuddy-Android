@@ -2,6 +2,7 @@ package com.example.gamebuddy.presentation.auth.details.keywords
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -39,16 +40,26 @@ class KeywordAdapter(
         private val requestOptions: RequestOptions,
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
-
+        private var isRadioButtonSelected = false
         fun bind(item: Keyword) {
             binding.apply {
-
+                txtKeyword.text = item.keywordName
+                desc.text = item.description
                 binding.selectKeywordRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
+                    isRadioButtonSelected = !isRadioButtonSelected
+                    selectKeywordRB.isChecked =
+                        isRadioButtonSelected
+                    if (isRadioButtonSelected) {
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border_custom)
+                    } else {
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border)
+
+                    }
+
                 }
-                txtKeyword.text = item.keywordName
-
-
 
             }
         }
