@@ -2,10 +2,14 @@ package com.example.gamebuddy.presentation.main.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentProfileBinding
 import com.example.gamebuddy.domain.model.profile.profilUser
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
@@ -15,6 +19,7 @@ import com.example.gamebuddy.util.EnvironmentManager
 import com.example.gamebuddy.util.EnvironmentModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
+import timber.log.Timber
 
 class ProfileFragment : BaseAuthFragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -22,7 +27,7 @@ class ProfileFragment : BaseAuthFragment() {
     private lateinit var arrayAdapter: ArrayAdapter<profilUser>
 
     private val viewModel: ProfileViewModel by activityViewModels()
-
+    private lateinit var menu: Menu
     private var user: ArrayList<profilUser> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +40,38 @@ class ProfileFragment : BaseAuthFragment() {
             deploymentType = DeploymentType.PRODUCTION,
             path = "application/"
         )
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.onTriggerEvent(ProfileEvent.GetUserInfo)
+        binding.toolbarProfile.setOnMenuItemClickListener { item ->
+            if(item.itemId == R.id.action_settings)
+            {
+                var gameString = ""
+                var keywordString = ""
+                for(game in user[0].games){
+                    gameString += "${game} - "
+                }
+                for(keyword in user[0].keywords){
+                    keywordString += "${keyword} - "
+                }
+                val avatar = user[0].avatar
+                findNavController().
+                navigate(ProfileFragmentDirections.
+                actionProfileFragmentToEditProfileFragment(user[0].username,user[0].age,gameString,keywordString,avatar!!))
+                true
+            }else{
+                false
+            }
+        }
         collectState()
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        this.menu = menu
+        inflater.inflate(R.menu.profile_menu, this.menu)
     }
 
     private fun collectState() {
