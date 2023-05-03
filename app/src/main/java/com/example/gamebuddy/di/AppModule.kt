@@ -6,6 +6,7 @@ import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
+import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import dagger.Module
 import dagger.Provides
@@ -68,6 +69,18 @@ object AppModule {
         authTokenDao: AuthTokenDao
     ): GetChatBoxUseCase{
         return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMarketUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MarketUseCase {
+        return MarketUseCase(
             service = service,
             authTokenDao = authTokenDao
         )

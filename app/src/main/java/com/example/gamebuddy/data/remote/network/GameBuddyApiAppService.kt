@@ -3,6 +3,7 @@ package com.example.gamebuddy.data.remote.network
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
+import com.example.gamebuddy.data.remote.model.market.MarketResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
@@ -33,5 +34,10 @@ interface GameBuddyApiAppService {
         @Header("Accept") language: String = "*/*",
     ): FriendsResponse
 
+    @GET("get/marketplace")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAvatars(
+        @Header("Authorization") token: String,
+    ): MarketResponse
 
 }
