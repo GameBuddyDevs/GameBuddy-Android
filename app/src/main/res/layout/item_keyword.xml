@@ -18,7 +18,6 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +28,10 @@
         android:text="Description"
         android:fontFamily="@font/poppins_light"
         android:textColor="@color/desc"
-        app:layout_constraintStart_toStartOf="@id/txt_keyword"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_keyword" />
 
 
@@ -40,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/txt_keyword"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_keyword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,21 +45,18 @@ class GamesAdapter(
         private var isRadioButtonSelected = false
         fun bind(item: Game) {
             binding.apply {
-                root.background = ContextCompat.getDrawable(itemView.context, R.drawable.border)
                 selectGamesRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
                     isRadioButtonSelected = !isRadioButtonSelected
                     selectGamesRB.isChecked =
                         isRadioButtonSelected
                     if (isRadioButtonSelected) {
-                        selectGamesRB.background =
-                            ContextCompat.getDrawable(root.context, R.drawable.border_custom)
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border_custom)
                     } else {
-                        selectGamesRB.background =
-                            ContextCompat.getDrawable(root.context, R.drawable.border)
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border)
                     }
-                    itemView.background =
-                        ContextCompat.getDrawable(itemView.context, R.drawable.border)
                 }
 
                 Glide.with(itemView)

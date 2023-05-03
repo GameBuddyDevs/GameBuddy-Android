@@ -23,9 +23,9 @@
             android:fontFamily="@font/poppins_bold"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:text="  Pick min 3 keywords that describes you"
+            android:text="       Pick min 3 keywords that describes you"
             android:textColor="@color/text"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView

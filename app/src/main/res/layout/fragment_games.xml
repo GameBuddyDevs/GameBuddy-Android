@@ -69,7 +69,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
-                android:text="Finish "
+                android:text="Next "
                 app:cornerRadius="32dp" />
 
         </LinearLayout>

@@ -45,22 +45,20 @@ class KeywordAdapter(
             binding.apply {
                 txtKeyword.text = item.keywordName
                 desc.text = item.description
-                root.background = ContextCompat.getDrawable(itemView.context, R.drawable.border)
                 binding.selectKeywordRB.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
                     isRadioButtonSelected = !isRadioButtonSelected
                     selectKeywordRB.isChecked =
                         isRadioButtonSelected
                     if (isRadioButtonSelected) {
-                        selectKeywordRB.background =
-                            ContextCompat.getDrawable(root.context, R.drawable.border_custom)
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border_custom)
                     } else {
-                        selectKeywordRB.background =
-                            ContextCompat.getDrawable(root.context, R.drawable.border)
+                        itemView.background =
+                            ContextCompat.getDrawable(itemView.context, R.drawable.border)
 
                     }
-                    itemView.background =
-                        ContextCompat.getDrawable(itemView.context, R.drawable.border)
+
                 }
 
             }
