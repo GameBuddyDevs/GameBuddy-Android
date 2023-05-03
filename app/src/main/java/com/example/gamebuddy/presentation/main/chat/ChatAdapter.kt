@@ -121,7 +121,7 @@ class ChatAdapter(
     }
 
     companion object {
-        private const val VIEW_TYPE_SENT = 1
-        private const val VIEW_TYPE_RECEIVED = 2
+        private const val VIEW_TYPE_SENT = 2
+        private const val VIEW_TYPE_RECEIVED = 1
     }
 }

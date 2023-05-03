@@ -6,6 +6,7 @@ import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
+import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -96,6 +97,17 @@ object AppModule {
     ): SendMessageUseCase {
         return SendMessageUseCase(
             service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetMessagesFromWebSocketUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetMessagesFromWebSocketUseCase {
+        return GetMessagesFromWebSocketUseCase(
             authTokenDao = authTokenDao
         )
     }

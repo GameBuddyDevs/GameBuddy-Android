@@ -42,4 +42,8 @@
     <string name="location_icon">Location icon</string>
     <string name="icon_to_turning_previous_page_which_is_chatbox_screen">Icon to turning previous page which is ChatBox screen</string>
     <string name="message">Message</string>
+    <string name="match">Match</string>
+    <string name="decline">Decline</string>
+    <string name="press_match_button_to_start_matching_or_decline_button_to_skip">Press Match button to start matching or Decline button to skip</string>
+    <string name="click_match_to_start_matching_or_click_decline_to_skip_next_match">Click Match to start matching or click Decline to skip next match</string>
 </resources>

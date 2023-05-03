@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.data.remote.model.message.Conversation
+import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
 import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
@@ -23,6 +25,7 @@ class ChatViewModel @Inject constructor(
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
     private val getMessagesUseCase: GetMessagesUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
+    private val getMessagesFromWebSocketUseCase: GetMessagesFromWebSocketUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -41,7 +44,23 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun getMessagesFromWebSocket(matchedUserId: String, message: String) {
+        _uiState.value?.let { state ->
+            if (message.isNotEmpty()) {
+                getMessagesFromWebSocketUseCase.execute(matchedUserId, message)
+                    .onEach { dataState ->
+                        _uiState.value = state.copy(isLoading = dataState.isLoading)
 
+                        dataState.data?.let { messageData ->
+                            Timber.d("Webscoketke Message data: $messageData")
+                            _uiState.value = state.copy(messages = state.messages + messageData)
+                        }
+
+                        dataState.stateMessage?.let { stateMessage ->
+                            appendToMessageQueue(stateMessage)
+                        }
+                    }.launchIn(viewModelScope)
+            }
+        }
     }
 
     private fun setUserProperties(matchedUserId: String) {
@@ -77,7 +96,7 @@ class ChatViewModel @Inject constructor(
 
                     dataState.data?.let { messageData ->
                         Timber.d("Message data: $messageData")
-                        _uiState.value = state.copy(messages = state.messages + messageData)
+                        //_uiState.value = state.copy(messages = state.messages + messageData)
                     }
 
                     dataState.stateMessage?.let { stateMessage ->

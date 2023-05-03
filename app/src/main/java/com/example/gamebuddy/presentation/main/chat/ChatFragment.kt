@@ -75,7 +75,12 @@ class ChatFragment : Fragment() {
             onMessageReceived = { message ->
                 // code to execute when a WebSocket message is received
                 Timber.d("WebSocket message received: $message")
-                viewModel.onTriggerEvent(ChatEvent.OnMessageReceivedFromWebSocket(userId!!, message))
+                viewModel.onTriggerEvent(
+                    ChatEvent.OnMessageReceivedFromWebSocket(
+                        userId!!,
+                        message
+                    )
+                )   //userId is the opponent's id
             }
         )
 
@@ -98,8 +103,17 @@ class ChatFragment : Fragment() {
 
             chatAdapter?.apply {
                 submitList(state.messages)
+                scrollToPosition()
             }
 
+        }
+    }
+
+    private fun scrollToPosition() {
+        val adapter = binding.recyclerViewChat.adapter
+        if (adapter != null && adapter.itemCount > 0) {
+            Timber.d("scrolling to position: ${viewModel.uiState.value!!.messages.size}")
+            binding.recyclerViewChat.smoothScrollToPosition(viewModel.uiState.value!!.messages.size)
         }
     }
 
@@ -108,6 +122,7 @@ class ChatFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(this@ChatFragment.context, LinearLayoutManager.VERTICAL, false)
             chatAdapter = ChatAdapter(userId = userId)
+            setHasFixedSize(true)
             adapter = chatAdapter
         }
     }
@@ -152,6 +167,7 @@ class ChatFragment : Fragment() {
                 if (userId?.isNotEmpty() == true && message.isNotEmpty()) {
                     Timber.d("message: $message")
                     webSocket.send(message)
+                    editTxtMsg.text.clear()
                     //viewModel.onTriggerEvent(ChatEvent.SendMessage(userId!!, message))
                 }
             }
