@@ -114,4 +114,6 @@ dependencies {
     // Circular Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

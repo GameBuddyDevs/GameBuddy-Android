@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.gamebuddy.R
 import com.example.gamebuddy.domain.model.profile.profilUser
 import com.example.gamebuddy.presentation.main.match.MatchedGamesAdapter
@@ -21,7 +22,7 @@ class ProfileAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.fragment_profile, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.item_profile, parent, false)
         }
         // Get user
         val user = getItem(position)
@@ -31,8 +32,8 @@ class ProfileAdapter(
         val friendsCount = view?.findViewById<TextView>(R.id.friends_count)
         val age = view?.findViewById<TextView>(R.id.age_text)
         val communities = view?.findViewById<TextView>(R.id.communies_text)
-        val gamesRecyclerView = view?.findViewById<RecyclerView>(R.id.game_profile)
-        val characterRecyclerView = view?.findViewById<RecyclerView>(R.id.keyword_profile)
+        val gamesRecyclerView = view?.findViewById<RecyclerView>(R.id.games_profile)
+        val characterRecyclerView = view?.findViewById<RecyclerView>(R.id.rv2_character)
 
         // Initialize adapters
         var characterAdapter: MatchedGamesAdapter? = null
@@ -43,7 +44,34 @@ class ProfileAdapter(
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.FLEX_START
         }
+        val flexboxLayoutManagerKeyword = FlexboxLayoutManager(context).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
+        }
 
+        gamesRecyclerView?.apply {
+            layoutManager = flexboxLayoutManagerGames
+            adapter = MatchedGamesAdapter().apply { submitList(user?.games) }
+        }
+        characterRecyclerView?.apply {
+            layoutManager = flexboxLayoutManagerKeyword
+            adapter = MatchedGamesAdapter().apply { submitList(user?.keywords) }
+        }
+
+        // Load avatar of user
+        if (avatar != null) {
+            Glide.with(context)
+                .load(user?.avatar)
+                .into(avatar)
+        }
+        if(user?.joinedCommunities.isNullOrEmpty()){
+            communities?.text = "You Did Not Join Any Community"
+        }else{
+            communities?.text = user?.joinedCommunities.toString()
+        }
+        username?.text = user?.username
+        friendsCount?.text = user?.friendsCount.toString()
+        age?.text = user?.age
         return view!!
     }
 }
