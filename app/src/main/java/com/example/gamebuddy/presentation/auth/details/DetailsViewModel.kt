@@ -59,6 +59,8 @@ class DetailsViewModel @Inject constructor(
             keywords = selectedKeywords ?: listOf()
         )
 
+        Timber.d("startup-logic: Sending profile details: $profileDetailsRequest")
+
         completeProfileDetailsUseCase.execute(profileDetailsRequest)
             .onEach { dataState ->
                 Timber.d("startup-logic: Collecting data: $dataState")

@@ -30,6 +30,7 @@ class RegisterUseCase(
             registerRequest = RegisterRequest(
                 email = email,
                 password = password,
+                fcmToken = "fY7j3zH1RnWZLfBCsQvlTu:APA91bGT7UYZgoHsKKlL1n9_uRsh_jmrpHJmnht1V6En4GqRFjAezI-F5UrVOGJTbW5GEdmXjDE_WcFKfycekpuYLZaipLCGXdfYrYJ_97OgroZIux7j-zgSXb0TmeUVftMOrtGsvA2W"
             )
         )
 
