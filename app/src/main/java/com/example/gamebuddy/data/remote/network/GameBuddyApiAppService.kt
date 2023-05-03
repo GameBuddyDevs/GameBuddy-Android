@@ -5,6 +5,7 @@ import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
+import com.example.gamebuddy.data.remote.model.users.UsersResponse
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
 import com.example.gamebuddy.data.remote.request.SendMessageRequest
 import com.example.gamebuddy.util.Api
@@ -24,6 +25,12 @@ interface GameBuddyApiAppService {
     @GET("get/keywords")
     @Api(ApiType.APPLICATION)
     suspend fun getKeywords(): KeywordResponse
+
+    @GET("get/recommendations")
+    @Api(ApiType.MATCH)
+    suspend fun getUsers(
+        @Header("Authorization") token: String,
+    ): UsersResponse
 
     @GET("get/friends")
     @Api(ApiType.APPLICATION)
@@ -53,6 +60,13 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
         @Body request: SendMessageRequest
     ): BasicResponse
+
+    @GET("get/user/info/{userId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun getProfile(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+    ): ProfileResponse
 
 
 }

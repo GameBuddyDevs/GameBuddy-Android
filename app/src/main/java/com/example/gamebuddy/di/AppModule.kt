@@ -43,6 +43,18 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideMatchUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MatchUseCase {
+        return MatchUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideGetFriendsUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
@@ -58,8 +70,20 @@ object AppModule {
     fun provideGetChatBoxUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase {
+    ): GetChatBoxUseCase{
         return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): ProfileUseCase {
+        return ProfileUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
@@ -111,5 +135,6 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
 
 }

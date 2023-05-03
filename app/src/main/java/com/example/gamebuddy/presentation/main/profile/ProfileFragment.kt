@@ -2,24 +2,103 @@ package com.example.gamebuddy.presentation.main.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
+import com.example.gamebuddy.databinding.FragmentProfileBinding
+import com.example.gamebuddy.domain.model.profile.profilUser
+import com.example.gamebuddy.presentation.auth.BaseAuthFragment
+import com.example.gamebuddy.util.ApiType
+import com.example.gamebuddy.util.DeploymentType
+import com.example.gamebuddy.util.EnvironmentManager
+import com.example.gamebuddy.util.EnvironmentModel
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.processQueue
+import timber.log.Timber
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseAuthFragment() {
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var arrayAdapter: ArrayAdapter<profilUser>
 
+    private val viewModel: ProfileViewModel by activityViewModels()
+    private lateinit var menu: Menu
+    private var user: ArrayList<profilUser> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == ApiType.APPLICATION }
+        EnvironmentManager.environments[index] = EnvironmentModel(
+            apiType = ApiType.APPLICATION,
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "application/"
+        )
+
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.onTriggerEvent(ProfileEvent.GetUserInfo)
+        binding.toolbarProfile.setOnMenuItemClickListener { item ->
+            if(item.itemId == R.id.action_settings)
+            {
+                var gameString = ""
+                var keywordString = ""
+                for(game in user[0].games){
+                    gameString += "${game} - "
+                }
+                for(keyword in user[0].keywords){
+                    keywordString += "${keyword} - "
+                }
+                val avatar = user[0].avatar
+                findNavController().
+                navigate(ProfileFragmentDirections.
+                actionProfileFragmentToEditProfileFragment(user[0].username,user[0].age,gameString,keywordString,avatar!!))
+                true
+            }else{
+                false
+            }
+        }
+        collectState()
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        this.menu = menu
+        inflater.inflate(R.menu.profile_menu, this.menu)
+    }
+
+    private fun collectState() {
+        viewModel.usersUiState.observe(viewLifecycleOwner) { state ->
+            uiCommunicationListener.displayProgressBar(state.isLoading)
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        viewModel.onTriggerEvent(ProfileEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+            state.profileUser?.let { profileUsers ->
+                user.add(profileUsers)
+                initAdapter()
+            }
+        }
+    }
+    private fun initAdapter(){
+        arrayAdapter = ProfileAdapter(requireContext(), user)
+        binding.simpleListView.adapter = arrayAdapter
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
