@@ -26,13 +26,12 @@ class GetFriendsUseCase(
             throw Exception("Please login again.")
         }
 
-        /*
-        * val friends = service
+
+//         val friends = service
 //                .getFriends(token = "Bearer $token")
 //                .toFriends()
 //            Timber.d("GetFriendsUseCase: $friends")
 //            emit(DataState.success(response = null, data = friends))
-        * */
 
         val response = getFakeData(10)
         emit(DataState.success(response = null, data = response))

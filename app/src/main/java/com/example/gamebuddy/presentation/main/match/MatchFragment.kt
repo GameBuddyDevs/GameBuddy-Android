@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
@@ -26,7 +25,7 @@ class MatchFragment : BaseAuthFragment() {
 
     private val viewModel: MatchViewModel by activityViewModels()
 
-    private var _binding:FragmentMatchBinding? = null
+    private var _binding: FragmentMatchBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -34,7 +33,7 @@ class MatchFragment : BaseAuthFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMatchBinding.inflate(inflater,container,false)
+        _binding = FragmentMatchBinding.inflate(inflater, container, false)
         flingContainer = binding.frame
 
         return binding.root
@@ -44,11 +43,21 @@ class MatchFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onTriggerEvent(MatchEvent.GetUsers)
-        matchedUsers.add(User("1","Romero",20,"Italy", games = listOf("GTA","CSGO","PUBG"), keywords = listOf("aim master","clutch king","pro")))
+        matchedUsers.add(
+            User(
+                "1",
+                "Romero",
+                20,
+                "Italy",
+                games = listOf("GTA", "CSGO", "PUBG"),
+                keywords = listOf("aim master", "clutch king", "pro")
+            )
+        )
         initAdapter()
         collectState()
 
     }
+
     private fun collectState() {
         viewModel.usersUiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)
@@ -62,17 +71,18 @@ class MatchFragment : BaseAuthFragment() {
                 }
             )
             state.users?.let { users ->
-                for(user in users){
+                for (user in users) {
                     matchedUsers.add(user)
                 }
             }
         }
 
     }
-    private fun initAdapter(){
-        arrayAdapter = MatchAdapter(requireContext(),matchedUsers)
+
+    private fun initAdapter() {
+        arrayAdapter = MatchAdapter(requireContext(), matchedUsers)
         flingContainer.adapter = arrayAdapter
-        flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener{
+        flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
             override fun removeFirstObjectInAdapter() {
                 matchedUsers.removeAt(0)
                 arrayAdapter.notifyDataSetChanged()
@@ -83,14 +93,15 @@ class MatchFragment : BaseAuthFragment() {
             }
 
             override fun onRightCardExit(dataObject: Any?) {
-                Toast.makeText(context,"MATCHING",Toast.LENGTH_LONG).show()
-                findNavController().navigate(MatchFragmentDirections.actionMatchFragmentToSendMessageFragment())
                 Timber.d("Right")
+                val user = dataObject as User
+                val action = MatchFragmentDirections.actionMatchFragmentToChatFragment(user.userId, user.avatar!!, user.gamerUsername!!)
+                findNavController().navigate(action)
             }
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-                arrayAdapter.notifyDataSetChanged()
                 Timber.d("LIST", "notified")
+                arrayAdapter.notifyDataSetChanged()
             }
 
             override fun onScroll(scrollProgressPercent: Float) {
@@ -102,11 +113,11 @@ class MatchFragment : BaseAuthFragment() {
             }
         })
 
-        flingContainer.setOnItemClickListener { itemPosition, dataObject ->
+        flingContainer.setOnItemClickListener { _, _ ->
             Timber.d("Clicked")
         }
 
-        val right =binding.root.findViewById<View>(R.id.right)
+        val right = binding.root.findViewById<View>(R.id.right)
         right.setOnClickListener {
             flingContainer.topCardListener.selectRight()
         }
@@ -116,6 +127,7 @@ class MatchFragment : BaseAuthFragment() {
             flingContainer.topCardListener.selectLeft()
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
