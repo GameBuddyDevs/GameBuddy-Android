@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.gamebuddy.EditProfileFragmentArgs
 import com.example.gamebuddy.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment : Fragment() {
@@ -24,6 +23,7 @@ class EditProfileFragment : Fragment() {
         val games = EditProfileFragmentArgs.fromBundle(requireArguments()).games
         val keywords = EditProfileFragmentArgs.fromBundle(requireArguments()).keywords
         val avatar = EditProfileFragmentArgs.fromBundle(requireArguments()).avatar
+
         binding.usernameEditText.hint = username
         binding.ageEditText.hint = age
         binding.gamesEditText.text = games

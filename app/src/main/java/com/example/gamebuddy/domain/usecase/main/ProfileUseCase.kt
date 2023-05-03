@@ -23,7 +23,7 @@ class ProfileUseCase(
         Timber.d("Tokenss: ${authToken?.token}")
         val profileUser = service.getProfile(
             token = "Bearer ${authToken?.token}",
-            userId = "c815aa8e-0899-426f-84bc-a41cdf216c9a"//Kaan user id
+            userId = authToken!!.pk
         ).toProfileUser()
         Timber.d("Profil Use Case success: ${profileUser?.username}")
         emit(DataState.success(response = null, data = profileUser))

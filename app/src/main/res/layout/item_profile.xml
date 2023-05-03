@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/username"
+
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +46,6 @@
         android:id="@+id/friends_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:text="290"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -76,7 +74,6 @@
         android:id="@+id/age_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="19"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"
