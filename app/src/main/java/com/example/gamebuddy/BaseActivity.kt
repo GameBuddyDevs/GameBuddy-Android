@@ -33,6 +33,17 @@ abstract class BaseActivity : AppCompatActivity(), UICommunicationListener, Envi
         }
     }
 
+    /*
+    * override fun displayProgressBar(isLoading: Boolean){
+        if(isLoading){
+            binding.progressBar.visibility = View.VISIBLE
+        }
+        else{
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+    * */
+
     override fun hideSoftKeyboard() {
         if (currentFocus != null) {
             val inputMethodManager =
