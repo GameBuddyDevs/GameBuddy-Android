@@ -23,10 +23,10 @@ class MarketUseCase(
         val avatars = service.getAvatars(
             token = "Bearer ${authToken?.token}"
         ).toMarket()
-        Timber.d("Profil Use Case success: ${avatars?.get(0)?.id}")
+        Timber.d("Market Use Case success: ${avatars?.get(0)?.id}")
         emit(DataState.success(response = null, data = avatars))
     }.catch {
-        Timber.e("Profile Use Case Error $it")
+        Timber.e("Market Use Case Error $it")
         emit(handleUseCaseException(it))
     }
 }

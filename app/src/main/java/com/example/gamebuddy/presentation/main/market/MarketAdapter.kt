@@ -2,24 +2,28 @@ package com.example.gamebuddy.presentation.main.market
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import androidx.appcompat.app.AlertDialog
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.ItemMarketBinding
 import com.example.gamebuddy.domain.model.market.Market
 
 class MarketAdapter(
-    private val onClickListener: MarketAdapter.OnClickListener? = null
+    private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
         fun onItemClick(position: Int, avatarId: String)
+        fun onBuyClick(position: Int, avatarId: String)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return MarketAdapter.MessageViewHolder(
+        return MessageViewHolder(
             ItemMarketBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -35,13 +39,24 @@ class MarketAdapter(
     class MessageViewHolder constructor(
         private val binding: ItemMarketBinding,
         private val requestOptions: RequestOptions,
-        private val onClickListener: MarketAdapter.OnClickListener?
+        private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
+        private val dialogConfirmPurchase = AlertDialog.Builder(binding.root.context)
+            .setView(R.layout.confirm_buy)
+            .create()
+
         fun bind(item: Market) {
             binding.apply {
 
-                root.setOnClickListener {
-                    onClickListener?.onItemClick(absoluteAdapterPosition, item.id)
+                dialogConfirmPurchase.findViewById<Button>(R.id.btnConfirm)?.setOnClickListener {
+                    onClickListener?.onBuyClick(absoluteAdapterPosition, item.id)
+                    dialogConfirmPurchase.dismiss()
+                }
+                btnBuy.setOnClickListener {
+                    dialogConfirmPurchase.show()
+                }
+                dialogConfirmPurchase.findViewById<Button>(R.id.btnCancel)?.setOnClickListener {
+                    dialogConfirmPurchase.dismiss()
                 }
 
                 Glide.with(binding.root)
@@ -59,7 +74,7 @@ class MarketAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is MarketAdapter.MessageViewHolder -> {
+            is MessageViewHolder -> {
                 holder.bind(differ.currentList[position])
             }
         }

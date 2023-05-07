@@ -15,41 +15,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
-    private val marketUseCase: MarketUseCase
+    private val marketUseCase: MarketUseCase,
 ) : ViewModel() {
     private val _uiState: MutableLiveData<MarketState> = MutableLiveData(MarketState())
     val uiState: MutableLiveData<MarketState> get() = _uiState
 
     fun onTriggerEvent(event: MarketEvent) {
         when (event) {
-            is MarketEvent.UpdateQuery -> {
-                updateQuery(event.query)
-            }
-            MarketEvent.NewQuery -> {
-                newQuery()
-            }
-            MarketEvent.NewSearch -> {
-                newSearch()
-            }
-            MarketEvent.OnRemoveHeadFromQueue -> {
-                removeHeadFromQueue()
-            }
-            MarketEvent.GetAvatars -> {
-                getAvatars()
-            }
-
+            MarketEvent.GetAvatars -> getAvatars()
+            MarketEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
         }
-    }
-    private fun updateQuery(query: String) {
-        TODO("Not yet implemented")
-    }
-
-    private fun newQuery() {
-        TODO("Not yet implemented")
-    }
-
-    private fun newSearch() {
-        TODO("Not yet implemented")
     }
 
     private fun removeHeadFromQueue() {
@@ -57,7 +32,7 @@ class MarketViewModel @Inject constructor(
             try {
                 val queue = it.queue
                 queue.remove()
-                //_uiState.value = it.copy(queue = queue)
+                _uiState.value = it.copy(queue = queue)
                 Timber.d("Queue count after remove head: $_uiState")
             } catch (e: Exception) {
                 Timber.d("Nothing to remove ${e.message}")
@@ -71,8 +46,8 @@ class MarketViewModel @Inject constructor(
             if (!stateMessage.isMessageExistInQueue(queue)) {
                 if (stateMessage.response.uiComponentType !is UIComponentType.None) {
                     queue.add(stateMessage)
-                    Timber.d("RegisterViewModel Something added to queue: ${state.queue}")
-                   // _uiState.value = state.copy(queue = queue)
+                    Timber.d("MarketViewModel Something added to queue: ${state.queue}")
+                     _uiState.value = state.copy(queue = queue)
                 }
             }
         }
@@ -86,7 +61,7 @@ class MarketViewModel @Inject constructor(
                     appendToMessageQueue(stateMessage)
                 }
 
-               // _uiState.value = state.copy(avatars = dataState.data)
+                _uiState.value = state.copy(avatars = dataState.data)
             }.launchIn(viewModelScope)
         }
     }
