@@ -17,7 +17,12 @@ object EnvironmentManager {
             apiType = ApiType.MATCH,
             deploymentType = DeploymentType.PRODUCTION,
             path = "match/"
-        )
+        ),
+        EnvironmentModel(
+            apiType = ApiType.MESSAGE,
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "messages/"
+        ),
     )
 
     fun getBaseUrl(apiType: ApiType): String {

@@ -1,10 +1,10 @@
 package com.example.gamebuddy.presentation.main.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +16,18 @@ import com.example.gamebuddy.util.EnvironmentModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.loadImageFromUrl
 import com.example.gamebuddy.util.processQueue
-import com.example.gamebuddy.websocket.WebSocketClient
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import timber.log.Timber
+import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
+
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -38,9 +43,14 @@ class ChatFragment : Fragment() {
 
     private var chatAdapter: ChatAdapter? = null
 
+    private var stompClient: StompClient? = null
+    private var compositeDisposable: CompositeDisposable? = null
+
+    // Args
     private var userId: String? = null
     private var username: String? = null
     private var avatarUrl: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,29 +72,7 @@ class ChatFragment : Fragment() {
         setupState()
         initRecyclerView()
         collectState()
-
-        webSocketClient = WebSocketClient(
-            onConnectionOpened = {
-                // code to execute when the WebSocket connection is opened
-                Timber.d("WebSocket connection opened.")
-            },
-            onConnectionClosed = {
-                // code to execute when the WebSocket connection is closed
-                Timber.d("WebSocket connection closed.")
-            },
-            onMessageReceived = { message ->
-                // code to execute when a WebSocket message is received
-                Timber.d("WebSocket message received: $message")
-                viewModel.onTriggerEvent(
-                    ChatEvent.OnMessageReceivedFromWebSocket(
-                        userId!!,
-                        message
-                    )
-                )   //userId is the opponent's id
-            }
-        )
-
-        connectWebSocket()
+        connectWebSocketOverStomp()
         setClickListeners()
     }
 
@@ -109,14 +97,6 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun scrollToPosition() {
-        val adapter = binding.recyclerViewChat.adapter
-        if (adapter != null && adapter.itemCount > 0) {
-            Timber.d("scrolling to position: ${viewModel.uiState.value!!.messages.size}")
-            binding.recyclerViewChat.smoothScrollToPosition(viewModel.uiState.value!!.messages.size)
-        }
-    }
-
     private fun initRecyclerView() {
         binding.recyclerViewChat.apply {
             layoutManager =
@@ -127,8 +107,56 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun connectWebSocket() {
-        webSocket = okHttpClient.newWebSocket(createRequest(), webSocketClient)
+    private fun connectWebSocketOverStomp() {
+
+        stompClient?.withClientHeartbeat(1000)?.withServerHeartbeat(1000)
+
+        resetSubscriptions()
+
+        val dispLifecycle = stompClient?.lifecycle()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe { lifecycleEvent ->
+                when (lifecycleEvent.type) {
+                    LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
+                    LifecycleEvent.Type.ERROR -> {
+                        Timber.e("Stomp connection error ${lifecycleEvent.getException()}")
+                    }
+                    LifecycleEvent.Type.CLOSED -> {
+                        Timber.e("Stomp connection closed")
+                        resetSubscriptions()
+                    }
+                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Timber.e("Stomp failed server heartbeat")
+                }
+            }
+
+        if (dispLifecycle != null) {
+            compositeDisposable?.add(dispLifecycle)
+        }
+
+        // Receive greetings
+        val dispTopic = stompClient?.topic("/topic/greetings")
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({ topicMessage ->
+                Timber.d("Received ${topicMessage.getPayload()}")
+                //addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel::class.java))
+            }, { throwable ->
+                Timber.e("Error on subscribe topic", throwable)
+            })
+
+        if (dispTopic != null) {
+            compositeDisposable?.add(dispTopic)
+        }
+
+        stompClient?.connect()
+    }
+
+    private fun resetSubscriptions() {
+        if (compositeDisposable != null) {
+            compositeDisposable?.dispose()
+        }
+        compositeDisposable = CompositeDisposable()
     }
 
     private fun createRequest(): Request {
@@ -137,6 +165,14 @@ class ChatFragment : Fragment() {
         return Request.Builder()
             .url(websocketURL)
             .build()
+    }
+
+    private fun scrollToPosition() {
+        val adapter = binding.recyclerViewChat.adapter
+        if (adapter != null && adapter.itemCount > 0) {
+            Timber.d("scrolling to position: ${viewModel.uiState.value!!.messages.size}")
+            binding.recyclerViewChat.smoothScrollToPosition(viewModel.uiState.value!!.messages.size)
+        }
     }
 
     private fun setUI() {
@@ -153,7 +189,9 @@ class ChatFragment : Fragment() {
     }
 
     private fun getArgs() {
-        val userId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
+        userId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
+        username = ChatFragmentArgs.fromBundle(requireArguments()).matchedUsername
+        avatarUrl = ChatFragmentArgs.fromBundle(requireArguments()).matchedAvatar
     }
 
 //    private fun getArgs() {
@@ -187,7 +225,7 @@ class ChatFragment : Fragment() {
         EnvironmentManager.environments[index] = EnvironmentModel(
             apiType = apiType,
             deploymentType = deploymentType,
-            path = "application/"
+            path = ""
         )
     }
 
