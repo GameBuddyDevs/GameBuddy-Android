@@ -25,6 +25,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import timber.log.Timber
+import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 
@@ -59,7 +60,7 @@ class ChatFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
-        updateEnvironment(apiType = ApiType.MESSAGE, deploymentType = DeploymentType.PRODUCTION)
+        //updateEnvironment(apiType = ApiType.MESSAGE, deploymentType = DeploymentType.PRODUCTION)
 
         return binding.root
     }
@@ -72,6 +73,7 @@ class ChatFragment : Fragment() {
         setupState()
         initRecyclerView()
         collectState()
+        createRequest()
         connectWebSocketOverStomp()
         setClickListeners()
     }
@@ -134,20 +136,20 @@ class ChatFragment : Fragment() {
             compositeDisposable?.add(dispLifecycle)
         }
 
-        // Receive greetings
-        val dispTopic = stompClient?.topic("/topic/greetings")
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ topicMessage ->
-                Timber.d("Received ${topicMessage.getPayload()}")
-                //addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel::class.java))
-            }, { throwable ->
-                Timber.e("Error on subscribe topic", throwable)
-            })
-
-        if (dispTopic != null) {
-            compositeDisposable?.add(dispTopic)
-        }
+//        // Receive greetings
+//        val dispTopic = stompClient?.topic("/topic/greetings")
+//            ?.subscribeOn(Schedulers.io())
+//            ?.observeOn(AndroidSchedulers.mainThread())
+//            ?.subscribe({ topicMessage ->
+//                Timber.d("Received ${topicMessage.getPayload()}")
+//                //addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel::class.java))
+//            }, { throwable ->
+//                Timber.e("Error on subscribe topic", throwable)
+//            })
+//
+//        if (dispTopic != null) {
+//            compositeDisposable?.add(dispTopic)
+//        }
 
         stompClient?.connect()
     }
@@ -159,12 +161,12 @@ class ChatFragment : Fragment() {
         compositeDisposable = CompositeDisposable()
     }
 
-    private fun createRequest(): Request {
-        val websocketURL = "http://l2.eren.wtf:4569/ws"
+    private fun createRequest() {
+        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "http://l2.eren.wtf:4569/ws");
 
-        return Request.Builder()
-            .url(websocketURL)
-            .build()
+//        return Request.Builder()
+//            .url(websocketURL)
+//            .build()
     }
 
     private fun scrollToPosition() {
@@ -225,7 +227,7 @@ class ChatFragment : Fragment() {
         EnvironmentManager.environments[index] = EnvironmentModel(
             apiType = apiType,
             deploymentType = deploymentType,
-            path = ""
+            path = "messages/"
         )
     }
 

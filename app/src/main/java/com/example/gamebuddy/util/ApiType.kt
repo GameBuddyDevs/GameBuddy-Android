@@ -6,5 +6,5 @@ enum class ApiType(
     AUTH("l2.eren.wtf:4567/"),
     APPLICATION("l2.eren.wtf:4568/"),
     MATCH("l2.eren.wtf:4569/match/"),
-    MESSAGE("l2.eren.wtf:4569/"),
+    MESSAGE("l2.eren.wtf:4569/messages/"),
 }

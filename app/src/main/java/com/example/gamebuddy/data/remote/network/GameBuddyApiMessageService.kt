@@ -10,7 +10,7 @@ import retrofit2.http.Path
 
 interface GameBuddyApiMessageService {
 
-    @GET("get/messages/{userId}")
+    @GET("get/{userId}")
     @Api(ApiType.MESSAGE)
     suspend fun getMessages(
         @Header("Authorization") token: String,
