@@ -49,7 +49,7 @@ class ChatFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
-        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
+        updateEnvironment(apiType = ApiType.MESSAGE, deploymentType = DeploymentType.PRODUCTION)
 
         return binding.root
     }
@@ -132,7 +132,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun createRequest(): Request {
-        val websocketURL = "http://l2.eren.wtf:4569/chat"
+        val websocketURL = "http://l2.eren.wtf:4569/ws"
 
         return Request.Builder()
             .url(websocketURL)
@@ -153,12 +153,16 @@ class ChatFragment : Fragment() {
     }
 
     private fun getArgs() {
-        with(ChatFragmentArgs.fromBundle(requireArguments())) {
-            userId = matchedUserId
-            username = matchedUsername
-            avatarUrl = matchedAvatar
-        }
+        val userId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
     }
+
+//    private fun getArgs() {
+//        with(ChatFragmentArgs.fromBundle(requireArguments())) {
+//            userId = matchedUserId
+//            username = matchedUsername
+//            avatarUrl = matchedAvatar
+//        }
+//    }
 
     private fun setClickListeners() {
         binding.apply {
@@ -168,7 +172,6 @@ class ChatFragment : Fragment() {
                     Timber.d("message: $message")
                     webSocket.send(message)
                     editTxtMsg.text.clear()
-                    //viewModel.onTriggerEvent(ChatEvent.SendMessage(userId!!, message))
                 }
             }
             icAddFriend.setOnClickListener { viewModel.onTriggerEvent(ChatEvent.AddFriend(viewModel.uiState.value?.matchedUserId)) }

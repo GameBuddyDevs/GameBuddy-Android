@@ -1,16 +1,12 @@
 package com.example.gamebuddy.presentation.main.chat
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gamebuddy.data.remote.model.message.Conversation
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
-import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
@@ -24,7 +20,6 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
     private val getMessagesUseCase: GetMessagesUseCase,
-    private val sendMessageUseCase: SendMessageUseCase,
     private val getMessagesFromWebSocketUseCase: GetMessagesFromWebSocketUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -35,7 +30,7 @@ class ChatViewModel @Inject constructor(
     fun onTriggerEvent(event: ChatEvent) {
         when (event) {
             is ChatEvent.GetMessagesFromApi -> getMessagesFromApi(event.receiverId)
-            is ChatEvent.SendMessage -> sendMessage(event.receiverId, event.message)
+            is ChatEvent.SendMessage -> TODO()
             is ChatEvent.AddFriend -> addFriend(event.matchedUserId)
             is ChatEvent.SetUserProperties -> setUserProperties(event.matchedUserId)
             is ChatEvent.OnMessageReceivedFromWebSocket -> getMessagesFromWebSocket(event.matchedUserId, event.message)
@@ -85,24 +80,6 @@ class ChatViewModel @Inject constructor(
                         }
                     }.launchIn(viewModelScope)
             }
-        }
-    }
-
-    private fun sendMessage(receiverId: String, message: String) {
-        _uiState.value?.let { state ->
-            sendMessageUseCase.execute(receiverId, message)
-                .onEach { dataState ->
-                    _uiState.value = state.copy(isLoading = dataState.isLoading)
-
-                    dataState.data?.let { messageData ->
-                        Timber.d("Message data: $messageData")
-                        //_uiState.value = state.copy(messages = state.messages + messageData)
-                    }
-
-                    dataState.stateMessage?.let { stateMessage ->
-                        appendToMessageQueue(stateMessage)
-                    }
-                }.launchIn(viewModelScope)
         }
     }
 
