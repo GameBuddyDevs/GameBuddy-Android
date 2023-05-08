@@ -8,10 +8,11 @@ import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
-import com.example.gamebuddy.domain.usecase.main.MatchUseCase
+import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
 import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
+import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,7 +54,28 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
-
+    @Singleton
+    @Provides
+    fun providePendingFriendUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): PendingFriendUseCase {
+        return PendingFriendUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+    @Singleton
+    @Provides
+    fun provideacceptFriendsUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): acceptFriendsUseCase {
+        return acceptFriendsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
     @Singleton
     @Provides
     fun provideGetChatBoxUseCase(

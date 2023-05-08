@@ -36,12 +36,12 @@
 
         <TextView
             android:id="@+id/txt_username_desc"
-            android:layout_width="150dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
             android:maxLines="1"
-            android:text="lorem ipsum dolor sit amet"
+            android:text="Turkey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_pending_user_photo" />
 

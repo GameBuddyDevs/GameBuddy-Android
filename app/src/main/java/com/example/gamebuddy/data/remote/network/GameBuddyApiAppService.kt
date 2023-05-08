@@ -1,12 +1,13 @@
 package com.example.gamebuddy.data.remote.network
 
+import com.example.gamebuddy.data.remote.model.PendingFriends.PendingFriendsResponse
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
 import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
-import com.example.gamebuddy.data.remote.model.users.UsersResponse
+import com.example.gamebuddy.data.remote.request.AcceptRejectFriendRequest
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
 import com.example.gamebuddy.data.remote.request.SendMessageRequest
 import com.example.gamebuddy.util.Api
@@ -62,6 +63,23 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
     ): ProfileResponse
+    @GET("get/requests/friends")
+    @Api(ApiType.APPLICATION)
+    suspend fun getPendingFriends(
+        @Header("Authorization") token: String,
+    ): PendingFriendsResponse
 
+    @POST("accept/friend")
+    @Api(ApiType.APPLICATION)
+    suspend fun acceptFriends(
+        @Header("Authorization") token: String,
+        @Body acceptRejectFriendRequest: AcceptRejectFriendRequest,
+    ): BasicResponse
 
+    @POST("reject/friend")
+    @Api(ApiType.APPLICATION)
+    suspend fun rejectFriends(
+        @Header("Authorization") token: String,
+        @Body acceptRejectFriendRequest: AcceptRejectFriendRequest,
+    ): BasicResponse
 }
