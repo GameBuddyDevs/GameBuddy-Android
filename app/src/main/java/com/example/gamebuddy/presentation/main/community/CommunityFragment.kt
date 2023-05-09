@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.gamebuddy.data.remote.model.post.Post
+import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
+import com.example.gamebuddy.util.StateMessageCallback
+import com.example.gamebuddy.util.processQueue
 
 class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
-
-    override fun onItemClick(position: Int, item: Post) {
-        TODO("Not yet implemented")
-    }
 
     private val viewModel: CommunityViewModel by viewModels()
 
@@ -42,7 +40,20 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
 
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            //loading bar
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        viewModel.onTriggerEvent(CommunityEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
 
+            postAdapter?.apply {
+                submitList(state.posts)
+            }
         }
     }
 
@@ -59,6 +70,16 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
                 //findNavController().navigate(R.id.action_communityFragment_to_createPostFragment)
             }
         }
+    }
+
+    override fun onLikePostClick(postId: String) {
+        viewModel.onTriggerEvent(CommunityEvent.LikePost(postId))
+    }
+
+    override fun onCommentClick(postId: String) {
+        findNavController().navigate(
+            CommunityFragmentDirections.actionCommunityFragmentToCommentFragment(postId)
+        )
     }
 
 }

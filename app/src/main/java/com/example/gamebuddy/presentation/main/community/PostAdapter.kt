@@ -11,13 +11,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.post.Post
 import com.example.gamebuddy.databinding.ItemPostBinding
+import com.example.gamebuddy.util.loadImageFromUrl
 
 class PostAdapter(
     private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, item: Post)
+        fun onLikePostClick(postId: String)
+        fun onCommentClick(postId: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,8 +44,22 @@ class PostAdapter(
 
         fun bind(item: Post) {
             binding.apply {
+                imgPost.loadImageFromUrl(item.picture)
+                imgUser.loadImageFromUrl(item.avatar)
+                txtUsername.text = item.username
+                txtLikeCount.text = item.likeCount.toString()
+                txtCommentCount.text = item.commentCount.toString()
+                //txtPostTitle.text = item.title
 
 
+                // listeners
+                imgLikePost.setOnClickListener {
+                    imgLikePost.setImageResource(R.drawable.ic_videogame_liked_asset_24)
+                    onClickListener?.onLikePostClick(item.postId)
+                }
+                imgComment.setOnClickListener {
+                    onClickListener?.onCommentClick(item.postId)
+                }
             }
         }
     }

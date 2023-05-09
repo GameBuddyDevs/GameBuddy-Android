@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.community.GetPostUseCase
-import com.example.gamebuddy.presentation.main.chatbox.ChatBoxState
+import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 class CommunityViewModel @Inject constructor(
     private val getPostsUseCase: GetPostUseCase,
+    private val likePostUseCase: LikePostUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<CommunityState> = MutableLiveData(CommunityState())
@@ -23,7 +24,20 @@ class CommunityViewModel @Inject constructor(
     fun onTriggerEvent(event: CommunityEvent) {
         when (event) {
             is CommunityEvent.GetPosts -> getPosts(event.communityId)
+            is CommunityEvent.LikePost -> likePost(event.postId)
             CommunityEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
+        }
+    }
+
+    private fun likePost(postId: String) {
+        _uiState.value?.let { state ->
+            likePostUseCase.execute(postId).onEach { dataState ->
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -33,7 +47,7 @@ class CommunityViewModel @Inject constructor(
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { posts ->
-                    _uiState.value = state.copy(list = posts)
+                    _uiState.value = state.copy(posts = posts)
                 }
 
                 dataState.stateMessage?.let { stateMessage ->

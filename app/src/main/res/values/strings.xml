@@ -60,4 +60,5 @@
     <string name="comment_for_the_post">Comment for the post</string>
     <string name="like_the_post">Like the post</string>
     <string name="add_a_photo">Add a photo</string>
+    <string name="comments">Comments</string>
 </resources>

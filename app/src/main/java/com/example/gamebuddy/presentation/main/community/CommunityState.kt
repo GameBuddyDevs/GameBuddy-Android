@@ -6,6 +6,6 @@ import com.example.gamebuddy.util.StateMessage
 
 data class CommunityState(
     val isLoading: Boolean = false,
-    val list: List<Post> = mutableListOf(),
+    val posts: List<Post> = mutableListOf(),
     val queue: Queue<StateMessage> = Queue(mutableListOf()),
 )

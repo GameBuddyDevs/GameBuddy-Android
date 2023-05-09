@@ -64,11 +64,4 @@ interface GameBuddyApiAppService {
         @Path("userId") userId: String,
     ): ProfileResponse
 
-    @GET("get/communities/posts")
-    @Api(ApiType.COMMUNITIES)
-    suspend fun getPosts(
-        @Path("communityId") communityId: String,
-    ): PostResponse
-
-
 }
