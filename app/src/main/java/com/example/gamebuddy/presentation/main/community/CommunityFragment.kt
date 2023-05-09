@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
 
     private val viewModel: CommunityViewModel by viewModels()
