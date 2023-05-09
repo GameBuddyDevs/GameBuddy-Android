@@ -84,7 +84,7 @@ class ChatFragment : Fragment() {
 
         resetSubscriptions()
 
-        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "http://l2.eren.wtf:4569/ws")
+        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://91.191.173.119:4569/ws/websocket")
         stompClient?.connect(headers)
 
         stompClient?.lifecycle()?.subscribe { lifecycleEvent ->
