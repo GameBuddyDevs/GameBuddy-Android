@@ -8,4 +8,5 @@ sealed class HomeEvent {
     object OnRemoveHeadFromQueue : HomeEvent()
     object AcceptFriends: HomeEvent()
     object ResetPendingFriends:HomeEvent()
+    object GetPopularGames: HomeEvent()
 }

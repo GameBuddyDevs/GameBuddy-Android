@@ -8,6 +8,7 @@ import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
+import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -83,6 +84,17 @@ object AppModule {
         authTokenDao: AuthTokenDao
     ): GetChatBoxUseCase{
         return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+    @Singleton
+    @Provides
+    fun provideGetPopularUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): GetPopularUseCase{
+        return GetPopularUseCase(
             service = service,
             authTokenDao = authTokenDao
         )

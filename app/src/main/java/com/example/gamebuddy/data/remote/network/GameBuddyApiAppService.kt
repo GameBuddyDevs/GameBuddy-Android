@@ -6,6 +6,7 @@ import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
+import com.example.gamebuddy.data.remote.model.popularGames.PopularGamesResponse
 import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.request.AcceptRejectFriendRequest
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
@@ -82,4 +83,10 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
         @Body acceptRejectFriendRequest: AcceptRejectFriendRequest,
     ): BasicResponse
+
+    @GET("get/popular/games")
+    @Api(ApiType.APPLICATION)
+    suspend fun getPopularGames(
+        @Header("Authorization") token: String,
+    ): PopularGamesResponse
 }

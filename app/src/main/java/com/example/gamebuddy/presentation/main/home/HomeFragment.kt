@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentHomeBinding
 import com.example.gamebuddy.domain.model.Pending.PendingFriends
+import com.example.gamebuddy.domain.model.popular.PopularGames
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
@@ -17,9 +19,10 @@ import com.example.gamebuddy.util.processQueue
 import timber.log.Timber
 
 
-class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener {
+class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener, GetPopularAdapter.OnClickListener {
     private val viewModel: HomeViewModel by viewModels()
     private var pendingFriendAdapter: PendingFriendAdapter? = null
+    private var getPopularAdapter: GetPopularAdapter? = null
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -58,6 +61,10 @@ class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener {
             pendingFriendAdapter?.apply {
                 submitList(state.pendingFriends)
             }
+            getPopularAdapter?.apply {
+                submitList(state.popularGames)
+            }
+
         }
     }
     private fun stateFriends(userId:String,accept:Boolean){
@@ -75,10 +82,19 @@ class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener {
             pendingFriendAdapter = PendingFriendAdapter(this@HomeFragment)
             adapter = pendingFriendAdapter
         }
+        binding.rvPopular.apply {
+            layoutManager = LinearLayoutManager(this@HomeFragment.context, LinearLayoutManager.HORIZONTAL, false)
+            getPopularAdapter = GetPopularAdapter(this@HomeFragment)
+            adapter = getPopularAdapter
+        }
     }
     override fun onItemClick(position: Int, item: PendingFriends, accept:Boolean) {
         Timber.d("onItemClick Message $position : $item : $accept")
+        if(accept) Toast.makeText(context,"Accepted Friend Username: ${item.username}",Toast.LENGTH_LONG).show() else Toast.makeText(context,"Rejected Friend Username: ${item.username}",Toast.LENGTH_LONG).show()
         stateFriends(item.userId,accept)
+    }
+    override fun onItemClick(position: Int, item: PopularGames) {
+        Timber.d("onItemClick Message $position : $item")
     }
 
     override fun onDestroy() {

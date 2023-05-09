@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.main.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
 import com.example.gamebuddy.util.StateMessage
@@ -18,12 +19,14 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val pendingFriendUseCase: PendingFriendUseCase,
     private val acceptFriendsUseCase: acceptFriendsUseCase,
+    private val getPopularUseCase: GetPopularUseCase,
 ) : ViewModel() {
     private val _uiState: MutableLiveData<HomeState> = MutableLiveData(HomeState())
     val uiState: MutableLiveData<HomeState> get() = _uiState
 
     init {
         onTriggerEvent(HomeEvent.GetPendingFriends)
+        onTriggerEvent(HomeEvent.GetPopularGames)
     }
 
     fun onTriggerEvent(event: HomeEvent) {
@@ -34,7 +37,22 @@ class HomeViewModel @Inject constructor(
             HomeEvent.GetPendingFriends -> getPendingFriends()
             HomeEvent.AcceptFriends -> AcceptFriends()
             HomeEvent.ResetPendingFriends -> resetPendingFriends()
+            HomeEvent.GetPopularGames -> getPopularGames()
         }
+    }
+    private fun getPopularGames(){
+        getPopularUseCase.execute().onEach { dataState ->
+            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
+            dataState.data?.let { popularGames ->
+                if(popularGames.isNotEmpty()){
+                    Timber.d("getPopularGames : ${popularGames[0].gameName}")
+                    _uiState.value = uiState.value?.copy(popularGames = popularGames)
+                }
+            }
+            dataState.stateMessage?.let { stateMessage ->
+                appendToMessageQueue(stateMessage)
+            }
+        }.launchIn(viewModelScope)
     }
     private fun resetPendingFriends(){
         val userId = _uiState.value?.userId
