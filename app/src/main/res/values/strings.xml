@@ -55,4 +55,6 @@
     <string name="e_mail">E-Mail :</string>
     <string name="test_test_com">test@test.com</string>
     <string name="_19">19</string>
+    <string name="pending_friend_requests">Pending friend requests</string>
+    <string name="popular_games">Popular games</string>
 </resources>

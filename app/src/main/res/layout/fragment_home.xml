@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/popular"
+                    android:text="@string/popular_games"
                     android:textColor="@color/text" />
 
                 <TextView
@@ -164,7 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/pending_requests"
+                    android:text="@string/pending_friend_requests"
                     android:textColor="@color/text" />
 
                 <TextView

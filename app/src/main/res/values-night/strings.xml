@@ -46,4 +46,6 @@
     <string name="decline">Decline</string>
     <string name="press_match_button_to_start_matching_or_decline_button_to_skip">Press Match button to start matching or Decline button to skip</string>
     <string name="click_match_to_start_matching_or_click_decline_to_skip_next_match">Click Match to start matching or click Decline to skip next match</string>
+    <string name="pending_friend_requests">Pending friend requests</string>
+    <string name="popular_games">Popular games</string>
 </resources>
