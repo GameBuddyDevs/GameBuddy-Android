@@ -1,12 +1,16 @@
 package com.example.gamebuddy.data.remote.network
 
+import com.example.gamebuddy.data.remote.model.PendingFriends.PendingFriendsResponse
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
+import com.example.gamebuddy.data.remote.model.market.MarketResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
+import com.example.gamebuddy.data.remote.model.popularGames.PopularGamesResponse
 import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
+import com.example.gamebuddy.data.remote.request.AcceptRejectFriendRequest
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
 import com.example.gamebuddy.data.remote.request.SendMessageRequest
 import com.example.gamebuddy.util.Api
@@ -95,5 +99,12 @@ interface GameBuddyApiAppService {
     suspend fun getPopularGames(
         @Header("Authorization") token: String,
     ): PopularGamesResponse
+
+    @GET("get/marketplace")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAvatars(
+        @Header("Authorization") token: String,
+    ): MarketResponse
+
 
 }
