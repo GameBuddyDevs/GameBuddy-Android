@@ -44,6 +44,54 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideMatchUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MatchUseCase {
+        return MatchUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetFriendsUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetFriendsUseCase {
+        return GetFriendsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetChatBoxUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetChatBoxUseCase{
+        return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMarketUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MarketUseCase {
+        return MarketUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideGetFriendsUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
@@ -124,6 +172,5 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
-
 
 }

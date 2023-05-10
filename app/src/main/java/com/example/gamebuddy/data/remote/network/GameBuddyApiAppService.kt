@@ -9,6 +9,7 @@ import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
 import com.example.gamebuddy.data.remote.request.SendMessageRequest
+import com.example.gamebuddy.data.remote.model.market.MarketResponse
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
 import retrofit2.http.Body
@@ -26,6 +27,12 @@ interface GameBuddyApiAppService {
     @GET("get/keywords")
     @Api(ApiType.APPLICATION)
     suspend fun getKeywords(): KeywordResponse
+
+    @GET("get/recommendations")
+    @Api(ApiType.MATCH)
+    suspend fun getUsers(
+        @Header("Authorization") token: String,
+    ): UsersResponse
 
     @GET("get/friends")
     @Api(ApiType.APPLICATION)
@@ -63,5 +70,10 @@ interface GameBuddyApiAppService {
         @Path("userId") userId: String,
     ): ProfileResponse
 
+    @GET("get/marketplace")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAvatars(
+        @Header("Authorization") token: String,
+    ): MarketResponse
 
 }
