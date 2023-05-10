@@ -41,22 +41,11 @@ class MarketAdapter(
         private val requestOptions: RequestOptions,
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val dialogConfirmPurchase = AlertDialog.Builder(binding.root.context)
-            .setView(R.layout.confirm_buy)
-            .create()
-
-        fun bind(item: Market) {
+            fun bind(item: Market) {
             binding.apply {
 
-                dialogConfirmPurchase.findViewById<Button>(R.id.btnConfirm)?.setOnClickListener {
-                    onClickListener?.onBuyClick(absoluteAdapterPosition, item.id)
-                    dialogConfirmPurchase.dismiss()
-                }
                 btnBuy.setOnClickListener {
-                    dialogConfirmPurchase.show()
-                }
-                dialogConfirmPurchase.findViewById<Button>(R.id.btnCancel)?.setOnClickListener {
-                    dialogConfirmPurchase.dismiss()
+                    showConfirmationDialog(item)
                 }
 
                 Glide.with(binding.root)
@@ -65,8 +54,21 @@ class MarketAdapter(
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivAvatarDisplayItem)
                 txtPrice.text = item.price
-
             }
+        }
+
+        private fun showConfirmationDialog(item: Market) {
+            val builder = AlertDialog.Builder(binding.root.context)
+            builder.setMessage("Do you confirm the purchase of this item ?")
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                onClickListener?.onBuyClick(absoluteAdapterPosition, item.id)
+                dialog.dismiss()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
     }
 

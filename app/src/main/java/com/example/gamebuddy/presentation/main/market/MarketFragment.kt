@@ -9,8 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gamebuddy.databinding.FragmentMarketBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
-import com.example.gamebuddy.util.StateMessageCallback
-import com.example.gamebuddy.util.processQueue
+import com.example.gamebuddy.util.*
 import timber.log.Timber
 
 class MarketFragment : BaseAuthFragment(), MarketAdapter.OnClickListener {
@@ -26,6 +25,7 @@ class MarketFragment : BaseAuthFragment(), MarketAdapter.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMarketBinding.inflate(inflater, container, false)
+        updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
 
@@ -80,6 +80,18 @@ class MarketFragment : BaseAuthFragment(), MarketAdapter.OnClickListener {
     }
 
     override fun onBuyClick(position: Int, avatarId: String) {
-        TODO("Not yet implemented")
+        Timber.d("onBuyClick Message $position : $avatarId")
+
+    }
+    override fun updateEnvironment(
+        apiType: ApiType,
+        deploymentType: DeploymentType
+    ) {
+        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
+        EnvironmentManager.environments[index] = EnvironmentModel(
+            apiType = apiType,
+            deploymentType = deploymentType,
+            path = "application/"
+        )
     }
 }
