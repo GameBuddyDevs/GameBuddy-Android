@@ -2,12 +2,14 @@ package com.example.gamebuddy.di
 
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
+import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -39,42 +41,6 @@ object AppModule {
     ): KeywordsUseCase {
         return KeywordsUseCase(
             service = service
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideMatchUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao,
-    ): MatchUseCase {
-        return MatchUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetFriendsUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): GetFriendsUseCase {
-        return GetFriendsUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetChatBoxUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase{
-        return GetChatBoxUseCase(
-            service = service,
-            authTokenDao = authTokenDao
         )
     }
 
