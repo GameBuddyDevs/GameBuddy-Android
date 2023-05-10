@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
@@ -79,9 +81,8 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
     }
 
     override fun onCommentClick(postId: String) {
-        findNavController().navigate(
-            CommunityFragmentDirections.actionCommunityFragmentToCommentFragment(postId)
-        )
+        val bundle = bundleOf("postId" to postId)
+        findNavController().navigate(R.id.action_communityFragment_to_commentFragment, bundle)
     }
 
 }

@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
-        android:name="com.example.gamebuddy.CommentFragment"
+        android:name="com.example.gamebuddy.presentation.main.comment.CommentFragment"
         android:label="fragment_comment"
         tools:layout="@layout/fragment_comment" >
         <argument
