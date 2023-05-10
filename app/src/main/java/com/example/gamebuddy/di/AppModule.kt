@@ -2,7 +2,6 @@ package com.example.gamebuddy.di
 
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
-import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
@@ -41,18 +40,6 @@ object AppModule {
     ): KeywordsUseCase {
         return KeywordsUseCase(
             service = service
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideMarketUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao,
-    ): MarketUseCase {
-        return MarketUseCase(
-            service = service,
-            authTokenDao = authTokenDao
         )
     }
 
@@ -138,5 +125,42 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideacceptFriendsUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): acceptFriendsUseCase {
+        return acceptFriendsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetPopularUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): GetPopularUseCase{
+        return GetPopularUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMarketUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): MarketUseCase {
+        return MarketUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
 
 }
