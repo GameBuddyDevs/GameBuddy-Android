@@ -14,10 +14,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 
 // Retrofit Extensions
@@ -107,19 +112,24 @@ fun ImageView.loadImageFromDrawable(
 }
 
 // String Extensions
-@RequiresApi(Build.VERSION_CODES.O)
 fun String.formatDateTime(): String {
-    val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
-    val dateTime = LocalDateTime.parse(this, dateTimeFormatter)
-    val now = LocalDateTime.now(ZoneId.of("UTC"))
-    val duration = ChronoUnit.HOURS.between(dateTime, now)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+    val dateTime = dateFormat.parse(this)
+    val now = Calendar.getInstance().time
+    val duration = TimeUnit.MILLISECONDS.toHours(now.time - dateTime.time)
+
+    val calendar = Calendar.getInstance().apply { time = dateTime }
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+    val minute = calendar.get(Calendar.MINUTE)
 
     return when {
-        duration < 1 -> "${dateTime.hour}:${String.format("%02d", dateTime.minute)}"
-        duration < 24 -> "${dateTime.hour}:${String.format("%02d", dateTime.minute)}"
+        duration < 1 -> "${hour}:${String.format("%02d", minute)}"
+        duration < 24 -> "${hour}:${String.format("%02d", minute)}"
         else -> "${duration / 24}d"
     }
 }
+
+
 
 private fun getMultiTransform(
     fitCenter: Boolean,

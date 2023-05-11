@@ -7,6 +7,7 @@ import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.market.MarketResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
+import com.example.gamebuddy.data.remote.model.post.PostResponse
 import com.example.gamebuddy.data.remote.model.popularGames.PopularGamesResponse
 import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
@@ -105,6 +106,5 @@ interface GameBuddyApiAppService {
     suspend fun getAvatars(
         @Header("Authorization") token: String,
     ): MarketResponse
-
 
 }

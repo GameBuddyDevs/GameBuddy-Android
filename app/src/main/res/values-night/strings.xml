@@ -46,6 +46,13 @@
     <string name="decline">Decline</string>
     <string name="press_match_button_to_start_matching_or_decline_button_to_skip">Press Match button to start matching or Decline button to skip</string>
     <string name="click_match_to_start_matching_or_click_decline_to_skip_next_match">Click Match to start matching or click Decline to skip next match</string>
+    <string name="post_of_community">Post of community</string>
+    <string name="share_the_post">Share the post</string>
+    <string name="comment_for_the_post">Comment for the post</string>
+    <string name="like_the_post">Like the post</string>
+    <string name="add_a_photo">Add a photo</string>
+    <string name="comments">Comments</string>
+    <string name="gamebuddy">GameBuddy</string>
     <string name="pending_friend_requests">Pending friend requests</string>
     <string name="popular_games">Popular games</string>
 </resources>
