@@ -15,7 +15,7 @@ abstract class BaseAuthFragment: Fragment() {
 
     lateinit var uiCommunicationListener: UICommunicationListener
 
-    fun updateEnvironment(
+    open fun updateEnvironment(
         apiType: ApiType,
         deploymentType: DeploymentType
     ) {
