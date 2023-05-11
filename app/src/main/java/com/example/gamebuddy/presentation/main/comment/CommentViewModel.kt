@@ -2,20 +2,33 @@ package com.example.gamebuddy.presentation.main.comment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.comments.GetCommentsUseCase
+import com.example.gamebuddy.domain.usecase.comments.LikeCommentUseCase
+import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class CommentViewModel @Inject constructor(
+    private val getCommentsUseCase: GetCommentsUseCase,
+    private val likeCommentUseCase: LikeCommentUseCase,
+    private val likePostUseCase: LikePostUseCase,
     private val savedStatedHandle: SavedStateHandle
-) {
+) : ViewModel() {
 
-    //TODO: Implement SavedStateHandle
-    //TODO: Add adapter for comments
+    init {
+        savedStatedHandle.get<String>("postId")?.let { postId ->
+            onTriggerEvent(CommentEvent.GetComments(postId))
+        }
+    }
 
     private val _uiState: MutableLiveData<CommentState> = MutableLiveData(CommentState())
     val uiState: MutableLiveData<CommentState> get() = _uiState
@@ -23,12 +36,55 @@ class CommentViewModel @Inject constructor(
     fun onTriggerEvent(event: CommentEvent) {
         when (event) {
             is CommentEvent.GetComments -> getComments(event.postId)
+            is CommentEvent.LikeComment -> likeComment(event.commentId)
+            CommentEvent.LikeCurrentPost -> likeCurrentPost()
             CommentEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
         }
     }
 
+    private fun likeCurrentPost() {
+        _uiState.value?.let { state ->
+            savedStatedHandle.get<String>("postId")?.let { postId ->
+                likePostUseCase.execute(postId).onEach { dataState ->
+
+                    _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                    dataState.stateMessage?.let { stateMessage ->
+                        appendToMessageQueue(stateMessage)
+                    }
+
+                }.launchIn(viewModelScope)
+            }
+        }
+    }
+
+
     private fun getComments(postId: String) {
-        TODO("Not yet implemented")
+        _uiState.value?.let { state ->
+            getCommentsUseCase.execute(postId).onEach { dataState ->
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                dataState.data?.let { comments ->
+                    _uiState.value = state.copy(comments = comments)
+                }
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun likeComment(commentId: String) {
+        _uiState.value?.let { state ->
+            likeCommentUseCase.execute(commentId).onEach { dataState ->
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     private fun onRemoveHeadFromQueue() {

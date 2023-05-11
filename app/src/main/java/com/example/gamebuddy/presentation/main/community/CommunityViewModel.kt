@@ -14,8 +14,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class CommunityViewModel @Inject constructor(
+    private val likePostUseCase: LikePostUseCase,
     private val getPostsUseCase: GetPostUseCase,
-    private val likePostUseCase: LikePostUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<CommunityState> = MutableLiveData(CommunityState())
