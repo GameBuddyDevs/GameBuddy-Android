@@ -8,11 +8,13 @@ import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class CommunityViewModel @Inject constructor(
     private val likePostUseCase: LikePostUseCase,
     private val getPostsUseCase: GetPostUseCase,
