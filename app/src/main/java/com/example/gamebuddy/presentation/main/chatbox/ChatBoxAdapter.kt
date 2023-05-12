@@ -15,7 +15,7 @@ class ChatBoxAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, item: Inbox)
+        fun onItemClick(item: Inbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,7 +42,7 @@ class ChatBoxAdapter(
             binding.apply {
 
                 root.setOnClickListener {
-                    onClickListener?.onItemClick(absoluteAdapterPosition, item)
+                    onClickListener?.onItemClick(item)
                 }
 
                 Glide.with(binding.root)

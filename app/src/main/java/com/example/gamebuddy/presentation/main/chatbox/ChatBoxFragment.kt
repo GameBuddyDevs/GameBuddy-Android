@@ -9,12 +9,14 @@ import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.FragmentChatBoxBinding
 import com.example.gamebuddy.domain.model.Friend
+import com.example.gamebuddy.presentation.main.match.MatchFragmentDirections
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.StateMessageCallback
@@ -164,12 +166,13 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Frie
         _binding = null
     }
 
-    override fun onItemClick(position: Int, item: Inbox) {
-        Timber.d("onItemClick Message $position : $item")
-    }
-
     override fun onItemClick(position: Int, item: Friend) {
         Timber.d("onItemClick Friend $position : $item")
+    }
+
+    override fun onItemClick(item: Inbox) {
+        val action = ChatBoxFragmentDirections.actionMessageFragmentToChatFragment2(item.userId, item.avatar, item.username)
+        findNavController().navigate(action)
     }
 
 

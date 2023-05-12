@@ -40,6 +40,13 @@ private fun getFakeData(): List<Inbox> {
     return listOf(
         Inbox(
             avatar = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex3.jpg?alt=media&token=5906921d-2787-4049-8b46-23894dc3e8db",
+            lastMessage = "Socket test",
+            lastMessageTime = "2023-03-17T09:28:00Z",
+            userId = "c815aa8e-0899-426f-84bc-a41cdf216c9a",
+            username = "igakaan"
+        ),
+        Inbox(
+            avatar = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex3.jpg?alt=media&token=5906921d-2787-4049-8b46-23894dc3e8db",
             lastMessage = "Hey, how's it going?",
             lastMessageTime = "2022-03-17T09:28:00Z",
             userId = "u293481",
