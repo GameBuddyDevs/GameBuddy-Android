@@ -65,7 +65,7 @@ class ChatFragment : Fragment() {
 
         //updateEnvironment(apiType = ApiType.MESSAGE, deploymentType = DeploymentType.PRODUCTION)
 
-        //viewModel.handleWebSocket()
+        viewModel.handleWebSocket()
         return binding.root
     }
 
@@ -78,7 +78,7 @@ class ChatFragment : Fragment() {
         initRecyclerView()
         collectState()
         //createRequest()
-        connectWebSocketOverStomp()
+        //connectWebSocketOverStomp()
         setClickListeners()
     }
 
@@ -160,13 +160,13 @@ class ChatFragment : Fragment() {
     private fun setClickListeners() {
         binding.apply {
             btnSendMsg.setOnClickListener {
-//                viewModel.onTriggerEvent(
-//                    ChatEvent.SendMessage(
-//                        matchedUserId = userId!!,
-//                        message = editTxtMsg.text.toString()
-//                    )
-//                )
-                sendMessage(editTxtMsg.text.toString())
+                viewModel.onTriggerEvent(
+                    ChatEvent.SendMessage(
+                        matchedUserId = userId!!,
+                        message = editTxtMsg.text.toString()
+                    )
+                )
+                //sendMessage(editTxtMsg.text.toString())
             }
 
             icAddFriend.setOnClickListener {
@@ -243,8 +243,6 @@ class ChatFragment : Fragment() {
             {
                 "sender": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
                 "receiver": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
-                "senderName": "Can",
-                "receiverName": "Can",
                 "messageBody": "$msg",
                 "date": "2023-05-05T12:00:00.000Z"
             }

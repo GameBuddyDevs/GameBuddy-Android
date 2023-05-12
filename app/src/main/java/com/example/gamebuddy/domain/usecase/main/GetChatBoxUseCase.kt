@@ -27,9 +27,12 @@ class GetChatBoxUseCase(
             throw Exception("Please login again.")
         }
 
-        val inboxList = getFakeData()
-        emit(DataState.success(response = null, data = inboxList))
+        val response = service.getInbox(token = "Bearer $token")
 
+        if (!response.status.success)
+            throw Exception(response.status.message)
+
+        emit(DataState.success(response = null, data = response.body.data.inboxList))
     }.catch { e ->
         Timber.e("GetFriendsUseCase Error: ${e.printStackTrace()}")
         emit(handleUseCaseException(e))

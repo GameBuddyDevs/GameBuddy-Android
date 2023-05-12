@@ -40,7 +40,7 @@ class GetMessagesFromWebSocketUseCase(
 
         val conversation = Conversation(
             date = formattedDateTimeWithOffset,
-            messageBody = message,
+            message = message,
             sender = sender!!
         )
 

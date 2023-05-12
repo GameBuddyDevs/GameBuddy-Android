@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.ItemMessageBinding
+import timber.log.Timber
 
 class ChatBoxAdapter(
     private val onClickListener: OnClickListener? = null
@@ -44,6 +45,8 @@ class ChatBoxAdapter(
                 root.setOnClickListener {
                     onClickListener?.onItemClick(item)
                 }
+
+                Timber.d("bind: ${item.username}")
 
                 Glide.with(binding.root)
                     .setDefaultRequestOptions(requestOptions)

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.model.message.Conversation
-import com.example.gamebuddy.domain.model.message.Message
+import com.example.gamebuddy.data.remote.model.socketmessage.WebSocketMessageResponse
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -28,6 +28,9 @@ import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -41,7 +44,7 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        //connectWebSocketOverStomp()
+        connectWebSocketOverStomp()
     }
 
     private val _uiState: MutableLiveData<ChatState> = MutableLiveData(ChatState())
@@ -71,14 +74,26 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value?.let { state ->
                 val authTokenDao = authTokenDao.getAuthToken()
+                val currentDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).format(Date())
                 val conversation = """
             {
                 "sender": "${authTokenDao?.account_pk}",
-                "receiver": "${authTokenDao?.account_pk}",
-                "messageBody": "$messageBody",
-                "date": "2023-05-05T12:00:00.000Z"
+                "receiver": "$matchedUserId",
+                "message": "$messageBody",
+                "date": "$currentDate"
             }
         """.trimIndent()
+
+                compositeDisposable?.add(
+                    stompClient!!.send("/app/chat", conversation)
+                        .compose(applySchedulers())
+                        .subscribe(
+                            {
+                                Timber.d("Message sent successfully")
+                                //viewModel.onTriggerEvent(ChatEvent.SendMessage(userId!!, message))
+                            },
+                            { throwable: Throwable? -> Timber.e("Error on send message", throwable) })
+                )
 
                 Timber.d("Send message. State: $state")
                 val gson = GsonBuilder().create()
@@ -183,47 +198,50 @@ class ChatViewModel @Inject constructor(
     }
 
     fun handleWebSocket() {
-        stompClient?.withClientHeartbeat(5000)?.withServerHeartbeat(5000)
 
-        resetSubscriptions()
+        viewModelScope.launch {
 
-        val dispLifecycle = stompClient?.lifecycle()
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe { lifecycleEvent ->
-                when (lifecycleEvent.type) {
-                    LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
-                    LifecycleEvent.Type.ERROR -> {
-                        Timber.e("Stomp connection error ${lifecycleEvent.exception}")
+
+            stompClient?.withClientHeartbeat(5000)?.withServerHeartbeat(5000)
+
+            resetSubscriptions()
+
+            val dispLifecycle = stompClient?.lifecycle()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe { lifecycleEvent ->
+                    when (lifecycleEvent.type) {
+                        LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
+                        LifecycleEvent.Type.ERROR -> Timber.e("Stomp connection error ${lifecycleEvent.exception}")
+                        LifecycleEvent.Type.CLOSED -> {
+                            Timber.e("Stomp connection closed")
+                            resetSubscriptions()
+                        }
+                        LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Timber.e("Stomp failed server heartbeat")
                     }
-
-                    LifecycleEvent.Type.CLOSED -> {
-                        Timber.e("Stomp connection closed")
-                        resetSubscriptions()
-                    }
-
-                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Timber.e("Stomp failed server heartbeat")
                 }
+
+            if (dispLifecycle != null) {
+                compositeDisposable?.add(dispLifecycle)
             }
 
-        if (dispLifecycle != null) {
-            compositeDisposable?.add(dispLifecycle)
+            // kaan id: c815aa8e-0899-426f-84bc-a41cdf216c9a, can id: c16049ca-844e-4897-b221-4d93e47e88b3
+            val authTokenDao = authTokenDao
+            val id = authTokenDao.getAuthToken()?.account_pk
+
+            val disposableTopic: Disposable =
+                stompClient!!.topic("/user/$id/queue/messages")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ topicMessage ->
+                        Timber.d("Received " + topicMessage.payload)
+                        addItem(gson.fromJson(topicMessage.payload, WebSocketMessageResponse::class.java))
+                    }) { throwable -> Timber.e("Error on subscribe topic", throwable) }
+
+            compositeDisposable?.add(disposableTopic)
+
+            stompClient?.connect()
         }
-
-        // kaan id: c815aa8e-0899-426f-84bc-a41cdf216c9a, can id: c16049ca-844e-4897-b221-4d93e47e88b3
-        // Receive greetings
-        val disposableTopic: Disposable =
-            stompClient!!.topic("/user/c16049ca-844e-4897-b221-4d93e47e88b3/queue/messages")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ topicMessage ->
-                    Timber.d("Received " + topicMessage.payload)
-                    addItem(gson.fromJson(topicMessage.payload, Message::class.java))
-                }) { throwable -> Timber.e("Error on subscribe topic", throwable) }
-
-        compositeDisposable?.add(disposableTopic)
-
-        stompClient?.connect()
     }
 
     private fun resetSubscriptions() {
@@ -247,8 +265,17 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun addItem(message: Message) {
-        //viewModel.onTriggerEvent(ChatEvent.SendMessage(message))
+    private fun addItem(webSocketMessageResponse: WebSocketMessageResponse) {
+        _uiState.value?.let { state ->
+
+            val conversation = Conversation(
+                date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).format(Date()),
+                message = webSocketMessageResponse.message,
+                sender = webSocketMessageResponse.senderId,
+            )
+
+            _uiState.value = state.copy(messages = state.messages + conversation)
+        }
     }
 
 }
