@@ -1,6 +1,5 @@
 package com.example.gamebuddy.presentation.main.chat
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentChatBinding
+import com.example.gamebuddy.domain.model.message.Message
 import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.EnvironmentManager
@@ -17,8 +17,14 @@ import com.example.gamebuddy.util.EnvironmentModel
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.loadImageFromUrl
 import com.example.gamebuddy.util.processQueue
+import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.Completable
+import io.reactivex.CompletableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -26,7 +32,7 @@ import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompHeader
+import java.util.Date
 
 
 @AndroidEntryPoint
@@ -37,10 +43,6 @@ class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var webSocketClient: WebSocketListener
-    private val okHttpClient = OkHttpClient()
-    private lateinit var webSocket: WebSocket
-
     private var chatAdapter: ChatAdapter? = null
 
     private var stompClient: StompClient? = null
@@ -50,6 +52,8 @@ class ChatFragment : Fragment() {
     private var userId: String? = null
     private var username: String? = null
     private var avatarUrl: String? = null
+
+    private val gson = GsonBuilder().create()
 
 
     override fun onCreateView(
@@ -77,25 +81,28 @@ class ChatFragment : Fragment() {
         setClickListeners()
     }
 
-    @SuppressLint("CheckResult")
-    private fun connectWebSocketOverStomp() {
-        val headers: MutableList<StompHeader> = ArrayList()
-        headers.add(StompHeader("Host", "l2.eren.wtf:4569"))
-
-        resetSubscriptions()
-
-        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://91.191.173.119:4569/ws/websocket")
-        stompClient?.connect(headers)
-
-        stompClient?.lifecycle()?.subscribe { lifecycleEvent ->
-            when (lifecycleEvent.getType()) {
-                LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
-                LifecycleEvent.Type.ERROR -> Timber.e("Stomp connection error ${lifecycleEvent.exception}")
-                LifecycleEvent.Type.CLOSED -> Timber.d("Stomp connection closed")
-                else -> {}
-            }
-        }
-    }
+//    @SuppressLint("CheckResult")
+//    private fun connectWebSocketOverStomp() {
+//        val headers: MutableList<StompHeader> = ArrayList()
+//        headers.add(StompHeader("Host", "l2.eren.wtf:4569"))
+//
+//        resetSubscriptions()
+//
+//        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://91.191.173.119:4569/ws/websocket")
+//        stompClient?.connect(headers)
+//
+//        stompClient?.lifecycle()?.subscribe { lifecycleEvent ->
+//            when (lifecycleEvent.type) {
+//                LifecycleEvent.Type.OPENED -> {
+//                    Timber.d("Stomp connection opened")
+//                    stompClient.topic()
+//                }
+//                LifecycleEvent.Type.ERROR -> Timber.e("Stomp connection error ${lifecycleEvent.exception}")
+//                LifecycleEvent.Type.CLOSED -> Timber.d("Stomp connection closed")
+//                else -> {}
+//            }
+//        }
+//    }
 
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
@@ -128,35 +135,56 @@ class ChatFragment : Fragment() {
         }
     }
 
-//    private fun connectWebSocketOverStomp() {
-//
-//        stompClient?.withClientHeartbeat(1000)?.withServerHeartbeat(1000)
-//
-//        resetSubscriptions()
-//
-//        val dispLifecycle = stompClient?.lifecycle()
-//            ?.subscribeOn(Schedulers.io())
-//            ?.observeOn(AndroidSchedulers.mainThread())
-//            ?.subscribe { lifecycleEvent ->
-//                when (lifecycleEvent.type) {
-//                    LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
-//                    LifecycleEvent.Type.ERROR -> {
-//                        Timber.e("Stomp connection error ${lifecycleEvent.exception}")
-//                    }
-//                    LifecycleEvent.Type.CLOSED -> {
-//                        Timber.e("Stomp connection closed")
-//                        resetSubscriptions()
-//                    }
-//                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Timber.e("Stomp failed server heartbeat")
-//                }
-//            }
-//
-//        if (dispLifecycle != null) {
-//            compositeDisposable?.add(dispLifecycle)
-//        }
-//
-//        stompClient?.connect()
-//    }
+    private fun connectWebSocketOverStomp() {
+        stompClient =
+            Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://91.191.173.119:4569/ws/websocket")
+
+        stompClient?.withClientHeartbeat(5000)?.withServerHeartbeat(5000)
+
+        resetSubscriptions()
+
+        val dispLifecycle = stompClient?.lifecycle()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe { lifecycleEvent ->
+                when (lifecycleEvent.type) {
+                    LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
+                    LifecycleEvent.Type.ERROR -> {
+                        Timber.e("Stomp connection error ${lifecycleEvent.exception}")
+                    }
+
+                    LifecycleEvent.Type.CLOSED -> {
+                        Timber.e("Stomp connection closed")
+                        resetSubscriptions()
+                    }
+
+                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> Timber.e("Stomp failed server heartbeat")
+                }
+            }
+
+        if (dispLifecycle != null) {
+            compositeDisposable?.add(dispLifecycle)
+        }
+
+        // kaan id: c815aa8e-0899-426f-84bc-a41cdf216c9a, can id: c16049ca-844e-4897-b221-4d93e47e88b3
+        // Receive greetings
+        val disposableTopic: Disposable =
+            stompClient!!.topic("/user/c815aa8e-0899-426f-84bc-a41cdf216c9a/queue/messages")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ topicMessage ->
+                    Timber.d("Received " + topicMessage.payload)
+                    addItem(gson.fromJson(topicMessage.payload, Message::class.java))
+                }) { throwable -> Timber.e("Error on subscribe topic", throwable) }
+
+        compositeDisposable?.add(disposableTopic)
+
+        stompClient?.connect()
+    }
+
+    private fun addItem(message: Message) {
+        //viewModel.onTriggerEvent(ChatEvent.SendMessage(message))
+    }
 
     private fun resetSubscriptions() {
         if (compositeDisposable != null) {
@@ -211,15 +239,16 @@ class ChatFragment : Fragment() {
     private fun setClickListeners() {
         binding.apply {
             btnSendMsg.setOnClickListener {
-                val message = editTxtMsg.text.toString()
-                if (userId?.isNotEmpty() == true && message.isNotEmpty()) {
-                    Timber.d("message: $message")
-                    webSocket.send(message)
-                    editTxtMsg.text.clear()
+                sendMessage(editTxtMsg.text.toString())
+                icAddFriend.setOnClickListener {
+                    viewModel.onTriggerEvent(
+                        ChatEvent.AddFriend(
+                            viewModel.uiState.value?.matchedUserId
+                        )
+                    )
                 }
+                icBack.setOnClickListener { findNavController().popBackStack() }
             }
-            icAddFriend.setOnClickListener { viewModel.onTriggerEvent(ChatEvent.AddFriend(viewModel.uiState.value?.matchedUserId)) }
-            icBack.setOnClickListener { findNavController().popBackStack() }
         }
     }
 
@@ -235,4 +264,35 @@ class ChatFragment : Fragment() {
         )
     }
 
+
+    private fun sendMessage(msg: String) {
+            val message = """
+            {
+                "senderId": "c16049ca-844e-4897-b221-4d93e47e88b3",
+                "recipientId": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
+                "senderName": "Can",
+                "recipientName": "Kaan",
+                "content": "$msg",
+                "timestamp": "${Date().toString()}"
+            }
+        """.trimIndent()
+
+        compositeDisposable?.add(
+            stompClient!!.send("/app/chat", message)
+                .compose(applySchedulers())
+                .subscribe(
+                    { Timber.d("Message sent successfully") },
+                    { throwable: Throwable? -> Timber.e("Error on send message", throwable) })
+
+        )
+    }
+
+    private fun applySchedulers(): CompletableTransformer? {
+        return CompletableTransformer { upstream: Completable ->
+            upstream
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
 }
