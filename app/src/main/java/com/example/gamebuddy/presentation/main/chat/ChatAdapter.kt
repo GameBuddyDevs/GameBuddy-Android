@@ -48,7 +48,7 @@ class ChatAdapter(
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(item: Conversation) {
             binding.apply {
-                txtMessage.text = item.message
+                txtMessage.text = item.messageBody
                 txtTime.text = item.date.formatDateTime()
             }
         }
@@ -62,7 +62,7 @@ class ChatAdapter(
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(item: Conversation) {
             binding.apply {
-                txtMessage.text = item.message
+                txtMessage.text = item.messageBody
                 txtTime.text = item.date.formatDateTime()
             }
         }

@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.main.chat
 sealed class ChatEvent {
 
     data class SendMessage(
+        val matchedUserId: String,
         val message: String
     ) : ChatEvent()
 

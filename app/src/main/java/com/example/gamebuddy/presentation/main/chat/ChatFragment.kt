@@ -65,6 +65,7 @@ class ChatFragment : Fragment() {
 
         //updateEnvironment(apiType = ApiType.MESSAGE, deploymentType = DeploymentType.PRODUCTION)
 
+        //viewModel.handleWebSocket()
         return binding.root
     }
 
@@ -81,29 +82,6 @@ class ChatFragment : Fragment() {
         setClickListeners()
     }
 
-//    @SuppressLint("CheckResult")
-//    private fun connectWebSocketOverStomp() {
-//        val headers: MutableList<StompHeader> = ArrayList()
-//        headers.add(StompHeader("Host", "l2.eren.wtf:4569"))
-//
-//        resetSubscriptions()
-//
-//        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://91.191.173.119:4569/ws/websocket")
-//        stompClient?.connect(headers)
-//
-//        stompClient?.lifecycle()?.subscribe { lifecycleEvent ->
-//            when (lifecycleEvent.type) {
-//                LifecycleEvent.Type.OPENED -> {
-//                    Timber.d("Stomp connection opened")
-//                    stompClient.topic()
-//                }
-//                LifecycleEvent.Type.ERROR -> Timber.e("Stomp connection error ${lifecycleEvent.exception}")
-//                LifecycleEvent.Type.CLOSED -> Timber.d("Stomp connection closed")
-//                else -> {}
-//            }
-//        }
-//    }
-
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             //loading bar
@@ -116,6 +94,8 @@ class ChatFragment : Fragment() {
                     }
                 }
             )
+
+            Timber.d("state: ${state.messages}")
 
             chatAdapter?.apply {
                 submitList(state.messages)
@@ -133,6 +113,82 @@ class ChatFragment : Fragment() {
             setHasFixedSize(true)
             adapter = chatAdapter
         }
+    }
+
+    private fun addItem(message: Message) {
+        //viewModel.onTriggerEvent(ChatEvent.SendMessage(message))
+    }
+
+    private fun resetSubscriptions() {
+        if (compositeDisposable != null) {
+            compositeDisposable?.dispose()
+        }
+        compositeDisposable = CompositeDisposable()
+    }
+
+    private fun createRequest() {
+        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://l2.eren.wtf:4569/ws");
+    }
+
+    private fun scrollToPosition() {
+        val adapter = binding.recyclerViewChat.adapter
+        if (adapter != null && adapter.itemCount > 0) {
+            Timber.d("scrolling to position: ${viewModel.uiState.value!!.messages.size}")
+            binding.recyclerViewChat.smoothScrollToPosition(viewModel.uiState.value!!.messages.size)
+        }
+    }
+
+    private fun setUI() {
+        binding.apply {
+            Timber.d("username: $username avatarUrl: $avatarUrl")
+            txtUsername.text = username
+            imgUsernameAvatar.loadImageFromUrl(avatarUrl)
+        }
+    }
+
+    private fun setupState() {
+        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(userId!!))
+        viewModel.onTriggerEvent(ChatEvent.GetMessagesFromApi(userId!!))
+    }
+
+    private fun getArgs() {
+        userId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
+        username = ChatFragmentArgs.fromBundle(requireArguments()).matchedUsername
+        avatarUrl = ChatFragmentArgs.fromBundle(requireArguments()).matchedAvatar
+    }
+
+    private fun setClickListeners() {
+        binding.apply {
+            btnSendMsg.setOnClickListener {
+//                viewModel.onTriggerEvent(
+//                    ChatEvent.SendMessage(
+//                        matchedUserId = userId!!,
+//                        message = editTxtMsg.text.toString()
+//                    )
+//                )
+                sendMessage(editTxtMsg.text.toString())
+            }
+
+            icAddFriend.setOnClickListener {
+                viewModel.onTriggerEvent(
+                    ChatEvent.AddFriend(
+                        viewModel.uiState.value?.matchedUserId
+                    )
+                )
+            }
+
+            icBack.setOnClickListener { findNavController().popBackStack() }
+        }
+    }
+
+
+    private fun updateEnvironment(apiType: ApiType, deploymentType: DeploymentType) {
+        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
+        EnvironmentManager.environments[index] = EnvironmentModel(
+            apiType = apiType,
+            deploymentType = deploymentType,
+            path = "messages/"
+        )
     }
 
     private fun connectWebSocketOverStomp() {
@@ -182,98 +238,15 @@ class ChatFragment : Fragment() {
         stompClient?.connect()
     }
 
-    private fun addItem(message: Message) {
-        //viewModel.onTriggerEvent(ChatEvent.SendMessage(message))
-    }
-
-    private fun resetSubscriptions() {
-        if (compositeDisposable != null) {
-            compositeDisposable?.dispose()
-        }
-        compositeDisposable = CompositeDisposable()
-    }
-
-    private fun createRequest() {
-        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://l2.eren.wtf:4569/ws");
-
-//        return Request.Builder()
-//            .url(websocketURL)
-//            .build()
-    }
-
-    private fun scrollToPosition() {
-        val adapter = binding.recyclerViewChat.adapter
-        if (adapter != null && adapter.itemCount > 0) {
-            Timber.d("scrolling to position: ${viewModel.uiState.value!!.messages.size}")
-            binding.recyclerViewChat.smoothScrollToPosition(viewModel.uiState.value!!.messages.size)
-        }
-    }
-
-    private fun setUI() {
-        binding.apply {
-            Timber.d("username: $username avatarUrl: $avatarUrl")
-            txtUsername.text = username
-            imgUsernameAvatar.loadImageFromUrl(avatarUrl)
-        }
-    }
-
-    private fun setupState() {
-        viewModel.onTriggerEvent(ChatEvent.SetUserProperties(userId!!))
-        viewModel.onTriggerEvent(ChatEvent.GetMessagesFromApi(userId!!))
-    }
-
-    private fun getArgs() {
-        userId = ChatFragmentArgs.fromBundle(requireArguments()).matchedUserId
-        username = ChatFragmentArgs.fromBundle(requireArguments()).matchedUsername
-        avatarUrl = ChatFragmentArgs.fromBundle(requireArguments()).matchedAvatar
-    }
-
-//    private fun getArgs() {
-//        with(ChatFragmentArgs.fromBundle(requireArguments())) {
-//            userId = matchedUserId
-//            username = matchedUsername
-//            avatarUrl = matchedAvatar
-//        }
-//    }
-
-    private fun setClickListeners() {
-        binding.apply {
-            btnSendMsg.setOnClickListener {
-                sendMessage(editTxtMsg.text.toString())
-                icAddFriend.setOnClickListener {
-                    viewModel.onTriggerEvent(
-                        ChatEvent.AddFriend(
-                            viewModel.uiState.value?.matchedUserId
-                        )
-                    )
-                }
-                icBack.setOnClickListener { findNavController().popBackStack() }
-            }
-        }
-    }
-
-    private fun updateEnvironment(
-        apiType: ApiType,
-        deploymentType: DeploymentType
-    ) {
-        val index = EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
-        EnvironmentManager.environments[index] = EnvironmentModel(
-            apiType = apiType,
-            deploymentType = deploymentType,
-            path = "messages/"
-        )
-    }
-
-
     private fun sendMessage(msg: String) {
-            val message = """
+        val message = """
             {
-                "senderId": "c16049ca-844e-4897-b221-4d93e47e88b3",
-                "recipientId": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
+                "sender": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
+                "receiver": "c815aa8e-0899-426f-84bc-a41cdf216c9a",
                 "senderName": "Can",
-                "recipientName": "Kaan",
-                "content": "$msg",
-                "timestamp": "${Date().toString()}"
+                "receiverName": "Can",
+                "messageBody": "$msg",
+                "date": "2023-05-05T12:00:00.000Z"
             }
         """.trimIndent()
 
@@ -281,9 +254,11 @@ class ChatFragment : Fragment() {
             stompClient!!.send("/app/chat", message)
                 .compose(applySchedulers())
                 .subscribe(
-                    { Timber.d("Message sent successfully") },
+                    {
+                        Timber.d("Message sent successfully")
+                        //viewModel.onTriggerEvent(ChatEvent.SendMessage(userId!!, message))
+                    },
                     { throwable: Throwable? -> Timber.e("Error on send message", throwable) })
-
         )
     }
 
@@ -295,4 +270,15 @@ class ChatFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.disconnectWebSocket()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }
