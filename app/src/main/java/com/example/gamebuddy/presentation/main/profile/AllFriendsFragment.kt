@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentAllFriendsBinding
@@ -55,6 +56,14 @@ class AllFriendsFragment : BaseAuthFragment(), AllFriendsAdapter.OnClickListener
             }
         }
     }
+    private fun removeFriend(userId:String){
+        viewModel.onTriggerEvent(AllFriendsEvent.OnSetUserId(userId))
+        viewModel.onTriggerEvent(AllFriendsEvent.RemoveFriend)
+        viewModel.onTriggerEvent(AllFriendsEvent.ResetAllFriends)
+        allFriendsAdapter?.apply {
+            submitList(viewModel.usersUiState.value?.allFriends)
+        }
+    }
     private fun initRecyclerView(){
         binding.rvCategories.apply {
             layoutManager = LinearLayoutManager(this@AllFriendsFragment.context,LinearLayoutManager.VERTICAL,false)
@@ -64,6 +73,8 @@ class AllFriendsFragment : BaseAuthFragment(), AllFriendsAdapter.OnClickListener
     }
     override fun onItemClick(position: Int, item: AllFriends) {
         Timber.d("onItemClick Message $position : $item")
+        Toast.makeText(context,"Removed Successfully ${item.username}",Toast.LENGTH_LONG).show()
+        removeFriend(item.userId)
     }
     override fun onDestroy() {
         super.onDestroy()

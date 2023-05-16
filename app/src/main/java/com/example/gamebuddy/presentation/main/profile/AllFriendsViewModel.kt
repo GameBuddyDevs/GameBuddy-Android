@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.main.GetAllFriendsUseCase
+import com.example.gamebuddy.domain.usecase.main.removeFriendsUseCase
+import com.example.gamebuddy.presentation.main.home.HomeEvent
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AllFriendsViewModel@Inject constructor(
     private val allFriendsUseCase: GetAllFriendsUseCase,
+    private val removeFriendsUseCase: removeFriendsUseCase,
 ) : ViewModel()  {
     private val _usersUiState: MutableLiveData<AllFriendsState> =
         MutableLiveData(AllFriendsState())
@@ -23,8 +26,30 @@ class AllFriendsViewModel@Inject constructor(
 
     fun onTriggerEvent(event:AllFriendsEvent){
         when(event){
+            is AllFriendsEvent.OnSetUserId -> onSetUserId(userId = event.userId)
             AllFriendsEvent.GetAllFriends -> getAllFriends()
+            AllFriendsEvent.RemoveFriend -> removeFriends()
+            AllFriendsEvent.ResetAllFriends -> resetAllFriends()
             AllFriendsEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
+        }
+    }
+    private fun removeFriends(){
+        val userId = _usersUiState.value?.userId
+        removeFriendsUseCase.execute(userId)
+            .onEach { dataState ->
+                Timber.d("AllFriendsViewModelAcceptFriends: ${dataState.data}")
+                dataState?.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
+    }
+    private fun resetAllFriends(){
+        val userId = _usersUiState.value?.userId
+        usersUiState.value?.resetAllFriends(userId!!)
+    }
+    private fun onSetUserId(userId: String){
+        _usersUiState.value?.let { state ->
+            _usersUiState.value = state.copy(userId = userId)
         }
     }
     private fun getAllFriends(){

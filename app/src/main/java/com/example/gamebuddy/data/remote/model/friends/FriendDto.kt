@@ -12,8 +12,8 @@ data class FriendDto(
 ) {
     fun toFriend(): AllFriends {
         return AllFriends(
+            userId = userId,
             username = username,
-            age = age,
             country = country,
             avatar = avatar
         )

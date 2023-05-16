@@ -17,6 +17,7 @@ import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
 import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
 import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
+import com.example.gamebuddy.domain.usecase.main.removeFriendsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -152,7 +153,17 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
-
+    @Singleton
+    @Provides
+    fun provideremoveFriendsUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): removeFriendsUseCase {
+        return removeFriendsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
     @Singleton
     @Provides
     fun provideGetPopularUseCase(

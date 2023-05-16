@@ -2,6 +2,7 @@ package com.example.gamebuddy.presentation.main.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.ItemAllfriendBinding
+import com.example.gamebuddy.domain.model.market.Market
 import com.example.gamebuddy.domain.model.profile.AllFriends
 
 class AllFriendsAdapter(
@@ -45,7 +47,7 @@ class AllFriendsAdapter(
         fun bind(item:AllFriends){
             binding.apply {
                 binding.removeButton.setOnClickListener {
-                    onClickListener?.onItemClick(absoluteAdapterPosition,item)
+                    showConfirmationDialog(item)
                 }
                 val url = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex1.jpg?alt=media&token=${item.avatar}"
                 Glide.with(binding.root)
@@ -54,6 +56,19 @@ class AllFriendsAdapter(
                 txtUsername.text = item.username
                 txtUsernameDesc.text = item.country
             }
+        }
+        private fun showConfirmationDialog(item: AllFriends) {
+            val builder = AlertDialog.Builder(binding.root.context)
+            builder.setMessage("Do you confirm to delete friend ?")
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                onClickListener?.onItemClick(absoluteAdapterPosition,item)
+                dialog.dismiss()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

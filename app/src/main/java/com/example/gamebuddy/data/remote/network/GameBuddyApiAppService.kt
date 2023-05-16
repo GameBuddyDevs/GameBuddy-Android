@@ -101,6 +101,13 @@ interface GameBuddyApiAppService {
         @Body acceptRejectFriendRequest: AcceptRejectFriendRequest,
     ): BasicResponse
 
+    @POST("remove/friend")
+    @Api(ApiType.APPLICATION)
+    suspend fun removeFriends(
+        @Header("Authorization") token: String,
+        @Body acceptRejectFriendRequest: AcceptRejectFriendRequest,
+    ): BasicResponse
+
     @GET("get/popular/games")
     @Api(ApiType.APPLICATION)
     suspend fun getPopularGames(
