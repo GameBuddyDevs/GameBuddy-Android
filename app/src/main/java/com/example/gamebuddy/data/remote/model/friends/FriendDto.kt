@@ -1,19 +1,21 @@
 package com.example.gamebuddy.data.remote.model.friends
 
 import com.example.gamebuddy.domain.model.Friend
+import com.example.gamebuddy.domain.model.profile.AllFriends
 
 data class FriendDto(
+    val userId:String,
+    val username: String,
     val age: Int,
-    val avatar: String,
     val country: String,
-    val lastOnlineDate: String,
-    val username: String
+    val avatar: String,
 ) {
-    fun toFriend(): Friend {
-        return Friend(
+    fun toFriend(): AllFriends {
+        return AllFriends(
+            username = username,
             age = age,
-            avatar = avatar,
-            username = username
+            country = country,
+            avatar = avatar
         )
     }
 }

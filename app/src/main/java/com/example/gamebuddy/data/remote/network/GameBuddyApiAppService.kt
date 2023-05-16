@@ -40,6 +40,12 @@ interface GameBuddyApiAppService {
         @Header("Accept") language: String = "*/*",
     ): FriendsResponse
 
+    @GET("get/friends")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAllFriends(
+        @Header("Authorization") token: String
+    ): FriendsResponse
+
     @POST("send/friend")
     @Api(ApiType.APPLICATION)
     suspend fun sendFriendRequest(

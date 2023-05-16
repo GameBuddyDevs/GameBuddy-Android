@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
+import com.example.gamebuddy.domain.usecase.main.GetAllFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
@@ -53,6 +54,17 @@ object AppModule {
         authTokenDao: AuthTokenDao
     ): GetFriendsUseCase {
         return GetFriendsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+    @Singleton
+    @Provides
+    fun provideGetAllFriendsUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetAllFriendsUseCase {
+        return GetAllFriendsUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
