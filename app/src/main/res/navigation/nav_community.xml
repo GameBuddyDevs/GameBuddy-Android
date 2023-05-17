@@ -22,5 +22,13 @@
         <argument
             android:name="postId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_commentFragment_to_joinCommunityFragment"
+            app:destination="@id/joinCommunityFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/joinCommunityFragment"
+        android:name="com.example.gamebuddy.presentation.main.joincommunity.JoinCommunityFragment"
+        android:label="fragment_join_community"
+        tools:layout="@layout/fragment_join_community" />
 </navigation>
