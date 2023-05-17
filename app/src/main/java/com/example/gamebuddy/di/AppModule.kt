@@ -16,7 +16,6 @@ import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
-import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
 import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.removeFriendsUseCase
 import dagger.Module
@@ -174,18 +173,6 @@ object AppModule {
         authTokenDao: AuthTokenDao
     ): GetMessagesUseCase {
         return GetMessagesUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideSendMessageUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): SendMessageUseCase {
-        return SendMessageUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
