@@ -7,7 +7,6 @@ import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.market.MarketResponse
 import com.example.gamebuddy.data.remote.model.message.MessageResponse
-import com.example.gamebuddy.data.remote.model.post.PostResponse
 import com.example.gamebuddy.data.remote.model.popularGames.PopularGamesResponse
 import com.example.gamebuddy.data.remote.model.profile.ProfileResponse
 import com.example.gamebuddy.data.remote.model.users.UsersResponse
@@ -67,19 +66,6 @@ interface GameBuddyApiAppService {
         @Body request: SendMessageRequest
     ): BasicResponse
 
-    @GET("get/user/info/{userId}")
-    @Api(ApiType.APPLICATION)
-    suspend fun getProfile(
-        @Header("Authorization") token: String,
-        @Path("userId") userId: String,
-    ): ProfileResponse
-
-    @GET("get/recommendations")
-    @Api(ApiType.MATCH)
-    suspend fun getUsers(
-        @Header("Authorization") token: String,
-    ): UsersResponse
-
     @GET("get/requests/friends")
     @Api(ApiType.APPLICATION)
     suspend fun getPendingFriends(
@@ -119,5 +105,13 @@ interface GameBuddyApiAppService {
     suspend fun getAvatars(
         @Header("Authorization") token: String,
     ): MarketResponse
+
+    @GET("get/user/info/{userId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun getProfile(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+    ): ProfileResponse
+
 
 }

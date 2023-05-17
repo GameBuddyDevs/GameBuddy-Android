@@ -9,13 +9,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.ItemMessageBinding
+import timber.log.Timber
 
 class ChatBoxAdapter(
     private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, item: Inbox)
+        fun onItemClick(item: Inbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,8 +43,10 @@ class ChatBoxAdapter(
             binding.apply {
 
                 root.setOnClickListener {
-                    onClickListener?.onItemClick(absoluteAdapterPosition, item)
+                    onClickListener?.onItemClick(item)
                 }
+
+                Timber.d("bind: ${item.username}")
 
                 Glide.with(binding.root)
                     .setDefaultRequestOptions(requestOptions)

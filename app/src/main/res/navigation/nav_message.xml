@@ -9,5 +9,22 @@
         android:id="@+id/messageFragment"
         android:name="com.example.gamebuddy.presentation.main.chatbox.ChatBoxFragment"
         android:label="fragment_message"
-        tools:layout="@layout/fragment_chat_box" />
+        tools:layout="@layout/fragment_chat_box" >
+        <action
+            android:id="@+id/action_messageFragment_to_chatFragment2"
+            app:destination="@id/chatFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment2"
+        android:name="com.example.gamebuddy.presentation.main.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="matchedUserId"
+            app:argType="string" />
+        <argument
+            android:name="matchedAvatar"
+            app:argType="string" />
+        <argument android:name="matchedUsername" />
+    </fragment>
 </navigation>

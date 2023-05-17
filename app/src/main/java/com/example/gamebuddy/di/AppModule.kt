@@ -11,6 +11,7 @@ import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
@@ -59,6 +60,7 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
     @Singleton
     @Provides
     fun provideGetAllFriendsUseCase(
@@ -67,77 +69,6 @@ object AppModule {
     ): GetAllFriendsUseCase {
         return GetAllFriendsUseCase(
             service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetChatBoxUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase{
-        return GetChatBoxUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideProfileUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao,
-    ): ProfileUseCase {
-        return ProfileUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideSendFriendRequestUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): SendFriendRequestUseCase {
-        return SendFriendRequestUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetMessagesUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): GetMessagesUseCase {
-        return GetMessagesUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideSendMessageUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): SendMessageUseCase {
-        return SendMessageUseCase(
-            service = service,
-            authTokenDao = authTokenDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetMessagesFromWebSocketUseCase(
-        service: GameBuddyApiAppService,
-        authTokenDao: AuthTokenDao
-    ): GetMessagesFromWebSocketUseCase {
-        return GetMessagesFromWebSocketUseCase(
             authTokenDao = authTokenDao
         )
     }
@@ -199,5 +130,77 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideGetChatBoxUseCase(
+        service: GameBuddyApiMessageService,
+        authTokenDao: AuthTokenDao
+    ): GetChatBoxUseCase{
+        return GetChatBoxUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): ProfileUseCase {
+        return ProfileUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSendFriendRequestUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): SendFriendRequestUseCase {
+        return SendFriendRequestUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetMessagesUseCase(
+        service: GameBuddyApiMessageService,
+        authTokenDao: AuthTokenDao
+    ): GetMessagesUseCase {
+        return GetMessagesUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSendMessageUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): SendMessageUseCase {
+        return SendMessageUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetMessagesFromWebSocketUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetMessagesFromWebSocketUseCase {
+        return GetMessagesFromWebSocketUseCase(
+            authTokenDao = authTokenDao
+        )
+    }
+
 
 }

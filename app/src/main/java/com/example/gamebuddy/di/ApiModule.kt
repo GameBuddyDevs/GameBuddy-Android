@@ -5,6 +5,7 @@ import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiCommunityService
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMatchService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.util.BaseUrlInterceptor
 import com.google.gson.Gson
 import dagger.Module
@@ -100,6 +101,14 @@ object ApiModule {
         retrofit: Retrofit
     ): GameBuddyApiCommunityService {
         return retrofit.create(GameBuddyApiCommunityService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGameBuddyMessageService(
+        retrofit: Retrofit
+    ): GameBuddyApiMessageService {
+        return retrofit.create(GameBuddyApiMessageService::class.java)
     }
 
 }

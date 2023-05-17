@@ -3,6 +3,7 @@ package com.example.gamebuddy.domain.usecase.main
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class GetChatBoxUseCase(
-    private val service: GameBuddyApiAppService,
+    private val service: GameBuddyApiMessageService,
     private val authTokenDao: AuthTokenDao
 ) {
 
@@ -26,9 +27,12 @@ class GetChatBoxUseCase(
             throw Exception("Please login again.")
         }
 
-        val inboxList = getFakeData()
-        emit(DataState.success(response = null, data = inboxList))
+        val response = service.getInbox(token = "Bearer $token")
 
+        if (!response.status.success)
+            throw Exception(response.status.message)
+
+        emit(DataState.success(response = null, data = response.body.data.inboxList))
     }.catch { e ->
         Timber.e("GetFriendsUseCase Error: ${e.printStackTrace()}")
         emit(handleUseCaseException(e))
@@ -37,6 +41,13 @@ class GetChatBoxUseCase(
 
 private fun getFakeData(): List<Inbox> {
     return listOf(
+        Inbox(
+            avatar = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex3.jpg?alt=media&token=5906921d-2787-4049-8b46-23894dc3e8db",
+            lastMessage = "Socket test",
+            lastMessageTime = "2023-03-17T09:28:00Z",
+            userId = "c815aa8e-0899-426f-84bc-a41cdf216c9a",
+            username = "igakaan"
+        ),
         Inbox(
             avatar = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex3.jpg?alt=media&token=5906921d-2787-4049-8b46-23894dc3e8db",
             lastMessage = "Hey, how's it going?",

@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.local.auth.toAuthToken
 import com.example.gamebuddy.data.remote.model.message.MessageData
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
+import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.data.remote.request.SendFriendRequest
 import com.example.gamebuddy.util.DataState
 import com.example.gamebuddy.util.handleUseCaseException
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class GetMessagesUseCase(
-    private val service: GameBuddyApiAppService,
+    private val service: GameBuddyApiMessageService,
     private val authTokenDao: AuthTokenDao,
 ) {
 
