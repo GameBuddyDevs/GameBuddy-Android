@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_communityFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_communityFragment_to_joinCommunityFragment"
+            app:destination="@id/joinCommunityFragment" />
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
@@ -22,9 +25,6 @@
         <argument
             android:name="postId"
             app:argType="string" />
-        <action
-            android:id="@+id/action_commentFragment_to_joinCommunityFragment"
-            app:destination="@id/joinCommunityFragment" />
     </fragment>
     <fragment
         android:id="@+id/joinCommunityFragment"

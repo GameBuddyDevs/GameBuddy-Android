@@ -64,4 +64,5 @@
     <string name="gamebuddy">GameBuddy</string>
     <string name="pending_friend_requests">Pending friend requests</string>
     <string name="popular_games">Popular games</string>
+    <string name="join_community">Join Community</string>
 </resources>

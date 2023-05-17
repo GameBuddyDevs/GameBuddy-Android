@@ -73,7 +73,7 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
             icCreatePost.setOnClickListener {
                 //findNavController().navigate(R.id.action_communityFragment_to_createPostFragment)
             }
-            icJoinCommunity.setOnClickListener { findNavController() }
+            icJoinCommunity.setOnClickListener { findNavController().navigate(R.id.action_communityFragment_to_joinCommunityFragment) }
         }
     }
 
