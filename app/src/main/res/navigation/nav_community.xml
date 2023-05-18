@@ -30,5 +30,14 @@
         android:id="@+id/joinCommunityFragment"
         android:name="com.example.gamebuddy.presentation.main.joincommunity.JoinCommunityFragment"
         android:label="fragment_join_community"
-        tools:layout="@layout/fragment_join_community" />
+        tools:layout="@layout/fragment_join_community" >
+        <action
+            android:id="@+id/action_joinCommunityFragment_to_communityDetailFragment"
+            app:destination="@id/communityDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityDetailFragment"
+        android:name="com.example.gamebuddy.presentation.main.communitydetail.CommunityDetailFragment"
+        android:label="fragment_community_detail"
+        tools:layout="@layout/fragment_community_detail" />
 </navigation>

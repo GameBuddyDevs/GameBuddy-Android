@@ -2,6 +2,7 @@ package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.comment.CommentResponse
+import com.example.gamebuddy.data.remote.model.joincommunity.JoinCommunityResponse
 import com.example.gamebuddy.data.remote.model.post.PostResponse
 import com.example.gamebuddy.data.remote.request.CreateCommentRequest
 import com.example.gamebuddy.util.Api
@@ -13,6 +14,10 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface GameBuddyApiCommunityService {
+
+    @POST
+    @Api(ApiType.COMMUNITIES)
+    suspend fun getCommunities(): JoinCommunityResponse
 
     @POST("like/post/{postId}")
     @Api(ApiType.COMMUNITIES)
