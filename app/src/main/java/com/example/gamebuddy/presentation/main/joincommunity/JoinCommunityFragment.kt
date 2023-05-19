@@ -13,8 +13,9 @@ import com.example.gamebuddy.databinding.FragmentJoinCommunityBinding
 import com.example.gamebuddy.presentation.main.community.CommunityEvent
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
 
     private val viewModel: JoinCommunityViewModel by viewModels()

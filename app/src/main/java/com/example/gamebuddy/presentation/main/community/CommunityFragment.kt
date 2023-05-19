@@ -10,9 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
+import com.example.gamebuddy.presentation.dialog.CommunityDialogFragment
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
@@ -69,11 +71,18 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
     }
 
     private fun setClickListeners() {
-        binding.apply {
-            icCreatePost.setOnClickListener {
-                //findNavController().navigate(R.id.action_communityFragment_to_createPostFragment)
+        val bottomSheet = CommunityDialogFragment()
+        bottomSheet.setOnActionCompleteListener(object : CommunityDialogFragment.OnActionSelectedListener {
+            override fun onActionSelected(destination: Int) {
+                bottomSheet.dismiss()
+                findNavController().navigate(destination)
             }
-            icJoinCommunity.setOnClickListener { findNavController().navigate(R.id.action_communityFragment_to_joinCommunityFragment) }
+        })
+
+        binding.apply {
+            icCommunitiesMenu.setOnClickListener {
+                bottomSheet.show(childFragmentManager, bottomSheet.tag)
+            }
         }
     }
 

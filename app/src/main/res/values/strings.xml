@@ -65,4 +65,6 @@
     <string name="pending_friend_requests">Pending friend requests</string>
     <string name="popular_games">Popular games</string>
     <string name="join_community">Join Community</string>
+    <string name="create_a_community">Create a community</string>
+    <string name="explore_communities">Explore communities</string>
 </resources>

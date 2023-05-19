@@ -32,6 +32,9 @@
         android:label="fragment_join_community"
         tools:layout="@layout/fragment_join_community" >
         <action
+            android:id="@+id/action_joinCommunityFragment_to_communityDialogFragment"
+            app:destination="@id/communityDialogFragment" />
+        <action
             android:id="@+id/action_joinCommunityFragment_to_communityDetailFragment"
             app:destination="@id/communityDetailFragment" />
     </fragment>
@@ -40,4 +43,8 @@
         android:name="com.example.gamebuddy.presentation.main.communitydetail.CommunityDetailFragment"
         android:label="fragment_community_detail"
         tools:layout="@layout/fragment_community_detail" />
+    <fragment
+        android:id="@+id/communityDialogFragment"
+        android:name="com.example.gamebuddy.presentation.dialog.CommunityDialogFragment"
+        android:label="CommunityDialogFragment" />
 </navigation>

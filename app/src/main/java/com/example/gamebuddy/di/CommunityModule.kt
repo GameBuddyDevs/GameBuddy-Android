@@ -4,6 +4,7 @@ import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiCommunityService
 import com.example.gamebuddy.domain.usecase.comments.GetCommentsUseCase
 import com.example.gamebuddy.domain.usecase.comments.LikeCommentUseCase
+import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
 import com.example.gamebuddy.domain.usecase.community.GetPostUseCase
 import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import dagger.Module
@@ -15,6 +16,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CommunityModule {
+
+    @Singleton
+    @Provides
+    fun provideGetCommunitiesUseCase(
+        service: GameBuddyApiCommunityService
+    ): GetCommunitiesUseCase {
+        return GetCommunitiesUseCase(
+            service = service
+        )
+    }
 
     @Singleton
     @Provides
