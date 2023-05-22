@@ -42,7 +42,25 @@
         android:id="@+id/communityDetailFragment"
         android:name="com.example.gamebuddy.presentation.main.communitydetail.CommunityDetailFragment"
         android:label="fragment_community_detail"
-        tools:layout="@layout/fragment_community_detail" />
+        tools:layout="@layout/fragment_community_detail" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="background"
+            app:argType="string" />
+        <argument android:name="avatar"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="memberCount"
+            app:argType="string" />
+        <argument
+            android:name="postCount"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/communityDialogFragment"
         android:name="com.example.gamebuddy.presentation.dialog.CommunityDialogFragment"
