@@ -4,20 +4,7 @@ import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAppService
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
-import com.example.gamebuddy.domain.usecase.main.GetAllFriendsUseCase
-import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
-import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
-import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
-import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
-import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
-import com.example.gamebuddy.domain.usecase.main.MarketUseCase
-import com.example.gamebuddy.domain.usecase.main.MatchUseCase
-import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
-import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
-import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
-import com.example.gamebuddy.domain.usecase.main.SendMessageUseCase
-import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
-import com.example.gamebuddy.domain.usecase.main.removeFriendsUseCase
+import com.example.gamebuddy.domain.usecase.main.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -199,5 +186,18 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+    @Singleton
+    @Provides
+    fun provideAchievementUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): AchievementUseCase {
+        return AchievementUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+
 
 }

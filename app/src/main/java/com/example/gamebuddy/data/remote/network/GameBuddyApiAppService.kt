@@ -1,6 +1,7 @@
 package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.PendingFriends.PendingFriendsResponse
+import com.example.gamebuddy.data.remote.model.achievement.AchievementResponse
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
@@ -119,5 +120,13 @@ interface GameBuddyApiAppService {
     suspend fun getAvatars(
         @Header("Authorization") token: String,
     ): MarketResponse
+
+    @GET("get/achievements")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAchievements(
+        @Header("Authorization") token: String,
+    ): AchievementResponse
+
+
 
 }

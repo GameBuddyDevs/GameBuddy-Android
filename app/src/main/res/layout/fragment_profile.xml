@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,6 +25,7 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -118,6 +118,19 @@
         app:layout_constraintStart_toStartOf="@+id/age_text"
         app:layout_constraintTop_toBottomOf="@+id/age_text"
         app:layout_constraintVertical_bias="0.375" />
+
+    <ImageView
+        android:id="@+id/trophy_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="30dp"
+        android:clickable="true"
+        android:contentDescription="Trophy Button"
+        android:src="@drawable/trophy"
+        app:layout_constraintEnd_toStartOf="@id/profile_avatar"
+        app:layout_constraintStart_toStartOf="@id/imageView"
+        app:layout_constraintTop_toTopOf="@id/profile_avatar" />
+
 
     <TextView
         android:id="@+id/community_text"
