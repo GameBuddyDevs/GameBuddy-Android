@@ -16,7 +16,7 @@ class JoinCommunityAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onCommunityClick(communityId: String)
+        fun onCommunityClick(community: Community)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,7 +47,7 @@ class JoinCommunityAdapter(
                 }
 
                 root.setOnClickListener {
-                    onClickListener?.onCommunityClick(item.communityId)
+                    onClickListener?.onCommunityClick(item)
                 }
             }
         }

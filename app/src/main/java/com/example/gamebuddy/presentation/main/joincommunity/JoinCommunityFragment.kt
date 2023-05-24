@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.gamebuddy.R
+import com.example.gamebuddy.data.remote.model.joincommunity.Community
 import com.example.gamebuddy.databinding.FragmentJoinCommunityBinding
 import com.example.gamebuddy.presentation.main.community.CommunityEvent
 import com.example.gamebuddy.util.StateMessageCallback
@@ -60,9 +61,22 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
         }
     }
 
-    override fun onCommunityClick(communityId: String) {
-        val bundle = bundleOf("communityId" to communityId)
-        findNavController().navigate(R.id.action_joinCommunityFragment_to_communityDetailFragment, bundle)
+    override fun onCommunityClick(community: Community) {
+
+        val bundle = bundleOf(
+            "communityId" to community.communityId,
+        )
+
+        val action = JoinCommunityFragmentDirections.actionJoinCommunityFragmentToCommunityDetailFragment(
+                community.name,
+                community.wallpaper,
+                community.communityAvatar,
+                community.description,
+                community.memberCount.toString(),
+                "40"
+            )
+
+        findNavController().navigate(action)
     }
 
     /*
