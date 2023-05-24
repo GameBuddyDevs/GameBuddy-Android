@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.ItemAllfriendBinding
-import com.example.gamebuddy.domain.model.market.Market
 import com.example.gamebuddy.domain.model.profile.AllFriends
 
 class AllFriendsAdapter(
@@ -49,9 +48,8 @@ class AllFriendsAdapter(
                 binding.removeButton.setOnClickListener {
                     showConfirmationDialog(item)
                 }
-                val url = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex1.jpg?alt=media&token=${item.avatar}"
                 Glide.with(binding.root)
-                    .load(url)
+                    .load(item.avatar)
                     .into(imgPendingUserPhoto)
                 txtUsername.text = item.username
                 txtUsernameDesc.text = item.country

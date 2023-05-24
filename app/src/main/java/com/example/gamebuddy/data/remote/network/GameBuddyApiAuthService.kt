@@ -1,8 +1,6 @@
 package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.forgotPassword.ForgotPasswordResponse
-import com.example.gamebuddy.data.remote.model.games.GameResponse
-import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.login.LoginResponse
 import com.example.gamebuddy.data.remote.model.newPassword.NewPasswordResponse
 import com.example.gamebuddy.data.remote.model.register.RegisterResponse
@@ -42,6 +40,27 @@ interface GameBuddyApiAuthService {
         @Header("Authorization") token: String,
         @Body usernameRequest: usernameRequest,
     ): UsernameResponse
+
+    @PUT("change/age")
+    @Api(ApiType.AUTH)
+    suspend fun newAge(
+        @Header("Authorization") token: String,
+        @Body newAgeRequest: NewAgeRequest,
+    ):UsernameResponse
+
+    @PUT("change/games")
+    @Api(ApiType.AUTH)
+    suspend fun newGames(
+        @Header("Authorization") token: String,
+        @Body newGamesRequest: NewGamesRequest,
+    ):UsernameResponse
+
+    @PUT("change/keywords")
+    @Api(ApiType.AUTH)
+    suspend fun newKeywords(
+        @Header("Authorization") token: String,
+        @Body newGamesRequest: NewGamesRequest,
+    ):UsernameResponse
 
     @POST("verify")
     @Api(ApiType.AUTH)

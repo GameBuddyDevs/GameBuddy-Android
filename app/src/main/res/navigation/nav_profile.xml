@@ -29,18 +29,47 @@
             android:name="age"
             app:argType="string" />
         <argument
-            android:name="games"
-            app:argType="string" />
-        <argument
-            android:name="keywords"
-            app:argType="string" />
-        <argument
             android:name="avatar"
             app:argType="string" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_editGameFragment"
+            app:destination="@id/editGameFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_editKeywordFragment"
+            app:destination="@id/editKeywordFragment" />
+        <argument
+            android:name="games"
+            app:argType="string[]" />
+        <argument
+            android:name="keywords"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/allFriendsFragment"
         android:name="com.example.gamebuddy.presentation.main.profile.AllFriendsFragment"
         android:label="fragment_all_friends"
         tools:layout="@layout/fragment_all_friends" />
+    <fragment
+        android:id="@+id/editGameFragment"
+        android:name="com.example.gamebuddy.presentation.main.profile.EditGameFragment"
+        android:label="fragment_edit_game"
+        tools:layout="@layout/fragment_edit_game" >
+        <action
+            android:id="@+id/action_editGameFragment_to_editLoadingFragment"
+            app:destination="@id/editLoadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editKeywordFragment"
+        android:name="com.example.gamebuddy.presentation.main.profile.EditKeywordFragment"
+        android:label="fragment_edit_keyword"
+        tools:layout="@layout/fragment_edit_keyword" >
+        <action
+            android:id="@+id/action_editKeywordFragment_to_editLoadingFragment"
+            app:destination="@id/editLoadingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editLoadingFragment"
+        android:name="com.example.gamebuddy.presentation.main.profile.EditLoadingFragment"
+        android:label="fragment_edit_loading"
+        tools:layout="@layout/fragment_edit_loading" />
 </navigation>

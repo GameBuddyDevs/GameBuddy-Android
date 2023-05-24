@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -24,7 +23,6 @@ import com.example.gamebuddy.util.processQueue
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import timber.log.Timber
 
 class ProfileFragment : BaseAuthFragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -52,18 +50,11 @@ class ProfileFragment : BaseAuthFragment() {
         binding.toolbarProfile.setOnMenuItemClickListener { item ->
             if(item.itemId == R.id.action_settings)
             {
-                var gameString = ""
-                var keywordString = ""
-                for(game in user[0].games){
-                    gameString += "${game} - "
-                }
-                for(keyword in user[0].keywords){
-                    keywordString += "${keyword} - "
-                }
+
                 val avatar = user[0].avatar
                 findNavController().
                 navigate(ProfileFragmentDirections.
-                actionProfileFragmentToEditProfileFragment(user[0].username,user[0].age,gameString,keywordString,avatar!!))
+                actionProfileFragmentToEditProfileFragment(user[0].username,user[0].age,avatar!!,user[0].games.toTypedArray(),user[0].keywords.toTypedArray()))
                 true
             }else{
                 false

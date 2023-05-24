@@ -51,9 +51,8 @@ class PendingFriendAdapter(
                 binding.imageButton2.setOnClickListener {
                     onClickListener?.onItemClick(absoluteAdapterPosition,item,false)
                 }
-                val url = "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fapex1.jpg?alt=media&token=${item.avatar}"
                 Glide.with(binding.root)
-                    .load(url)
+                    .load(item.avatar)
                     .into(imgPendingUserPhoto)
                 txtUsername.text = item.username
                 txtUsernameDesc.text = item.country
