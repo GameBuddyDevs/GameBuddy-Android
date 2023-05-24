@@ -84,7 +84,7 @@
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/poppins_bold"
         android:text="4000"
-        android:textColor="@color/text"
+        android:textColor="@color/pink_500"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/txt_post_count"
         app:layout_constraintTop_toBottomOf="@+id/img_community_background" />
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/member"
-        android:textColor="@color/text"
+        android:textColor="@color/pink_500"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/txt_member_count"
         app:layout_constraintStart_toStartOf="@+id/txt_member_count"
@@ -109,7 +109,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/poppins_bold"
         android:text="4000"
-        android:textColor="@color/text"
+        android:textColor="@color/pink_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_community_background" />
 
@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/post"
-        android:textColor="@color/text"
+        android:textColor="@color/pink_500"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/txt_post_count"
         app:layout_constraintStart_toStartOf="@+id/txt_post_count"
