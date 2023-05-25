@@ -15,7 +15,7 @@ import retrofit2.http.Path
 
 interface GameBuddyApiCommunityService {
 
-    @POST
+    @GET("get/communities")
     @Api(ApiType.COMMUNITY)
     suspend fun getCommunities(): JoinCommunityResponse
 

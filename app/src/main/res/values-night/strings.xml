@@ -67,4 +67,5 @@
     <string name="select_a_minimum_of_your_3_favorite_games">Select a minimum of your 3 favorite games</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
+    <string name="join">Join</string>
 </resources>

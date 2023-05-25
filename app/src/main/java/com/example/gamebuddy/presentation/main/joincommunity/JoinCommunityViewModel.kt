@@ -21,6 +21,10 @@ class JoinCommunityViewModel @Inject constructor(
     private val _uiState: MutableLiveData<JoinCommunityState> = MutableLiveData(JoinCommunityState())
     val uiState: MutableLiveData<JoinCommunityState> get() = _uiState
 
+    init {
+        onTriggerEvent(JoinCommunityEvent.GetCommunities)
+    }
+
     fun onTriggerEvent(event: JoinCommunityEvent){
         when (event) {
             is JoinCommunityEvent.GetCommunities -> getCommunities()

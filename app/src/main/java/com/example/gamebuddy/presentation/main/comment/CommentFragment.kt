@@ -19,8 +19,10 @@ import com.example.gamebuddy.util.ApiType
 import com.example.gamebuddy.util.DeploymentType
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
+import dagger.hilt.android.AndroidEntryPoint
 import org.w3c.dom.Comment
 
+@AndroidEntryPoint
 class CommentFragment : Fragment(), CommentAdapter.OnClickListener {
 
     private var commentAdapter: CommentAdapter? = null
@@ -84,19 +86,29 @@ class CommentFragment : Fragment(), CommentAdapter.OnClickListener {
     }
 
     private fun setClickListeners() {
-        binding.icLikePost.setOnClickListener {
-            viewModel.onTriggerEvent(CommentEvent.LikeCurrentPost)
-        }
+        binding.apply {
+            icLikePost.setOnClickListener {
+                viewModel.onTriggerEvent(CommentEvent.LikeCurrentPost)
+            }
 
-        binding.icBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
+            btnSendComment.setOnClickListener {
+                viewModel.onTriggerEvent(CommentEvent.CreateComment(comment = editTxtMsg.text.toString()))
+                editTxtMsg.text.clear()
+            }
 
+
+            binding.icBack.setOnClickListener {
+                findNavController().popBackStack()
+
+            }
+
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
 }
+
+

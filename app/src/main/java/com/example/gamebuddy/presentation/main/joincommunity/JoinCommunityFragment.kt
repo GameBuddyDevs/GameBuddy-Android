@@ -8,10 +8,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.joincommunity.Community
 import com.example.gamebuddy.databinding.FragmentJoinCommunityBinding
 import com.example.gamebuddy.presentation.main.community.CommunityEvent
+import com.example.gamebuddy.presentation.main.community.PostAdapter
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +43,16 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAdapter()
         collectState()
+    }
+
+    private fun initAdapter() {
+        binding.rvCommunityList.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            joinCommunityAdapter = JoinCommunityAdapter(this@JoinCommunityFragment)
+            adapter = joinCommunityAdapter
+        }
     }
 
     private fun collectState() {

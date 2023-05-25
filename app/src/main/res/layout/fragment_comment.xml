@@ -1,78 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.main.comment.CommentFragment">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <RelativeLayout
+                android:id="@+id/toolbar_container"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:id="@+id/toolbar_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ic_back"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/icon_to_turning_previous_page_which_is_chatbox_screen"
+                    android:src="@drawable/ic_arrow_back_24" />
 
-                    <ImageView
-                        android:id="@+id/ic_back"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@string/icon_to_turning_previous_page_which_is_chatbox_screen"
-                        android:src="@drawable/ic_arrow_back_24" />
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/comments"
+                    android:textColor="@color/text"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/txt_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/poppins_semi_bold"
-                        android:text="@string/comments"
-                        android:textColor="@color/text"
-                        android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/ic_like_post"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_thumb_up_black_24" />
 
-                    <ImageView
-                        android:id="@+id/ic_like_post"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_thumb_up_black_24" />
+            </RelativeLayout>
 
-                </RelativeLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
-            </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/msg_container"
+        android:layout_below="@+id/app_bar"
+        android:orientation="vertical"
+        tools:itemCount="50"
+        android:layout_marginBottom="16dp"
+        tools:listitem="@layout/item_comment" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_comments"
+    <RelativeLayout
+        android:id="@+id/msg_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="4dp"
+        android:background="@drawable/custom_edit_text_message">
+
+        <EditText
+            android:id="@+id/edit_txt_msg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:itemCount="5"
-            android:orientation="vertical"
-            tools:listitem="@layout/item_comment" />
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@id/btn_send_comment"
+            android:autofillHints="Your message"
+            android:hint="@string/message"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/btn_send_comment"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_send_black_24" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

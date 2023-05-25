@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:layout_marginBottom="32dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view_community"
@@ -64,28 +66,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_community_name" />
 
             <TextView
-                android:id="@+id/txt_community_date"
+                android:id="@+id/txt_community_member_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:padding="8dp"
-                android:text="Since 2023-01-01"
+                android:padding="16dp"
+                android:text="2000 member"
                 android:textColor="@color/pink_200"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_community_description" />
 
-            <TextView
-                android:id="@+id/txt_community_member_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:padding="8dp"
-                android:text="2000 member"
-                android:textColor="@color/pink_200"
-                android:textSize="16sp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/join"
+                app:cornerRadius="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_community_description" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_community_member_count" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

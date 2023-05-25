@@ -41,7 +41,6 @@ class JoinCommunityAdapter(
                 imgCommunity.loadImageFromUrl(item.communityAvatar)
                 txtCommunityName.text = item.name
                 txtCommunityDescription.text = item.description
-                "Since ${item.createdDate}".also { date -> txtCommunityDate.text = date }
                 "${item.memberCount} Member".also { memberCount ->
                     txtCommunityMemberCount.text = memberCount
                 }
