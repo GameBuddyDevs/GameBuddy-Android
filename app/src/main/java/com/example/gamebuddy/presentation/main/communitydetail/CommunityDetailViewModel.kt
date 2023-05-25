@@ -1,56 +1,34 @@
-package com.example.gamebuddy.presentation.main.community
+package com.example.gamebuddy.presentation.main.communitydetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.community.GetPostFromCommunityUseCase
-import com.example.gamebuddy.domain.usecase.community.GetPostsUseCase
-import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
-@HiltViewModel
-class CommunityViewModel @Inject constructor(
-    private val likePostUseCase: LikePostUseCase,
-    private val getPostsUseCase: GetPostsUseCase,
-) : ViewModel() {
+class CommunityDetailViewModel @Inject constructor(
+    private val getPostFromCommunityUseCase: GetPostFromCommunityUseCase
+): ViewModel() {
 
-    private val _uiState: MutableLiveData<CommunityState> = MutableLiveData(CommunityState())
-    val uiState: MutableLiveData<CommunityState> get() = _uiState
+    private val _uiState: MutableLiveData<CommunityDetailState> = MutableLiveData(CommunityDetailState())
+    val uiState: MutableLiveData<CommunityDetailState> get() = _uiState
 
-    init {
-        onTriggerEvent(CommunityEvent.GetPosts)
-    }
-
-    fun onTriggerEvent(event: CommunityEvent) {
+    fun onTriggerEvent(event: CommunityDetailEvent) {
         when (event) {
-            is CommunityEvent.GetPosts -> getPosts()
-            is CommunityEvent.LikePost -> likePost(event.postId)
-            CommunityEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
+            is CommunityDetailEvent.GetPosts -> getPosts(event.communityId)
+            CommunityDetailEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
         }
     }
 
-    private fun likePost(postId: String) {
+    private fun getPosts(communityId: String) {
         _uiState.value?.let { state ->
-            likePostUseCase.execute(postId).onEach { dataState ->
-                _uiState.value = state.copy(isLoading = dataState.isLoading)
-
-                dataState.stateMessage?.let { stateMessage ->
-                    appendToMessageQueue(stateMessage)
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    private fun getPosts() {
-        _uiState.value?.let { state ->
-            getPostsUseCase.execute().onEach { dataState ->
+            getPostFromCommunityUseCase.execute(communityId).onEach { dataState ->
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { posts ->

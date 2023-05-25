@@ -60,6 +60,9 @@
         <argument
             android:name="postCount"
             app:argType="string" />
+        <argument
+            android:name="communityId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/communityDialogFragment"

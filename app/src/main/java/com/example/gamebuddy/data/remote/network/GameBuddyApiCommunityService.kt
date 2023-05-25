@@ -16,40 +16,47 @@ import retrofit2.http.Path
 interface GameBuddyApiCommunityService {
 
     @POST
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun getCommunities(): JoinCommunityResponse
 
     @POST("like/post/{postId}")
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun likePost(
         @Header("Authorization") token: String,
         @Path("postId") postId: String,
     ): BasicResponse
 
     @POST("like/comment/{commentId}")
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun likeComment(
         @Header("Authorization") token: String,
         @Path("commentId") commentId: String,
     ): BasicResponse
 
     @POST("create/comment")
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun createComment(
         @Header("Authorization") token: String,
         @Body comment: CreateCommentRequest,
     ): BasicResponse
 
     @GET("get/post/comments/{postId}")
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun getComments(
         @Path("postId") postId: String,
     ): CommentResponse
 
     @GET("get/communities/posts")
-    @Api(ApiType.COMMUNITIES)
+    @Api(ApiType.COMMUNITY)
     suspend fun getPosts(
+        @Header("Authorization") token: String,
         @Path("communityId") communityId: String,
+    ): PostResponse
+
+    @GET("get/joined/posts")
+    @Api(ApiType.COMMUNITY)
+    suspend fun getJoinedPosts(
+        @Header("Authorization") token: String,
     ): PostResponse
 
 }

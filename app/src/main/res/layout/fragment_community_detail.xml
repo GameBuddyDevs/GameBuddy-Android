@@ -139,14 +139,27 @@
         app:layout_constraintStart_toStartOf="@+id/img_community_avatar"
         app:layout_constraintTop_toBottomOf="@+id/txt_member_count" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_follow_if"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/follow"
+        app:cornerRadius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_community_description" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_community_description"
+        app:layout_constraintTop_toBottomOf="@+id/btn_follow_if"
         app:spanCount="3"
         tools:listitem="@layout/item_community_detail" />
 

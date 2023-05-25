@@ -10,13 +10,16 @@ import androidx.navigation.fragment.navArgs
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
 import com.example.gamebuddy.databinding.FragmentCommunityDetailBinding
+import com.example.gamebuddy.presentation.main.community.CommunityEvent
 import com.example.gamebuddy.presentation.main.community.CommunityViewModel
 import com.example.gamebuddy.presentation.main.community.PostAdapter
+import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.loadImageFromUrl
+import com.example.gamebuddy.util.processQueue
 
 class CommunityDetailFragment : Fragment() {
 
-    //private val viewModel: CommunityDetailViewModel by viewModels()
+    private val viewModel: CommunityDetailViewModel by viewModels()
 
     private var _binding: FragmentCommunityDetailBinding? = null
     private val binding get() = _binding!!
@@ -31,6 +34,7 @@ class CommunityDetailFragment : Fragment() {
     private var description: String? = null
     private var memberCount: String? = null
     private var postCount: String? = null
+    private var id: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,26 @@ class CommunityDetailFragment : Fragment() {
 
         getArgs()
         setUI()
+        collectState()
+    }
+
+    private fun collectState() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            //loading bar
+            processQueue(
+                context = context,
+                queue = state.queue,
+                stateMessageCallback = object : StateMessageCallback {
+                    override fun removeMessageFromStack() {
+                        viewModel.onTriggerEvent(CommunityDetailEvent.OnRemoveHeadFromQueue)
+                    }
+                }
+            )
+
+            postAdapter?.apply {
+                submitList(state.posts)
+            }
+        }
     }
 
     private fun setUI() {
@@ -56,6 +80,7 @@ class CommunityDetailFragment : Fragment() {
             txtMemberCount.text = memberCount
             txtPostCount.text = postCount
         }
+        viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
     }
 
     private fun getArgs() {
@@ -65,6 +90,7 @@ class CommunityDetailFragment : Fragment() {
         description = args.description
         memberCount = args.memberCount
         postCount = args.postCount
+        id = args.communityId
     }
 
     override fun onDestroy() {

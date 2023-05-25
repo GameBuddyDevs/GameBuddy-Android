@@ -5,7 +5,8 @@ import com.example.gamebuddy.data.remote.network.GameBuddyApiCommunityService
 import com.example.gamebuddy.domain.usecase.comments.GetCommentsUseCase
 import com.example.gamebuddy.domain.usecase.comments.LikeCommentUseCase
 import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
-import com.example.gamebuddy.domain.usecase.community.GetPostUseCase
+import com.example.gamebuddy.domain.usecase.community.GetPostFromCommunityUseCase
+import com.example.gamebuddy.domain.usecase.community.GetPostsUseCase
 import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import dagger.Module
 import dagger.Provides
@@ -29,11 +30,25 @@ object CommunityModule {
 
     @Singleton
     @Provides
+    fun provideGetPostFromCommunityUseCase(
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
+    ): GetPostsUseCase {
+        return GetPostsUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideGetPostsUseCase(
-        service: GameBuddyApiCommunityService
-    ): GetPostUseCase {
-        return GetPostUseCase(
-            service = service
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
+    ): GetPostFromCommunityUseCase {
+        return GetPostFromCommunityUseCase(
+            service = service,
+            authTokenDao = authTokenDao
         )
     }
 
