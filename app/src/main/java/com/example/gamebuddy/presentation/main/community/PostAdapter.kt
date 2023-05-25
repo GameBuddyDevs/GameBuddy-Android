@@ -50,9 +50,20 @@ class PostAdapter(
                 txtUsername.text = item.username
                 txtLikeCount.text = item.likeCount.toString()
                 txtCommentCount.text = item.commentCount.toString()
-                //txtPostTitle.text = item.title
+                (if (item.likeCount > 0) "${item.likeCount} people like this" else "Be the first one to like this photo").also { likeText -> txtLikeCount.text = likeText }
+                when {
+                    item.commentCount > 1 -> "See all ${item.commentCount} comments"
+                    item.commentCount == 1 -> "See the comment"
+                    else -> "There are no comments"
+                }.also { commentText -> txtCommentCount.text = commentText }
 
                 // listeners
+                if (item.isLiked) {
+                    imgLikePost.setImageResource(R.drawable.ic_thumb_up_filled_pink_500_24)
+                } else {
+                    imgLikePost.setImageResource(R.drawable.ic_thumb_up_pink_500_24)
+                }
+
                 imgLikePost.setOnClickListener {
                     imgLikePost.setImageResource(R.drawable.ic_thumb_up_filled_pink_500_24)
                     onClickListener?.onLikePostClick(item.postId)

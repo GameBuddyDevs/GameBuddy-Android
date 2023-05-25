@@ -25,7 +25,9 @@ class GetCommunitiesUseCase(
             throw Exception("Please login again.")
         }
 
-        val response = service.getCommunities()
+        val response = service.getCommunities(
+            token = "Bearer $authToken"
+        )
 
         if (!response.status.success)
             throw Exception(response.status.message)

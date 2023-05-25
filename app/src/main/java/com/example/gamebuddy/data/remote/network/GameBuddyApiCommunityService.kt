@@ -17,7 +17,9 @@ interface GameBuddyApiCommunityService {
 
     @GET("get/communities")
     @Api(ApiType.COMMUNITY)
-    suspend fun getCommunities(): JoinCommunityResponse
+    suspend fun getCommunities(
+        @Header("Authorization") token: String,
+    ): JoinCommunityResponse
 
     @POST("like/post/{postId}")
     @Api(ApiType.COMMUNITY)

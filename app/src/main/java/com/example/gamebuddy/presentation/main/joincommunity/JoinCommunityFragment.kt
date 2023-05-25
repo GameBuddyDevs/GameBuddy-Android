@@ -44,6 +44,7 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        setClickListeners()
         collectState()
     }
 
@@ -74,6 +75,14 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
         }
     }
 
+    private fun setClickListeners() {
+        binding.apply {
+            icBack.setOnClickListener { findNavController().popBackStack() }
+
+
+        }
+    }
+
     override fun onCommunityClick(community: Community) {
         //bundlea gerek yok. Önce community çekecen eğer takip etmiyorsa zaten takip et butonu olacak fotolar da o sebepten ötürü gelmeyecek
         val bundle = bundleOf(
@@ -92,6 +101,10 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
             )
 
         findNavController().navigate(action)
+    }
+
+    override fun onCommunityJoinClick(communityId: String) {
+
     }
 
     /*

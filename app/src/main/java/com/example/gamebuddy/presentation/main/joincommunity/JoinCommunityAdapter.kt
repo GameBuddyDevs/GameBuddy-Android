@@ -17,6 +17,7 @@ class JoinCommunityAdapter(
 
     interface OnClickListener {
         fun onCommunityClick(community: Community)
+        fun onCommunityJoinClick(communityId: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

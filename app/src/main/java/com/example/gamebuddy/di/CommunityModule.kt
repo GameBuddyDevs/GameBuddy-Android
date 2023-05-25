@@ -22,10 +22,12 @@ object CommunityModule {
     @Singleton
     @Provides
     fun provideGetCommunitiesUseCase(
-        service: GameBuddyApiCommunityService
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
     ): GetCommunitiesUseCase {
         return GetCommunitiesUseCase(
-            service = service
+            service = service,
+            authTokenDao = authTokenDao
         )
     }
 
