@@ -58,11 +58,13 @@ class EditProfileFragment : BaseAuthFragment() {
                     viewModel.onTriggerEvent(EditEvent.OnSetParam("username"))
                     viewModel.onTriggerEvent(EditEvent.OnSetUsername(binding.usernameEditText.text.toString()))
                     viewModel.onTriggerEvent(EditEvent.Edit)
+                    findNavController().popBackStack(R.id.profileFragment,true)
                 }
                 if(binding.ageEditText.text.isNotEmpty()){
                     viewModel.onTriggerEvent(EditEvent.OnSetParam("age"))
                     viewModel.onTriggerEvent(EditEvent.OnSetAge(binding.ageEditText.text.toString()))
                     viewModel.onTriggerEvent(EditEvent.Edit)
+                    findNavController().popBackStack(R.id.profileFragment,true)
                 }
                 true
             }else if (item.itemId == R.id.action_back){
