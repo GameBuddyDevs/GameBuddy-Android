@@ -43,6 +43,7 @@ interface GameBuddyApiCommunityService {
     @GET("get/post/comments/{postId}")
     @Api(ApiType.COMMUNITY)
     suspend fun getComments(
+        @Header("Authorization") token: String,
         @Path("postId") postId: String,
     ): CommentResponse
 

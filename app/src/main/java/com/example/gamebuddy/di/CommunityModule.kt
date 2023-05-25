@@ -2,6 +2,7 @@ package com.example.gamebuddy.di
 
 import com.example.gamebuddy.data.local.auth.AuthTokenDao
 import com.example.gamebuddy.data.remote.network.GameBuddyApiCommunityService
+import com.example.gamebuddy.domain.usecase.comments.CreateCommentUseCase
 import com.example.gamebuddy.domain.usecase.comments.GetCommentsUseCase
 import com.example.gamebuddy.domain.usecase.comments.LikeCommentUseCase
 import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
@@ -67,10 +68,12 @@ object CommunityModule {
     @Singleton
     @Provides
     fun provideGetCommentsUseCase(
-        service: GameBuddyApiCommunityService
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
     ): GetCommentsUseCase {
         return GetCommentsUseCase(
-            service = service
+            service = service,
+            authTokenDao = authTokenDao
         )
     }
 
@@ -86,5 +89,16 @@ object CommunityModule {
         )
     }
 
+    @Singleton
+    @Provides
+    fun provideCreateCommentUseCase(
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
+    ): CreateCommentUseCase {
+        return CreateCommentUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
 
 }

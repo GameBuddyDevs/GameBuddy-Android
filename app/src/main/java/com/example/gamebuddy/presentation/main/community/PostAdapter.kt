@@ -12,6 +12,7 @@ import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.post.Post
 import com.example.gamebuddy.databinding.ItemPostBinding
 import com.example.gamebuddy.util.loadImageFromUrl
+import timber.log.Timber
 
 class PostAdapter(
     private val onClickListener: OnClickListener? = null
@@ -51,12 +52,12 @@ class PostAdapter(
                 txtCommentCount.text = item.commentCount.toString()
                 //txtPostTitle.text = item.title
 
-
                 // listeners
                 imgLikePost.setOnClickListener {
-                    imgLikePost.setImageResource(R.drawable.ic_videogame_liked_asset_24)
+                    imgLikePost.setImageResource(R.drawable.ic_thumb_up_filled_pink_500_24)
                     onClickListener?.onLikePostClick(item.postId)
                 }
+
                 imgComment.setOnClickListener {
                     onClickListener?.onCommentClick(item.postId)
                 }

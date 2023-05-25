@@ -26,14 +26,15 @@ class CommentViewModel @Inject constructor(
     private val savedStatedHandle: SavedStateHandle
 ) : ViewModel() {
 
+
+    private val _uiState: MutableLiveData<CommentState> = MutableLiveData(CommentState())
+    val uiState: MutableLiveData<CommentState> get() = _uiState
+
     init {
         savedStatedHandle.get<String>("postId")?.let { postId ->
             onTriggerEvent(CommentEvent.GetComments(postId))
         }
     }
-
-    private val _uiState: MutableLiveData<CommentState> = MutableLiveData(CommentState())
-    val uiState: MutableLiveData<CommentState> get() = _uiState
 
     fun onTriggerEvent(event: CommentEvent) {
         when (event) {

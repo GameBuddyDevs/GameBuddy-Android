@@ -93,6 +93,7 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
     }
 
     override fun onCommentClick(postId: String) {
+        Timber.d("onCommentClick: $postId")
         val bundle = bundleOf("postId" to postId)
         findNavController().navigate(R.id.action_communityFragment_to_commentFragment, bundle)
     }
