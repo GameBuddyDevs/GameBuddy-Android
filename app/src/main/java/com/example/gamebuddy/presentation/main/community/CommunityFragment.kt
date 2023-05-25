@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
 import com.example.gamebuddy.presentation.dialog.CommunityDialogFragment
@@ -65,6 +66,7 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
 
     private fun initAdapter() {
         binding.rvCommunityPosts.apply {
+            layoutManager = LinearLayoutManager(context)
             postAdapter = PostAdapter(this@CommunityFragment)
             adapter = postAdapter
         }
