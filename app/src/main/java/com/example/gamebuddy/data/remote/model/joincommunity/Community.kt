@@ -7,5 +7,6 @@ data class Community(
     val description: String,
     val memberCount: Int,
     val name: String,
-    val wallpaper: String
+    val wallpaper: String,
+    val isJoined: Boolean
 )
