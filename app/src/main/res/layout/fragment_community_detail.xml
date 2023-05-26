@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="64dp"
         android:fontFamily="@font/poppins_bold"
         android:text="4000"
         android:textColor="@color/pink_500"
@@ -93,6 +93,7 @@
         android:id="@+id/txt_member"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/member"
         android:textColor="@color/pink_500"
@@ -106,9 +107,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="4000"
+        android:text="4"
         android:textColor="@color/pink_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_community_background" />
@@ -140,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_member_count" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_follow_if"
+        android:id="@+id/btn_follow_state"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -152,6 +153,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_community_description" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_community_detail_posts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
@@ -159,7 +161,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_follow_if"
+        app:layout_constraintTop_toBottomOf="@+id/btn_follow_state"
         app:spanCount="3"
         tools:listitem="@layout/item_community_detail" />
 

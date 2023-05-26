@@ -5,6 +5,7 @@ import com.example.gamebuddy.data.remote.model.comment.CommentResponse
 import com.example.gamebuddy.data.remote.model.joincommunity.JoinCommunityResponse
 import com.example.gamebuddy.data.remote.model.post.PostResponse
 import com.example.gamebuddy.data.remote.request.CreateCommentRequest
+import com.example.gamebuddy.data.remote.request.JoinCommunityRequest
 import com.example.gamebuddy.util.Api
 import com.example.gamebuddy.util.ApiType
 import retrofit2.http.Body
@@ -61,5 +62,12 @@ interface GameBuddyApiCommunityService {
     suspend fun getJoinedPosts(
         @Header("Authorization") token: String,
     ): PostResponse
+
+    @POST("join")
+    @Api(ApiType.COMMUNITY)
+    suspend fun joinCommunity(
+        @Header("Authorization") token: String,
+        @Body community: JoinCommunityRequest,
+    ): BasicResponse
 
 }

@@ -1,19 +1,19 @@
 package com.example.gamebuddy.presentation.main.communitydetail
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.R
-import com.example.gamebuddy.databinding.FragmentCommunityBinding
 import com.example.gamebuddy.databinding.FragmentCommunityDetailBinding
-import com.example.gamebuddy.databinding.FragmentJoinCommunityBinding
-import com.example.gamebuddy.presentation.main.community.CommunityEvent
-import com.example.gamebuddy.presentation.main.community.CommunityViewModel
-import com.example.gamebuddy.presentation.main.community.PostAdapter
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.loadImageFromUrl
 import com.example.gamebuddy.util.processQueue
@@ -21,14 +21,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class CommunityDetailFragment : Fragment() {
+class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListener {
 
     private val viewModel: CommunityDetailViewModel by viewModels()
 
     private var _binding: FragmentCommunityDetailBinding? = null
     private val binding get() = _binding!!
 
-    private var postAdapter: PostAdapter? = null
+    private var communityDetailAdapter: CommunityDetailAdapter? = null
 
     private val args: CommunityDetailFragmentArgs by navArgs()
 
@@ -55,7 +55,28 @@ class CommunityDetailFragment : Fragment() {
 
         getArgs()
         setUI()
+        initRecyclerView()
+        setClickListeners()
         collectState()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvCommunityDetailPosts.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            communityDetailAdapter = CommunityDetailAdapter(this@CommunityDetailFragment)
+            adapter = communityDetailAdapter
+        }
+    }
+
+    private fun setClickListeners() {
+        binding.apply {
+            icBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            btnFollowState.setOnClickListener {
+                viewModel.onTriggerEvent(CommunityDetailEvent.FollowCommunity(id!!))
+            }
+        }
     }
 
     private fun collectState() {
@@ -71,9 +92,26 @@ class CommunityDetailFragment : Fragment() {
                 }
             )
 
-            postAdapter?.apply {
+            setButtonFollowState(state.isFollowing)
+
+            if (state.isFollowing && state.posts != null)
+                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
+
+            communityDetailAdapter?.apply {
                 submitList(state.posts)
             }
+        }
+    }
+
+    private fun setButtonFollowState(isFollowing: Boolean) {
+        if (isFollowing) {
+            binding.btnFollowState.text = context?.getString(R.string.leave)
+            binding.btnFollowState.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
+            binding.btnFollowState.setTextColor(Color.parseColor("#000000"))
+        } else {
+            binding.btnFollowState.text = context?.getString(R.string.join)
+            binding.btnFollowState.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF4D67"))
+            binding.btnFollowState.setTextColor(Color.parseColor("#FFFFFFFF"))
         }
     }
 
@@ -102,6 +140,10 @@ class CommunityDetailFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onPostClick(postId: String) {
+        Timber.d("onPostClick: $postId")
     }
 
 }
