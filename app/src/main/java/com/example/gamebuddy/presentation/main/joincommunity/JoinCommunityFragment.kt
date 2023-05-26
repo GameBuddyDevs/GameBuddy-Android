@@ -84,13 +84,7 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
     }
 
     override fun onCommunityClick(community: Community) {
-        //bundlea gerek yok. Önce community çekecen eğer takip etmiyorsa zaten takip et butonu olacak fotolar da o sebepten ötürü gelmeyecek
-        val bundle = bundleOf(
-            "communityId" to community.communityId,
-        )
-
-        val action =
-            JoinCommunityFragmentDirections.actionJoinCommunityFragmentToCommunityDetailFragment(
+        val action = JoinCommunityFragmentDirections.actionJoinCommunityFragmentToCommunityDetailFragment(
                 community.name,
                 community.wallpaper,
                 community.communityAvatar,
