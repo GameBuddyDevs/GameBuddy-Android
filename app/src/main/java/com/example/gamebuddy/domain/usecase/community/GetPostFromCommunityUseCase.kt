@@ -8,6 +8,7 @@ import com.example.gamebuddy.util.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class GetPostFromCommunityUseCase(
     private val service: GameBuddyApiCommunityService,
@@ -20,6 +21,8 @@ class GetPostFromCommunityUseCase(
         emit(DataState.loading())
 
         val authToken = authTokenDao.getAuthToken()
+
+        Timber.d("coMMUNITY ID: $communityId")
 
         val response = service.getPosts(
             token = "Bearer ${authToken?.token}",

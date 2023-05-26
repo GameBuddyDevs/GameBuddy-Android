@@ -49,7 +49,7 @@ interface GameBuddyApiCommunityService {
         @Path("postId") postId: String,
     ): CommentResponse
 
-    @GET("get/communities/posts")
+    @GET("get/posts/{communityId}")
     @Api(ApiType.COMMUNITY)
     suspend fun getPosts(
         @Header("Authorization") token: String,

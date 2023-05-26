@@ -3,7 +3,6 @@ package com.example.gamebuddy.presentation.main.community
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gamebuddy.domain.usecase.community.GetPostFromCommunityUseCase
 import com.example.gamebuddy.domain.usecase.community.GetPostsUseCase
 import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import com.example.gamebuddy.util.StateMessage
