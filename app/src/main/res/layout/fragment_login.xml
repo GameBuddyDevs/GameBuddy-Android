@@ -6,31 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".presentation.auth.login.LoginFragment">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
+        <ImageView
+            android:id="@+id/loginImageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:paddingTop="32dp"
-            android:text="Login to your Account"
-            android:textColor="@color/text"
-            android:textSize="40sp"
-            android:textStyle="bold" />
+            android:layout_height="150dp"
+            android:background="@color/pink_500"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_app_logo"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/loginImageView">
+
+        </ImageView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usernameContainer"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="64dp"
             app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginImageView"
             app:startIconDrawable="@drawable/ic_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -47,8 +63,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/usernameContainer"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_lock_24">
 
@@ -61,36 +79,59 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/rememberMeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/register_remember"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordContainer" />
+
         <TextView
             android:id="@+id/tvForgotThePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
             android:paddingTop="20dp"
-            android:text="Forgot password?"
+            android:text="Forgot your password?  Reset Password"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rememberMeCheckBox" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="75dp"
-            android:layout_margin="16dp"
+            android:layout_marginTop="76dp"
             android:text="login"
             app:cornerRadius="32dp"
-            app:layout_anchor="@+id/container"
-            app:layout_anchorGravity="center" />
+            app:layout_anchorGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvForgotThePassword" />
 
         <TextView
             android:id="@+id/tvSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:text="Don't you have an account? Sign Up"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
