@@ -84,6 +84,8 @@
                 android:layout_height="60dp"
                 android:text="@string/join"
                 app:cornerRadius="0dp"
+                app:strokeColor="@color/pink_500"
+                app:strokeWidth="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

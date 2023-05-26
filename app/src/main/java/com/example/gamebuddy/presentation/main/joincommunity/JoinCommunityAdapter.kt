@@ -1,5 +1,9 @@
 package com.example.gamebuddy.presentation.main.joincommunity
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -7,6 +11,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.joincommunity.Community
 import com.example.gamebuddy.databinding.ItemCommunityBinding
 import com.example.gamebuddy.util.loadImageFromUrl
@@ -36,7 +41,7 @@ class JoinCommunityAdapter(
         private val onClickListener: OnClickListener?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Community) {
+        fun bind(context: Context, item: Community) {
             binding.apply {
                 imgCommunityBackground.loadImageFromUrl(item.wallpaper)
                 imgCommunity.loadImageFromUrl(item.communityAvatar)
@@ -45,6 +50,19 @@ class JoinCommunityAdapter(
                 "${item.memberCount} Member".also { memberCount ->
                     txtCommunityMemberCount.text = memberCount
                 }
+                if (item.isJoined) {
+                    button.text = context.getString(R.string.leave)
+                    //button.setStrokeColorResource(R.color.white)
+                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
+                    button.setTextColor(Color.parseColor("#000000"))
+                } else {
+                    button.text = context.getString(R.string.join)
+                    //button.setStrokeColorResource(R.color.pink_500)
+                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF4D67"))
+                    button.setTextColor(Color.parseColor("#FFFFFFFF"))
+                }
+
+
 
                 root.setOnClickListener {
                     onClickListener?.onCommunityClick(item)
@@ -56,7 +74,7 @@ class JoinCommunityAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MessageViewHolder -> {
-                holder.bind(differ.currentList[position])
+                holder.bind(holder.itemView.context, differ.currentList[position])
             }
         }
     }
