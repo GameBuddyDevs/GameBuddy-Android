@@ -39,6 +39,7 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
     private var memberCount: String? = null
     private var postCount: String? = null
     private var id: String? = null
+    private var isJoined: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +76,7 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
             }
             btnFollowState.setOnClickListener {
                 viewModel.onTriggerEvent(CommunityDetailEvent.FollowCommunity(id!!))
+                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
             }
         }
     }
@@ -94,8 +96,10 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
 
             setButtonFollowState(state.isFollowing)
 
-            if (state.isFollowing && state.posts != null)
-                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
+//            if (state.isFollowing && state.posts.isNullOrEmpty()) {
+//                Timber.d("collectState: get posts")
+//                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
+//            }
 
             communityDetailAdapter?.apply {
                 submitList(state.posts)
@@ -104,7 +108,7 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
     }
 
     private fun setButtonFollowState(isFollowing: Boolean) {
-        if (isFollowing) {
+        if (isFollowing || isJoined!!) {
             binding.btnFollowState.text = context?.getString(R.string.leave)
             binding.btnFollowState.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
             binding.btnFollowState.setTextColor(Color.parseColor("#000000"))
@@ -135,6 +139,7 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
         memberCount = args.memberCount
         postCount = args.postCount
         id = args.communityId
+        isJoined = args.isJoined
     }
 
     override fun onDestroy() {

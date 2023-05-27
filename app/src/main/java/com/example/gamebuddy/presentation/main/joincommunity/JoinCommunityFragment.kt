@@ -84,7 +84,8 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
     }
 
     override fun onCommunityClick(community: Community) {
-        val action = JoinCommunityFragmentDirections.actionJoinCommunityFragmentToCommunityDetailFragment(
+        val action =
+            JoinCommunityFragmentDirections.actionJoinCommunityFragmentToCommunityDetailFragment(
                 community.name,
                 community.wallpaper,
                 community.communityAvatar,
@@ -92,13 +93,14 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
                 community.memberCount.toString(),
                 "40",
                 community.communityId,
+                community.isJoined
             )
 
         findNavController().navigate(action)
     }
 
     override fun onCommunityJoinClick(communityId: String) {
-
+        viewModel.onTriggerEvent(JoinCommunityEvent.JoinCommunity(communityId))
     }
 
     /*

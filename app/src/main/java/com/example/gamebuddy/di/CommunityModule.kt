@@ -9,6 +9,7 @@ import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
 import com.example.gamebuddy.domain.usecase.community.GetPostFromCommunityUseCase
 import com.example.gamebuddy.domain.usecase.community.GetPostsUseCase
 import com.example.gamebuddy.domain.usecase.community.JoinCommunityUseCase
+import com.example.gamebuddy.domain.usecase.community.LeaveCommunityUseCase
 import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
 import dagger.Module
 import dagger.Provides
@@ -111,6 +112,18 @@ object CommunityModule {
         authTokenDao: AuthTokenDao
     ): JoinCommunityUseCase {
         return JoinCommunityUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideLeaveCommunityUseCase(
+        service: GameBuddyApiCommunityService,
+        authTokenDao: AuthTokenDao
+    ): LeaveCommunityUseCase {
+        return LeaveCommunityUseCase(
             service = service,
             authTokenDao = authTokenDao
         )

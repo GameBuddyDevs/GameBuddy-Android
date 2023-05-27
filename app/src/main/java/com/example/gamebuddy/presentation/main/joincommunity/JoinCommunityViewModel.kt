@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
+import com.example.gamebuddy.domain.usecase.community.JoinCommunityUseCase
+import com.example.gamebuddy.domain.usecase.community.LeaveCommunityUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinCommunityViewModel @Inject constructor(
     private val getCommunitiesUseCase: GetCommunitiesUseCase,
+    private val joinCommunityUseCase: JoinCommunityUseCase
 ): ViewModel() {
 
     private val _uiState: MutableLiveData<JoinCommunityState> = MutableLiveData(JoinCommunityState())
@@ -28,7 +31,25 @@ class JoinCommunityViewModel @Inject constructor(
     fun onTriggerEvent(event: JoinCommunityEvent){
         when (event) {
             is JoinCommunityEvent.GetCommunities -> getCommunities()
+            is JoinCommunityEvent.JoinCommunity -> joinCommunityUseCase(event.communityId)
             JoinCommunityEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
+        }
+    }
+
+    private fun joinCommunityUseCase(communityId: String) {
+        _uiState.value?.let { state ->
+            joinCommunityUseCase.execute(communityId).onEach { dataState ->
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+//                dataState.data?.let { isFollowing ->
+//                    _uiState.value = state.copy(isFollowing = isFollowing)
+//                }
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+            }.launchIn(viewModelScope)
         }
     }
 

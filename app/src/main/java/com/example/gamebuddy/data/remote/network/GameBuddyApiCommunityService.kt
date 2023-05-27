@@ -70,4 +70,11 @@ interface GameBuddyApiCommunityService {
         @Body community: JoinCommunityRequest,
     ): BasicResponse
 
+    @POST("leave")
+    @Api(ApiType.COMMUNITY)
+    suspend fun leaveCommunity(
+        @Header("Authorization") token: String,
+        @Body community: JoinCommunityRequest,
+    ): BasicResponse
+
 }

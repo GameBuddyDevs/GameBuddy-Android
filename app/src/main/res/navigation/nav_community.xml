@@ -65,6 +65,9 @@
         <argument
             android:name="communityId"
             app:argType="string" />
+        <argument
+            android:name="isJoined"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/communityDialogFragment"
