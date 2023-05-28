@@ -3,6 +3,7 @@ package com.example.gamebuddy.data.remote.network
 import com.example.gamebuddy.data.remote.model.PendingFriends.PendingFriendsResponse
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
+import com.example.gamebuddy.data.remote.model.gamedetail.GameDetailResponse
 import com.example.gamebuddy.data.remote.model.games.GameResponse
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
 import com.example.gamebuddy.data.remote.model.market.MarketResponse
@@ -26,6 +27,13 @@ interface GameBuddyApiAppService {
     @GET("get/games")
     @Api(ApiType.APPLICATION)
     suspend fun getGames(): GameResponse
+
+    @GET("get/game/{gameId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun getGameDetail(
+        @Header("Authorization") token: String,
+        @Path("gameId") gameId: String
+    ): GameDetailResponse
 
     @GET("get/keywords")
     @Api(ApiType.APPLICATION)

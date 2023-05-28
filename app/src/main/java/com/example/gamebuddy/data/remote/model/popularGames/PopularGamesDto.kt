@@ -16,7 +16,8 @@ data class PopularGamesDto(
             gameName = gameName,
             gameIcon = gameIcon,
             category = category,
-            avgVote = avgVote
+            avgVote = avgVote,
+            description = description
         )
     }
 }
