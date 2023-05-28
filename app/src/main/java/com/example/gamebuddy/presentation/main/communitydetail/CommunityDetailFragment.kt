@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityDetailBinding
 import com.example.gamebuddy.util.StateMessageCallback
@@ -75,8 +74,10 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
                 findNavController().popBackStack()
             }
             btnFollowState.setOnClickListener {
-                viewModel.onTriggerEvent(CommunityDetailEvent.FollowCommunity(id!!))
-                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
+                setJoinStatus()
+                setButtonFollowState(isJoined!!)
+                //viewModel.onTriggerEvent(CommunityDetailEvent.JoinCommunity(id!!))
+                //viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
             }
         }
     }
@@ -94,21 +95,34 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
                 }
             )
 
-            setButtonFollowState(state.isFollowing)
-
-//            if (state.isFollowing && state.posts.isNullOrEmpty()) {
-//                Timber.d("collectState: get posts")
-//                viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
-//            }
+            //setButtonFollowState(state.isJoined)
 
             communityDetailAdapter?.apply {
-                submitList(state.posts)
+                if (state.posts.isNotEmpty()) {
+                    binding.rvCommunityDetailPosts.visibility = View.VISIBLE
+                    submitList(state.posts)
+                } else {
+                    binding.rvCommunityDetailPosts.visibility = View.GONE
+                }
             }
         }
     }
 
+    private fun setJoinStatus() {
+        if (isJoined!!) {
+            isJoined = false
+            viewModel.setIsJoinedCommunity(isJoined!!)
+            viewModel.onTriggerEvent(CommunityDetailEvent.LeaveCommunity(id!!))
+        } else {
+            isJoined = true
+            viewModel.setIsJoinedCommunity(isJoined!!)
+            viewModel.onTriggerEvent(CommunityDetailEvent.JoinCommunity(id!!))
+            viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
+        }
+    }
+
     private fun setButtonFollowState(isFollowing: Boolean) {
-        if (isFollowing || isJoined!!) {
+        if (isJoined!!) {
             binding.btnFollowState.text = context?.getString(R.string.leave)
             binding.btnFollowState.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
             binding.btnFollowState.setTextColor(Color.parseColor("#000000"))
@@ -128,18 +142,23 @@ class CommunityDetailFragment : Fragment(), CommunityDetailAdapter.OnClickListen
             txtMemberCount.text = memberCount
             txtPostCount.text = postCount
         }
+        setButtonFollowState(isJoined!!)
         viewModel.onTriggerEvent(CommunityDetailEvent.GetPosts(id!!))
     }
 
     private fun getArgs() {
         name = args.name
-        background = args.background ?: "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/community-banner%2Fcs-banner.jpg?alt=media&token=9b3d9942-4be6-47e1-82b1-7eef0372515b"
-        avatar = args.avatar ?: "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fminecraft6.jpg?alt=media&token=c5a6b3d9-a741-4511-a96f-1dbb8b84c1d7"
+        background = args.background
+            ?: "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/community-banner%2Fcs-banner.jpg?alt=media&token=9b3d9942-4be6-47e1-82b1-7eef0372515b"
+        avatar = args.avatar
+            ?: "https://firebasestorage.googleapis.com/v0/b/gamebuddy-a6a7e.appspot.com/o/avatar-images%2Fminecraft6.jpg?alt=media&token=c5a6b3d9-a741-4511-a96f-1dbb8b84c1d7"
         description = args.description ?: ""
         memberCount = args.memberCount
         postCount = args.postCount
         id = args.communityId
         isJoined = args.isJoined
+
+        viewModel.setIsJoinedCommunity(isJoined!!)
     }
 
     override fun onDestroy() {

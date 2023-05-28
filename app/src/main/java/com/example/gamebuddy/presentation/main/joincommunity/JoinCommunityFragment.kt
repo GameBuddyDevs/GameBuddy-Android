@@ -103,13 +103,6 @@ class JoinCommunityFragment : Fragment(), JoinCommunityAdapter.OnClickListener {
         viewModel.onTriggerEvent(JoinCommunityEvent.JoinCommunity(communityId))
     }
 
-    /*
-    * init {
-        savedStatedHandle.get<String>("postId")?.let { postId ->
-            onTriggerEvent(CommentEvent.GetComments(postId))
-        }
-    }
-    * */
 
     override fun onDestroy() {
         super.onDestroy()

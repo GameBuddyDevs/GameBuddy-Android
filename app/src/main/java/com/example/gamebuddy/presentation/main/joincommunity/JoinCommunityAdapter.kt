@@ -3,7 +3,6 @@ package com.example.gamebuddy.presentation.main.joincommunity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -15,6 +14,8 @@ import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.joincommunity.Community
 import com.example.gamebuddy.databinding.ItemCommunityBinding
 import com.example.gamebuddy.util.loadImageFromUrl
+import com.google.android.material.button.MaterialButton
+import timber.log.Timber
 
 class JoinCommunityAdapter(
     private val onClickListener: OnClickListener? = null
@@ -51,23 +52,32 @@ class JoinCommunityAdapter(
                     txtCommunityMemberCount.text = memberCount
                 }
                 if (item.isJoined) {
-                    button.text = context.getString(R.string.leave)
-                    //button.setStrokeColorResource(R.color.white)
-                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
-                    button.setTextColor(Color.parseColor("#000000"))
+                    setButtonToLeave(btnJoinStatus, context)
                 } else {
-                    button.text = context.getString(R.string.join)
-                    //button.setStrokeColorResource(R.color.pink_500)
-                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF4D67"))
-                    button.setTextColor(Color.parseColor("#FFFFFFFF"))
+                    setButtonToJoin(btnJoinStatus, context)
                 }
 
-
+                btnJoinStatus.setOnClickListener {
+                    Timber.d("Join button clicked")
+                    onClickListener?.onCommunityJoinClick(item.communityId)
+                }
 
                 root.setOnClickListener {
                     onClickListener?.onCommunityClick(item)
                 }
             }
+        }
+
+        private fun setButtonToLeave(btnJoinStatus: MaterialButton, context: Context) {
+            btnJoinStatus.text = context.getString(R.string.leave)
+            btnJoinStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
+            btnJoinStatus.setTextColor(Color.parseColor("#000000"))
+        }
+
+        private fun setButtonToJoin(btnJoinStatus: MaterialButton, context: Context) {
+            btnJoinStatus.text = context.getString(R.string.join)
+            btnJoinStatus.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF4D67"))
+            btnJoinStatus.setTextColor(Color.parseColor("#FFFFFFFF"))
         }
     }
 
@@ -84,6 +94,15 @@ class JoinCommunityAdapter(
     fun submitList(blogList: List<Community>?) {
         val newList = blogList?.toMutableList()
         differ.submitList(newList)
+    }
+
+    fun updateCommunityJoinStatus(communityId: String, isJoined: Boolean) {
+        val position = differ.currentList.indexOfFirst { it.communityId == communityId }
+        if (position != -1) {
+            val community = differ.currentList[position]
+            community.isJoined = isJoined
+            notifyItemChanged(position)
+        }
     }
 
     private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Community>() {
