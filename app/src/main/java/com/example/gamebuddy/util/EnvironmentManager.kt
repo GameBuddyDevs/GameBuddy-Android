@@ -23,6 +23,11 @@ object EnvironmentManager {
             deploymentType = DeploymentType.PRODUCTION,
             path = "messages/"
         ),
+        EnvironmentModel(
+            apiType = ApiType.COMMUNITY,
+            deploymentType = DeploymentType.PRODUCTION,
+            path = "community/"
+        ),
     )
 
     fun getBaseUrl(apiType: ApiType): String {

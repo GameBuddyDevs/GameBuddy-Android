@@ -37,6 +37,12 @@ class BaseUrlInterceptor @Inject constructor(): Interceptor {
 
         Timber.d("newUrl: $newUrl, newUrlTest: $newUrl, decoded: $decoded")
 
+//        val updatedUrl = if (decoded.contains("%7B") && decoded.contains("%7D")) {
+//            decoded.replace("%7B", "").replace("%7D", "")
+//        } else {
+//            decoded
+//        }
+
         val newRequest = request.newBuilder()
             //.url(newUrl)
             .url(decoded)

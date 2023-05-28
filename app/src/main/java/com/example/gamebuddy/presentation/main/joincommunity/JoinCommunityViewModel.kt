@@ -1,10 +1,11 @@
-package com.example.gamebuddy.presentation.main.community
+package com.example.gamebuddy.presentation.main.joincommunity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gamebuddy.domain.usecase.community.GetPostsUseCase
-import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
+import com.example.gamebuddy.domain.usecase.community.GetCommunitiesUseCase
+import com.example.gamebuddy.domain.usecase.community.JoinCommunityUseCase
+import com.example.gamebuddy.domain.usecase.community.LeaveCommunityUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
@@ -15,50 +16,56 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class CommunityViewModel @Inject constructor(
-    private val likePostUseCase: LikePostUseCase,
-    private val getPostsUseCase: GetPostsUseCase,
-) : ViewModel() {
+class JoinCommunityViewModel @Inject constructor(
+    private val getCommunitiesUseCase: GetCommunitiesUseCase,
+    private val joinCommunityUseCase: JoinCommunityUseCase
+): ViewModel() {
 
-    private val _uiState: MutableLiveData<CommunityState> = MutableLiveData(CommunityState())
-    val uiState: MutableLiveData<CommunityState> get() = _uiState
+    private val _uiState: MutableLiveData<JoinCommunityState> = MutableLiveData(JoinCommunityState())
+    val uiState: MutableLiveData<JoinCommunityState> get() = _uiState
 
     init {
-        onTriggerEvent(CommunityEvent.GetPosts)
+        onTriggerEvent(JoinCommunityEvent.GetCommunities)
     }
 
-    fun onTriggerEvent(event: CommunityEvent) {
+    fun onTriggerEvent(event: JoinCommunityEvent){
         when (event) {
-            is CommunityEvent.GetPosts -> getPosts()
-            is CommunityEvent.LikePost -> likePost(event.postId)
-            CommunityEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
+            is JoinCommunityEvent.GetCommunities -> getCommunities()
+            is JoinCommunityEvent.JoinCommunity -> joinCommunityUseCase(event.communityId)
+            JoinCommunityEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
         }
     }
 
-    private fun likePost(postId: String) {
+    private fun joinCommunityUseCase(communityId: String) {
         _uiState.value?.let { state ->
-            likePostUseCase.execute(postId).onEach { dataState ->
+            joinCommunityUseCase.execute(communityId).onEach { dataState ->
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+//                dataState.data?.let { isFollowing ->
+//                    _uiState.value = state.copy(isFollowing = isFollowing)
+//                }
 
                 dataState.stateMessage?.let { stateMessage ->
                     appendToMessageQueue(stateMessage)
                 }
+
             }.launchIn(viewModelScope)
         }
     }
 
-    private fun getPosts() {
+    private fun getCommunities() {
         _uiState.value?.let { state ->
-            getPostsUseCase.execute().onEach { dataState ->
+            getCommunitiesUseCase.execute().onEach { dataState ->
                 _uiState.value = state.copy(isLoading = dataState.isLoading)
 
-                dataState.data?.let { posts ->
-                    _uiState.value = state.copy(posts = posts)
+                dataState.data?.let { communities ->
+                    _uiState.value = state.copy(communities = communities)
                 }
 
                 dataState.stateMessage?.let { stateMessage ->
                     appendToMessageQueue(stateMessage)
                 }
+
             }.launchIn(viewModelScope)
         }
     }

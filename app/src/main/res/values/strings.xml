@@ -64,4 +64,19 @@
     <string name="gamebuddy">GameBuddy</string>
     <string name="pending_friend_requests">Pending friend requests</string>
     <string name="popular_games">Popular games</string>
+    <string name="join_community">Join Community</string>
+    <string name="create_a_community">Create a community</string>
+    <string name="explore_communities">Explore communities</string>
+    <string name="community_background_image">Community background image</string>
+    <string name="member">Member</string>
+    <string name="post">Post</string>
+    <string name="games">Games</string>
+    <string name="select_your_min_3_favorite_games">Select your min 3 favorite games</string>
+    <string name="keywords">Keywords</string>
+    <string name="select_a_minimum_of_your_three_favorite_games">Select a minimum of your three favorite games.</string>
+    <string name="select_a_minimum_of_your_3_favorite_games">Select a minimum of your 3 favorite games</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="join">Join</string>
+    <string name="leave">Leave</string>
 </resources>

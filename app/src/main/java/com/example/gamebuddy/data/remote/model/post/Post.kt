@@ -10,5 +10,7 @@ data class Post(
     val postId: String,
     val title: String,
     val updatedDate: String,
-    val username: String
+    val username: String,
+    val communityName: String,
+    val isLiked: Boolean
 )

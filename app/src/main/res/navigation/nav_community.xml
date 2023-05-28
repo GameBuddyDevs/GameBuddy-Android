@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_communityFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_communityFragment_to_joinCommunityFragment"
+            app:destination="@id/joinCommunityFragment" />
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
@@ -23,4 +26,51 @@
             android:name="postId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/joinCommunityFragment"
+        android:name="com.example.gamebuddy.presentation.main.joincommunity.JoinCommunityFragment"
+        android:label="fragment_join_community"
+        tools:layout="@layout/fragment_join_community" >
+        <action
+            android:id="@+id/action_joinCommunityFragment_to_communityDialogFragment"
+            app:destination="@id/communityDialogFragment" />
+        <action
+            android:id="@+id/action_joinCommunityFragment_to_communityDetailFragment"
+            app:destination="@id/communityDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityDetailFragment"
+        android:name="com.example.gamebuddy.presentation.main.communitydetail.CommunityDetailFragment"
+        android:label="fragment_community_detail"
+        tools:layout="@layout/fragment_community_detail" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="background"
+            app:argType="string"
+            app:nullable="true" />
+        <argument android:name="avatar"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="memberCount"
+            app:argType="string" />
+        <argument
+            android:name="postCount"
+            app:argType="string" />
+        <argument
+            android:name="communityId"
+            app:argType="string" />
+        <argument
+            android:name="isJoined"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityDialogFragment"
+        android:name="com.example.gamebuddy.presentation.dialog.CommunityDialogFragment"
+        android:label="CommunityDialogFragment" />
 </navigation>

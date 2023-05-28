@@ -8,11 +8,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.FragmentCommunityBinding
+import com.example.gamebuddy.presentation.dialog.CommunityDialogFragment
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.processQueue
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
@@ -63,15 +66,24 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
 
     private fun initAdapter() {
         binding.rvCommunityPosts.apply {
+            layoutManager = LinearLayoutManager(context)
             postAdapter = PostAdapter(this@CommunityFragment)
             adapter = postAdapter
         }
     }
 
     private fun setClickListeners() {
+        val bottomSheet = CommunityDialogFragment()
+        bottomSheet.setOnActionCompleteListener(object : CommunityDialogFragment.OnActionSelectedListener {
+            override fun onActionSelected(destination: Int) {
+                bottomSheet.dismiss()
+                findNavController().navigate(destination)
+            }
+        })
+
         binding.apply {
-            icCreatePost.setOnClickListener {
-                //findNavController().navigate(R.id.action_communityFragment_to_createPostFragment)
+            icCommunitiesMenu.setOnClickListener {
+                bottomSheet.show(childFragmentManager, bottomSheet.tag)
             }
         }
     }
@@ -81,6 +93,7 @@ class CommunityFragment : Fragment(), PostAdapter.OnClickListener {
     }
 
     override fun onCommentClick(postId: String) {
+        Timber.d("onCommentClick: $postId")
         val bundle = bundleOf("postId" to postId)
         findNavController().navigate(R.id.action_communityFragment_to_commentFragment, bundle)
     }

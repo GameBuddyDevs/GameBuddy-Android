@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.comments.CreateCommentUseCase
 import com.example.gamebuddy.domain.usecase.comments.GetCommentsUseCase
 import com.example.gamebuddy.domain.usecase.comments.LikeCommentUseCase
 import com.example.gamebuddy.domain.usecase.community.LikePostUseCase
@@ -21,8 +22,13 @@ class CommentViewModel @Inject constructor(
     private val getCommentsUseCase: GetCommentsUseCase,
     private val likeCommentUseCase: LikeCommentUseCase,
     private val likePostUseCase: LikePostUseCase,
+    private val createCommentUseCase: CreateCommentUseCase,
     private val savedStatedHandle: SavedStateHandle
 ) : ViewModel() {
+
+
+    private val _uiState: MutableLiveData<CommentState> = MutableLiveData(CommentState())
+    val uiState: MutableLiveData<CommentState> get() = _uiState
 
     init {
         savedStatedHandle.get<String>("postId")?.let { postId ->
@@ -30,15 +36,32 @@ class CommentViewModel @Inject constructor(
         }
     }
 
-    private val _uiState: MutableLiveData<CommentState> = MutableLiveData(CommentState())
-    val uiState: MutableLiveData<CommentState> get() = _uiState
-
     fun onTriggerEvent(event: CommentEvent) {
         when (event) {
             is CommentEvent.GetComments -> getComments(event.postId)
             is CommentEvent.LikeComment -> likeComment(event.commentId)
             CommentEvent.LikeCurrentPost -> likeCurrentPost()
+            is CommentEvent.CreateComment -> createComment(event.comment)
             CommentEvent.OnRemoveHeadFromQueue -> onRemoveHeadFromQueue()
+        }
+    }
+
+    private fun createComment(comment: String) {
+        savedStatedHandle.get<String>("postId")?.let { postId ->
+            _uiState.value?.let { state ->
+                createCommentUseCase.execute(postId, comment).onEach { dataState ->
+                    _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+                    dataState.data?.let { comment ->
+                        _uiState.value = state.copy(comments = state.comments?.plus(comment))
+                    }
+
+                    dataState.stateMessage?.let { stateMessage ->
+                        appendToMessageQueue(stateMessage)
+                    }
+
+                }.launchIn(viewModelScope)
+            }
         }
     }
 

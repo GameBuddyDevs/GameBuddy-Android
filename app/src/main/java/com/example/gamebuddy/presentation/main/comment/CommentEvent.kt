@@ -8,5 +8,7 @@ sealed class CommentEvent {
 
     object LikeCurrentPost: CommentEvent()
 
+    data class CreateComment(val comment: String): CommentEvent()
+
     object OnRemoveHeadFromQueue : CommentEvent()
 }
