@@ -12,6 +12,7 @@ import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
+import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -34,6 +35,18 @@ object AppModule {
     ): GamesUseCase {
         return GamesUseCase(
             service = service
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGameDetailUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): GetGameDetailUseCase {
+        return GetGameDetailUseCase(
+            service = service,
+            authTokenDao = authTokenDao
         )
     }
 
@@ -82,6 +95,7 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
     @Singleton
     @Provides
     fun provideremoveFriendsUseCase(
@@ -93,6 +107,7 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
     @Singleton
     @Provides
     fun provideGetPopularUseCase(
@@ -134,7 +149,7 @@ object AppModule {
     fun provideGetChatBoxUseCase(
         service: GameBuddyApiMessageService,
         authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase{
+    ): GetChatBoxUseCase {
         return GetChatBoxUseCase(
             service = service,
             authTokenDao = authTokenDao

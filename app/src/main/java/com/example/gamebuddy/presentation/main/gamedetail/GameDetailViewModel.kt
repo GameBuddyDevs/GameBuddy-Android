@@ -8,11 +8,13 @@ import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.doesMessageAlreadyExistInQueue
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class GameDetailViewModel @Inject constructor(
     private val getGameDetailUseCase: GetGameDetailUseCase,
     private val savedStatedHandle: SavedStateHandle

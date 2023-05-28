@@ -12,7 +12,9 @@ import com.example.gamebuddy.databinding.FragmentGameDetailBinding
 import com.example.gamebuddy.util.StateMessageCallback
 import com.example.gamebuddy.util.loadImageFromUrl
 import com.example.gamebuddy.util.processQueue
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GameDetailFragment : Fragment() {
 
     private val viewModel: GameDetailViewModel by viewModels()
