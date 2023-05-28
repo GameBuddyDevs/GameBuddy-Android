@@ -24,7 +24,7 @@ class GameDetailViewModel @Inject constructor(
     val uiState: MutableLiveData<GameDetailState> get() = _uiState
 
     init {
-        savedStatedHandle.get<String>("postId")?.let { postId ->
+        savedStatedHandle.get<String>("gameId")?.let { postId ->
             onTriggerEvent(GameDetailEvent.GetGameDetail(postId))
         }
     }
