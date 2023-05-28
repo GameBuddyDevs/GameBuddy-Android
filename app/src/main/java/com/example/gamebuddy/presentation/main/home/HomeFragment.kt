@@ -20,11 +20,14 @@ import timber.log.Timber
 
 
 class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener, GetPopularAdapter.OnClickListener {
+
     private val viewModel: HomeViewModel by viewModels()
-    private var pendingFriendAdapter: PendingFriendAdapter? = null
-    private var getPopularAdapter: GetPopularAdapter? = null
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private var pendingFriendAdapter: PendingFriendAdapter? = null
+    private var getPopularAdapter: GetPopularAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +45,20 @@ class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener, G
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initRecyclerView()
+        setClickListeners()
         collectState()
     }
+
+    private fun setClickListeners() {
+        binding.apply {
+            txtSeeAllPopular.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPopularGamesFragment())
+            }
+        }
+    }
+
     private fun collectState() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             uiCommunicationListener.displayProgressBar(state.isLoading)

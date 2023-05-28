@@ -3,7 +3,7 @@ package com.example.gamebuddy.presentation.main.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
+import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.acceptFriendsUseCase
 import com.example.gamebuddy.util.StateMessage
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val pendingFriendUseCase: PendingFriendUseCase,
     private val acceptFriendsUseCase: acceptFriendsUseCase,
-    private val getPopularUseCase: GetPopularUseCase,
+    private val getPopularGamesUseCase: GetPopularGamesUseCase,
 ) : ViewModel() {
     private val _uiState: MutableLiveData<HomeState> = MutableLiveData(HomeState())
     val uiState: MutableLiveData<HomeState> get() = _uiState
@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
         }
     }
     private fun getPopularGames(){
-        getPopularUseCase.execute().onEach { dataState ->
+        getPopularGamesUseCase.execute().onEach { dataState ->
             _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
             dataState.data?.let { popularGames ->
                 if(popularGames.isNotEmpty()){

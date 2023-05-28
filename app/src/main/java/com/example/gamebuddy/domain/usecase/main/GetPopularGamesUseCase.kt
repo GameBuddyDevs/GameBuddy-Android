@@ -11,21 +11,24 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
-
-class GetPopularUseCase(
+class GetPopularGamesUseCase(
     private val service: GameBuddyApiAppService,
     private val authTokenDao: AuthTokenDao
 ) {
-    fun execute(): Flow<DataState<List<PopularGames>>> = flow{
+    fun execute(): Flow<DataState<List<PopularGames>>> = flow {
         emit(DataState.loading())
+
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
-        Timber.d("Tokenss: ${authToken?.token}")
-        val popular = service.getPopularGames(
-            token = "Bearer ${authToken?.token}",
-        ).toPopularGames()
-        if (popular.isNotEmpty()){
-            Timber.d("GetPopular Use Case success: ${popular[0].gameName}")
+
+        if (authToken == null) {
+            Timber.d("Auth token is null")
+            throw Exception("Please login again.")
         }
+
+        val popular = service.getPopularGames(
+            token = "Bearer ${authToken.token}",
+        ).toPopularGames()
+
         emit(DataState.success(response = null, data = popular))
     }.catch {
         Timber.e("GetPopularUseCase Use Case Error $it")

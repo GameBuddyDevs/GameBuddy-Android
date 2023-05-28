@@ -9,10 +9,9 @@ import com.example.gamebuddy.domain.usecase.main.GetChatBoxUseCase
 import com.example.gamebuddy.domain.usecase.main.GetFriendsUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesFromWebSocketUseCase
 import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
-import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
+import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
-import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -99,8 +98,8 @@ object AppModule {
     fun provideGetPopularUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao,
-    ): GetPopularUseCase {
-        return GetPopularUseCase(
+    ): GetPopularGamesUseCase {
+        return GetPopularGamesUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
