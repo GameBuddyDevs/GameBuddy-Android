@@ -126,7 +126,7 @@
         android:layout_marginEnd="30dp"
         android:clickable="true"
         android:contentDescription="Trophy Button"
-        android:src="@drawable/trophy"
+        android:src="@drawable/collected_trophy"
         app:layout_constraintEnd_toStartOf="@id/profile_avatar"
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintTop_toTopOf="@id/profile_avatar" />

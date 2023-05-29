@@ -6,21 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamebuddy.databinding.FragmentAchievementBinding
-import com.example.gamebuddy.databinding.FragmentMarketBinding
 import com.example.gamebuddy.presentation.auth.BaseAuthFragment
-import com.example.gamebuddy.presentation.main.market.MarketEvent
+import com.example.gamebuddy.presentation.main.chatbox.FriendsAdapter
 import com.example.gamebuddy.util.*
 import timber.log.Timber
 
 
-class AchievementFragment : BaseAuthFragment() {
+class AchievementFragment : BaseAuthFragment(), AchievementAdapter.OnClickListener {
+
     private val viewModel: AchievementViewModel by activityViewModels()
+
     private var _binding: FragmentAchievementBinding? = null
     private val binding get() = _binding!!
-    private lateinit var earnedAdapter: AchievementAdapter
-    private lateinit var collectedAdapter: AchievementAdapter
-    private lateinit var unearnedAdapter: AchievementAdapter
+
+    private var achievementAdapter: AchievementAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +30,7 @@ class AchievementFragment : BaseAuthFragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAchievementBinding.inflate(inflater, container, false)
+
         updateEnvironment(apiType = ApiType.APPLICATION, deploymentType = DeploymentType.PRODUCTION)
         return binding.root
     }
@@ -35,7 +38,7 @@ class AchievementFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        viewModel.onTriggerEvent(AchievementEvent.GetAchievement)
+
         collectState()
         initRecyclerView()
     }
@@ -52,44 +55,29 @@ class AchievementFragment : BaseAuthFragment() {
                     }
                 }
             )
-            earnedAdapter.submitList(state.earnedAchievements)
-            collectedAdapter.submitList(state.collectedAchievements)
-            unearnedAdapter.submitList(state.unearnedAchievements)
+
+            achievementAdapter?.apply {
+                submitList(state.achievements)
+            }
         }
     }
 
 
     private fun initRecyclerView() {
-        earnedAdapter = AchievementAdapter(object : AchievementAdapter.OnClickListener {
-            override fun onItemClick(position: Int, achievementId: String) {
-                Timber.d("onItemClick Message $position : $achievementId")
-            }
-        })
-        binding.recyclerViewAchievements.adapter = earnedAdapter
-
-        collectedAdapter = AchievementAdapter(object : AchievementAdapter.OnClickListener {
-            override fun onItemClick(position: Int, achievementId: String) {
-                Timber.d("onItemClick Message $position : $achievementId")
-            }
-        })
-        binding.recyclerViewCollected.adapter = collectedAdapter
-
-        unearnedAdapter = AchievementAdapter(object : AchievementAdapter.OnClickListener {
-            override fun onItemClick(position: Int, achievementId: String) {
-                Timber.d("onItemClick Message $position : $achievementId")
-            }
-        })
-        binding.recyclerViewUnearned.adapter = unearnedAdapter
+        binding.recyclerViewAchievements.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            achievementAdapter = AchievementAdapter(this@AchievementFragment)
+            adapter = achievementAdapter
+        }
     }
 
+    override fun onItemClick(achievementId: String) {
+        viewModel.onTriggerEvent(AchievementEvent.CollectAchievement(achievementId))
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    fun onItemClick(position: Int, achievementId: String) {
-        Timber.d("onItemClick Message $position : $achievementId")
     }
 
     override fun updateEnvironment(

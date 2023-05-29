@@ -16,14 +16,14 @@ class AchievementUseCase(
     private val authTokenDao: AuthTokenDao
 ) {
     fun execute(): Flow<DataState<List<Achievement>>> = flow {
-        Timber.d("Achievement Use Case")
         emit(DataState.loading())
+
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
-        Timber.d("Tokenns: ${authToken?.token}")
+
         val achievement = service.getAchievements(
             token = "Bearer ${authToken?.token}"
         ).toAchievement()
-        Timber.d("Achievement Use Case success: ${achievement?.get(0)?.id}")
+
         emit(DataState.success(response = null, data = achievement))
     }.catch {
         Timber.e("Achievement Use Case Error $it")

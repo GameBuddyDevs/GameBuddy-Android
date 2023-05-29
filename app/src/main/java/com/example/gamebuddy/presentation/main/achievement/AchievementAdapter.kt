@@ -8,13 +8,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.databinding.ItemAchievementBinding
 import com.example.gamebuddy.domain.model.achievement.Achievement
+import com.example.gamebuddy.util.loadImageFromDrawable
 
 class AchievementAdapter(
     private val onClickListener: OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnClickListener {
-        fun onItemClick(position: Int, achievementId: String)
+        fun onItemClick(achievementId: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,28 +39,29 @@ class AchievementAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(achievement: Achievement) {
-            binding.txtAchievementName.text = achievement.achievementName
+            binding.apply {
+                txtAchievementName.text = achievement.achievementName
 
-            val imageTint = when {
-                achievement.isEarned -> R.color.purple_200
-                achievement.isCollected -> R.color.black
-                else -> R.color.pink_500
-            }
-            binding.imgAchievement.setColorFilter(
-                ContextCompat.getColor(
-                    itemView.context,
-                    imageTint
-                )
-            )
+                if (achievement.isCollected) {
+                    imgAchievement.loadImageFromDrawable(R.drawable.collected_trophy)
+                } else if (achievement.isEarned) {
+                    imgAchievement.loadImageFromDrawable(R.drawable.earned_trophy)
+                } else {
+                    imgAchievement.loadImageFromDrawable(R.drawable.trophy)
+                }
 
-            binding.root.setOnClickListener {
-                val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    onClickListener?.onItemClick(position, achievement.id)
+                txtDescription.text = achievement.description
+
+                root.setOnClickListener {
+                    val position = bindingAdapterPosition
+                    if (position != RecyclerView.NO_POSITION || achievement.isEarned) {
+                        onClickListener?.onItemClick(achievement.id)
+                    }
                 }
             }
         }
     }
+
     override fun getItemCount() = differ.currentList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -107,6 +109,5 @@ class AchievementAdapter(
             achievementAdapter.notifyItemRangeChanged(position, count, payload)
         }
     }
-
 }
 

@@ -198,6 +198,16 @@ object AppModule {
         )
     }
 
-
+    @Singleton
+    @Provides
+    fun provideCollectAchievementUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): CollectAchievementUseCase {
+        return CollectAchievementUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
 
 }

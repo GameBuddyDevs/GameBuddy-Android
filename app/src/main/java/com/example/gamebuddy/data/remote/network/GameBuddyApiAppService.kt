@@ -127,6 +127,11 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
     ): AchievementResponse
 
-
+    @GET("collect/achievement/{achievementId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun collectAchievement(
+        @Header("Authorization") token: String,
+        @Path("achievementId") achievementId: String,
+    ): BasicResponse
 
 }

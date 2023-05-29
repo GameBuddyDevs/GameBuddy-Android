@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.domain.model.achievement.Achievement
 import com.example.gamebuddy.domain.usecase.main.AchievementUseCase
-import com.example.gamebuddy.domain.usecase.main.MarketUseCase
-import com.example.gamebuddy.presentation.main.market.MarketEvent
-import com.example.gamebuddy.presentation.main.market.MarketState
+import com.example.gamebuddy.domain.usecase.main.CollectAchievementUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
 import com.example.gamebuddy.util.isMessageExistInQueue
@@ -20,14 +18,58 @@ import javax.inject.Inject
 @HiltViewModel
 class AchievementViewModel @Inject constructor(
     private val achievementUseCase: AchievementUseCase,
+    private val collectAchievementUseCase: CollectAchievementUseCase
 ) : ViewModel() {
+
     private val _uiState: MutableLiveData<AchievementState> = MutableLiveData(AchievementState())
     val uiState: MutableLiveData<AchievementState> get() = _uiState
+
+    init {
+        onTriggerEvent(AchievementEvent.GetAchievement)
+    }
 
     fun onTriggerEvent(event: AchievementEvent) {
         when (event) {
             AchievementEvent.GetAchievement -> getAchievements()
+            is AchievementEvent.CollectAchievement -> collectAchievement(event.achievementId)
             AchievementEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
+        }
+    }
+
+    private fun collectAchievement(achievementId: String) {
+        _uiState.value?.let { state ->
+            collectAchievementUseCase.execute(achievementId).onEach { dataState ->
+                Timber.d("AchievementViewModel: $dataState")
+                _uiState.value = state.copy(isLoading = dataState.isLoading)
+
+//                dataState.data?.let { achievement ->
+//                    _uiState.value = state.copy(achievements = achievements)
+//                }
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun getAchievements() {
+        _uiState.value?.let { state ->
+            achievementUseCase.execute().onEach { dataState ->
+                Timber.d("Achievement View Model getAchievements: ${dataState.data}")
+
+                val earnedAchievements = mutableListOf<Achievement>()
+
+                dataState.data?.forEach { achievement ->
+                    earnedAchievements.add(achievement)
+                }
+
+                _uiState.value = state.copy(achievements = earnedAchievements)
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -57,31 +99,4 @@ class AchievementViewModel @Inject constructor(
         }
     }
 
-    private fun getAchievements() {
-        _uiState.value?.let { state ->
-            achievementUseCase.execute().onEach { dataState ->
-                Timber.d("Achievement View Model getAchievements: ${dataState.data}")
-                dataState.stateMessage?.let { stateMessage ->
-                    appendToMessageQueue(stateMessage)
-                }
-
-                val earnedAchievements = mutableListOf<Achievement>()
-                val unearnedAchievements = mutableListOf<Achievement>()
-                val collectedAchievements = mutableListOf<Achievement>()
-
-                dataState.data?.forEach { achievement ->
-                    when {
-                        achievement.isCollected -> collectedAchievements.add(achievement)
-                        achievement.isEarned -> earnedAchievements.add(achievement)
-                        else -> unearnedAchievements.add(achievement)
-                    }
-                }
-                _uiState.value = state?.copy(
-                    earnedAchievements = earnedAchievements,
-                    unearnedAchievements = unearnedAchievements,
-                    collectedAchievements = collectedAchievements
-                )
-            }.launchIn(viewModelScope)
-        }
-    }
 }
