@@ -63,6 +63,10 @@ class ProfileFragment : BaseAuthFragment() {
         binding.friendsCount.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAllFriendsFragment())
         }
+        binding.trophyButton.setOnClickListener {
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAchievementFragment())
+        }
+
         collectState()
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
