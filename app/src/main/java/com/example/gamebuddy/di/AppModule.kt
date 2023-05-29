@@ -12,7 +12,8 @@ import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
-import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
+import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
+import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -59,6 +60,17 @@ object AppModule {
             service = service
         )
     }
+    @Singleton
+    @Provides
+    fun provideAvatarUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): AvatarUseCase {
+        return AvatarUseCase(
+            service = service ,
+            authTokenDao = authTokenDao
+        )
+    }
 
     @Singleton
     @Provides
@@ -95,7 +107,6 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
-
     @Singleton
     @Provides
     fun provideremoveFriendsUseCase(
@@ -107,14 +118,13 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
-
     @Singleton
     @Provides
     fun provideGetPopularUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao,
-    ): GetPopularGamesUseCase {
-        return GetPopularGamesUseCase(
+    ): GetPopularUseCase {
+        return GetPopularUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
@@ -149,7 +159,7 @@ object AppModule {
     fun provideGetChatBoxUseCase(
         service: GameBuddyApiMessageService,
         authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase {
+    ): GetChatBoxUseCase{
         return GetChatBoxUseCase(
             service = service,
             authTokenDao = authTokenDao

@@ -40,7 +40,7 @@ class UserDetailsFragment : BaseAuthFragment() {
         binding.apply {
             btnDetailsUser.setOnClickListener {
                 cacheState()
-                findNavController().navigate(UserDetailsFragmentDirections.actionUserDetailsFragmentToGamesFragment())
+                findNavController().navigate(UserDetailsFragmentDirections.actionUserDetailsFragmentToAvatarFragment())
             }
         }
     }
@@ -48,12 +48,10 @@ class UserDetailsFragment : BaseAuthFragment() {
     private fun cacheState() {
         val age = binding.ageEditText.text.toString()
         val country = binding.ccp.selectedCountryName
-        val avatar = "" //  add the logic to get the user's avatar here
         val gender = if (binding.Female.isChecked) "F" else "M"
 
         detailsViewModel.onTriggerEvent(DetailsEvent.OnSetAge(age = age))
         detailsViewModel.onTriggerEvent(DetailsEvent.OnSetCountry(country = country))
-        detailsViewModel.onTriggerEvent(DetailsEvent.OnSetAvatar(avatar = avatar))
         detailsViewModel.onTriggerEvent(DetailsEvent.OnSetGender(gender = gender))
     }
 
