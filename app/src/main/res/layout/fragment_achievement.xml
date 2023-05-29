@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".presentation.main.achievement.AchievementFragment">
 
-
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -26,17 +26,6 @@
             </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
-        <TextView
-            android:id="@+id/txt_earned"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="Earned Achievements"
-            android:textColor="@color/text"
-            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_achievements"
@@ -44,49 +33,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="6"
+            android:layout_gravity="center"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="4"
             tools:listitem="@layout/item_achievement" />
 
-        <TextView
-            android:id="@+id/txt_collected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="Collected Achievements"
-            android:textColor="@color/text"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_collected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_achievement" />
-        <TextView
-            android:id="@+id/txt_unearned"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="Unearned Achievements"
-            android:textColor="@color/text"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_unearned"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="6"
-            tools:listitem="@layout/item_achievement" />
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

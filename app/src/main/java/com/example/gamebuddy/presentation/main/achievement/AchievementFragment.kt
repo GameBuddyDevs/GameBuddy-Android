@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -37,7 +38,7 @@ class AchievementFragment : BaseAuthFragment(), AchievementAdapter.OnClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        //(activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         collectState()
         initRecyclerView()
@@ -73,6 +74,7 @@ class AchievementFragment : BaseAuthFragment(), AchievementAdapter.OnClickListen
 
     override fun onItemClick(achievementId: String) {
         viewModel.onTriggerEvent(AchievementEvent.CollectAchievement(achievementId))
+        Toast.makeText(requireContext(), "Achievement Collected", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
