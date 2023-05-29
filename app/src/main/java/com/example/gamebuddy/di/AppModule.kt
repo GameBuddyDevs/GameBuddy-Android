@@ -13,6 +13,8 @@ import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
+import com.example.gamebuddy.domain.usecase.main.AchievementUseCase
+import com.example.gamebuddy.domain.usecase.main.CollectAchievementUseCase
 import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
@@ -216,5 +218,28 @@ object AppModule {
         )
     }
 
+    @Singleton
+    @Provides
+    fun provideAchievementUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): AchievementUseCase {
+        return AchievementUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideCollectAchievementUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): CollectAchievementUseCase {
+        return CollectAchievementUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
 
 }

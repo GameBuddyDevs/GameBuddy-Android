@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_profileFragment_to_allFriendsFragment"
             app:destination="@id/allFriendsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_achievementFragment"
+            app:destination="@id/achievementFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -72,4 +75,9 @@
         android:name="com.example.gamebuddy.presentation.main.profile.EditLoadingFragment"
         android:label="fragment_edit_loading"
         tools:layout="@layout/fragment_edit_loading" />
+    <fragment
+        android:id="@+id/achievementFragment"
+        android:name="com.example.gamebuddy.presentation.main.achievement.AchievementFragment"
+        android:label="fragment_achievement"
+        tools:layout="@layout/fragment_achievement" />
 </navigation>

@@ -28,6 +28,13 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:menu="@menu/profile_menu">
 
+                <ImageView
+                    android:id="@+id/ic_achievement"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/collected_trophy"
+                    android:contentDescription="@string/achievements" />
+
             </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>

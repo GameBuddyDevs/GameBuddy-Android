@@ -1,6 +1,7 @@
 package com.example.gamebuddy.data.remote.network
 
 import com.example.gamebuddy.data.remote.model.PendingFriends.PendingFriendsResponse
+import com.example.gamebuddy.data.remote.model.achievement.AchievementResponse
 import com.example.gamebuddy.data.remote.model.avatar.AvatarResponse
 import com.example.gamebuddy.data.remote.model.basic.BasicResponse
 import com.example.gamebuddy.data.remote.model.friends.FriendsResponse
@@ -130,5 +131,17 @@ interface GameBuddyApiAppService {
         @Header("Authorization") token: String,
     ): AvatarResponse
 
+    @GET("get/achievements")
+    @Api(ApiType.APPLICATION)
+    suspend fun getAchievements(
+        @Header("Authorization") token: String,
+    ): AchievementResponse
+
+    @GET("collect/achievement/{achievementId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun collectAchievement(
+        @Header("Authorization") token: String,
+        @Path("achievementId") achievementId: String,
+    ): BasicResponse
 
 }

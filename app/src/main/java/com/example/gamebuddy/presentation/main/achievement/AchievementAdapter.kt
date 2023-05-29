@@ -54,7 +54,7 @@ class AchievementAdapter(
 
                 root.setOnClickListener {
                     val position = bindingAdapterPosition
-                    if (position != RecyclerView.NO_POSITION || achievement.isEarned) {
+                    if (position != RecyclerView.NO_POSITION && achievement.isEarned) {
                         onClickListener?.onItemClick(achievement.id)
                     }
                 }

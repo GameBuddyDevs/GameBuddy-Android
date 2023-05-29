@@ -63,7 +63,7 @@ class ProfileFragment : BaseAuthFragment() {
         binding.friendsCount.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAllFriendsFragment())
         }
-        binding.trophyButton.setOnClickListener {
+        binding.icAchievement.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAchievementFragment())
         }
 
