@@ -24,11 +24,6 @@ class HomeViewModel @Inject constructor(
     private val _uiState: MutableLiveData<HomeState> = MutableLiveData(HomeState())
     val uiState: MutableLiveData<HomeState> get() = _uiState
 
-    init {
-        onTriggerEvent(HomeEvent.GetPendingFriends)
-        onTriggerEvent(HomeEvent.GetPopularGames)
-    }
-
     fun onTriggerEvent(event: HomeEvent) {
         when(event){
             is HomeEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()

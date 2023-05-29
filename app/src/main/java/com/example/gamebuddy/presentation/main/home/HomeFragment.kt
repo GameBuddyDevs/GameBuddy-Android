@@ -45,7 +45,8 @@ class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener, G
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.onTriggerEvent(HomeEvent.GetPendingFriends)
+        viewModel.onTriggerEvent(HomeEvent.GetPopularGames)
         initRecyclerView()
         setClickListeners()
         collectState()
@@ -55,6 +56,9 @@ class HomeFragment : BaseAuthFragment(), PendingFriendAdapter.OnClickListener, G
         binding.apply {
             txtSeeAllPopular.setOnClickListener {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPopularGamesFragment())
+            }
+            txtSeeAllCategories.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPendingFriendsFragment())
             }
         }
     }

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_popularGamesFragment"
             app:destination="@id/popularGamesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_pendingFriendsFragment"
+            app:destination="@id/pendingFriendsFragment" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"
@@ -62,4 +65,9 @@
             android:id="@+id/action_gameDetailFragment_to_matchFragment"
             app:destination="@id/matchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/pendingFriendsFragment"
+        android:name="com.example.gamebuddy.presentation.main.pendingfriends.PendingFriendsFragment"
+        android:label="fragment_pending_friends"
+        tools:layout="@layout/fragment_pending_friends" />
 </navigation>
