@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.gamebuddy.R
 import com.example.gamebuddy.data.remote.model.chatbox.Inbox
 import com.example.gamebuddy.databinding.ItemMessageBinding
+import com.example.gamebuddy.util.formatDateTime
 import timber.log.Timber
 
 class ChatBoxAdapter(
@@ -55,7 +56,7 @@ class ChatBoxAdapter(
                     .into(imgChatUsername)
                 txtChatUsername.text = item.username
                 txtLastMessage.text = item.lastMessage
-                txtTime.text = item.lastMessageTime
+                txtTime.text = item.lastMessageTime.formatDateTime()
             }
         }
     }

@@ -113,7 +113,7 @@ fun ImageView.loadImageFromDrawable(
 
 // String Extensions
 fun String.formatDateTime(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
     val dateTime = dateFormat.parse(this)
     val now = Calendar.getInstance().time
     val duration = TimeUnit.MILLISECONDS.toHours(now.time - dateTime.time)
