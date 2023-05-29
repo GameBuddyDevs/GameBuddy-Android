@@ -94,7 +94,7 @@ class ChatBoxAdapter(
 
     class BlogRecyclerChangeCallback(private val chatBoxAdapter: ChatBoxAdapter) : ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {
-            chatBoxAdapter.notifyItemRangeChanged(position, count)
+            chatBoxAdapter.notifyItemInserted(position)
         }
 
         override fun onRemoved(position: Int, count: Int) {

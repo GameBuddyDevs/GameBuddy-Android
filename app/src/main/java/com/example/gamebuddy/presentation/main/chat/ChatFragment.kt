@@ -166,7 +166,7 @@ class ChatFragment : Fragment() {
                         message = editTxtMsg.text.toString()
                     )
                 )
-                //sendMessage(editTxtMsg.text.toString())
+                editTxtMsg.text.clear()
             }
 
             icAddFriend.setOnClickListener {

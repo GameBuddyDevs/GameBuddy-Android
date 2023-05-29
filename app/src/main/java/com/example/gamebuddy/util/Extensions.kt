@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 
@@ -114,6 +115,7 @@ fun ImageView.loadImageFromDrawable(
 // String Extensions
 fun String.formatDateTime(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+    dateFormat.timeZone = TimeZone.getTimeZone("GMT + 3")   // TODO change to users timezone
     val dateTime = dateFormat.parse(this)
     val now = Calendar.getInstance().time
     val duration = TimeUnit.MILLISECONDS.toHours(now.time - dateTime.time)

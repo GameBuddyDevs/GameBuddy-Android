@@ -142,6 +142,7 @@ class ChatBoxFragment : BaseChatFragment(), ChatBoxAdapter.OnClickListener, Frie
             layoutManager = LinearLayoutManager(this@ChatBoxFragment.context)
             chatBoxAdapter = ChatBoxAdapter(this@ChatBoxFragment)
             adapter = chatBoxAdapter
+            //chatBoxAdapter!!.notifyDataSetChanged()
         }
     }
 
