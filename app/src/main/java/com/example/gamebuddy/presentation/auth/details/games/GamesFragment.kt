@@ -53,7 +53,7 @@ class GamesFragment : BaseAuthFragment(), GamesAdapter.OnClickListener {
             findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToKeywordFragment())
         }
         binding.btnBack.setOnClickListener {
-            findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToUserDetailsFragment())
+            findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToAvatarFragment())
         }
     }
 

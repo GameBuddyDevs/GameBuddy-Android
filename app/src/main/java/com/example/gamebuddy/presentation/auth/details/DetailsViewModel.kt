@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamebuddy.data.remote.request.setdetails.SetProfileDetailsRequest
+import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
 import com.example.gamebuddy.domain.usecase.auth.CompleteProfileDetailsUseCase
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
@@ -20,6 +21,7 @@ class DetailsViewModel @Inject constructor(
     private val gamesUseCase: GamesUseCase,
     private val keywordsUseCase: KeywordsUseCase,
     private val completeProfileDetailsUseCase: CompleteProfileDetailsUseCase,
+    private val avatarUseCase: AvatarUseCase,
 ) : ViewModel() {
 
     private val _detailsUiState: MutableLiveData<UserDetailsState> =
@@ -29,11 +31,12 @@ class DetailsViewModel @Inject constructor(
     fun onTriggerEvent(event: DetailsEvent) {
         when (event) {
             is DetailsEvent.OnSetAge -> onSetAge(age = event.age)
-            is DetailsEvent.OnSetAvatar -> onSetAvatar(avatar = event.avatar)
             is DetailsEvent.OnSetCountry -> onSetCountry(country = event.country)
             is DetailsEvent.OnSetGender -> onSetGender(gender = event.gender)
             DetailsEvent.GetGames -> getGames()
             DetailsEvent.GetKeywords -> getKeywords()
+            DetailsEvent.GetAvatars -> getAvatars()
+            is DetailsEvent.AddAvatarToSelected -> addAvatarToSelected(id = event.id)
             is DetailsEvent.AddGameToSelected -> addGameToSelected(id = event.id)
             is DetailsEvent.AddKeywordToSelected -> addKeywordToSelected(id = event.id)
             DetailsEvent.SendProfileDetail -> sendProfileDetails()
@@ -41,10 +44,11 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+
     private fun sendProfileDetails() {
         val age = _detailsUiState.value?.age
         val gender = _detailsUiState.value?.gender
-        val avatar = _detailsUiState.value?.avatar
+        val selectedAvatar = _detailsUiState.value?.selectedAvatar
         val country = _detailsUiState.value?.country
         val selectedGames = _detailsUiState.value?.selectedGames
         val selectedKeywords = _detailsUiState.value?.selectedKeywords
@@ -52,7 +56,7 @@ class DetailsViewModel @Inject constructor(
         val profileDetailsRequest = SetProfileDetailsRequest(
             age = age?.toIntOrNull() ?: 0,
             //avatar = avatar ?: "",
-            avatar = "3484fb61-3d44-4500-915d-3b1bb6b57c49",
+            avatar = selectedAvatar ?:"",
             country = country ?: "",
             gender = gender ?: "",
             favoriteGames = selectedGames ?: listOf(),
@@ -94,6 +98,14 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    private fun addAvatarToSelected(id: String) {
+        Timber.d("LOAA $id")
+        _detailsUiState.value?.let { state ->
+            _detailsUiState.value = state.copy(selectedAvatar = state.selectedAvatar + id)
+            Timber.d("Selected avatar: ${_detailsUiState.value!!.selectedAvatar}")
+        }
+    }
+
     private fun onSetGender(gender: String) {
         _detailsUiState.value?.let { state ->
             _detailsUiState.value = state.copy(gender = gender)
@@ -106,11 +118,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onSetAvatar(avatar: String) {
-        _detailsUiState.value?.let { state ->
-            _detailsUiState.value = state.copy(avatar = avatar)
-        }
-    }
+
 
     private fun onSetAge(age: String) {
         _detailsUiState.value?.let { state ->
@@ -141,6 +149,20 @@ class DetailsViewModel @Inject constructor(
                     _detailsUiState.value = state.copy(queue = queue)
                 }
             }
+        }
+    }
+
+    private fun getAvatars() {
+        _detailsUiState.value?.let { state ->
+            avatarUseCase.execute().onEach { dataState ->
+                Timber.d("DetailsViewModel getAvatars: ${dataState.data}")
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+                _detailsUiState.value = state.copy(avatars = dataState.data)
+            }.launchIn(viewModelScope)
         }
     }
 

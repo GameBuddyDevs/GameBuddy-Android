@@ -2,7 +2,9 @@ package com.example.gamebuddy.presentation.auth.details
 
 import com.example.gamebuddy.data.remote.model.keyword.Keyword
 import com.example.gamebuddy.data.remote.model.keyword.KeywordResponse
+import com.example.gamebuddy.domain.model.avatar.Avatar
 import com.example.gamebuddy.domain.model.game.Game
+import com.example.gamebuddy.domain.model.market.Market
 import com.example.gamebuddy.util.Queue
 import com.example.gamebuddy.util.StateMessage
 
@@ -12,8 +14,9 @@ data class UserDetailsState(
     val keywords: List<Keyword>? = null,
     val age: String = "",
     val country: String = "",
-    val avatar: String = "",
+    val avatars: List<Avatar>? = listOf(),
     val gender: String = "",
+    val selectedAvatar: String = "",
     val selectedGames: List<String> = listOf(),
     val selectedKeywords: List<String> = listOf(),
     val currentFragment: Int = 0,

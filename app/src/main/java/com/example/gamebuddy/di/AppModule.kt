@@ -12,6 +12,7 @@ import com.example.gamebuddy.domain.usecase.main.GetMessagesUseCase
 import com.example.gamebuddy.domain.usecase.main.GetPopularUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
+import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
 import com.example.gamebuddy.domain.usecase.main.MatchUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
@@ -45,6 +46,17 @@ object AppModule {
     ): KeywordsUseCase {
         return KeywordsUseCase(
             service = service
+        )
+    }
+    @Singleton
+    @Provides
+    fun provideAvatarUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao
+    ): AvatarUseCase {
+        return AvatarUseCase(
+            service = service ,
+            authTokenDao = authTokenDao
         )
     }
 
