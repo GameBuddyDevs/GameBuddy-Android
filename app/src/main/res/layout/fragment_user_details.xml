@@ -6,47 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".presentation.auth.details.userdetails.UserDetailsFragment">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/loginImageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:paddingTop="32dp"
-            android:text="Set Your Profile Details"
-            android:textColor="@color/text"
-            android:textSize="40sp"
-            android:textStyle="bold" />
+            android:layout_height="150dp"
+            android:background="@color/pink_500"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_app_logo"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/loginImageView">
+        </ImageView>
 
         <TextView
             android:id="@+id/Age"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:paddingTop="20dp"
             android:text="Age"
             android:textAlignment="textStart"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginImageView" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/usernameContainer"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Age">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:hint="Age"
                 android:inputType="number" />
 
@@ -60,17 +74,20 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/ccp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
-            app:ccp_textGravity="CENTER" />
+            app:ccp_textGravity="CENTER"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/usernameContainer" />
 
         <TextView
             android:id="@+id/gender"
@@ -81,13 +98,20 @@
             android:text="Gender"
             android:textAlignment="textStart"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ccp" />
 
         <RadioGroup
             android:id="@+id/genderRG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gender">
 
             <RadioButton
                 android:id="@+id/Male"
@@ -100,15 +124,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="F" />
-
         </RadioGroup>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDetailsUser"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
             android:text="Continue"
-            app:cornerRadius="32dp" />
-    </LinearLayout>
+            app:cornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genderRG"
+            app:layout_constraintVertical_bias="0.745" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
