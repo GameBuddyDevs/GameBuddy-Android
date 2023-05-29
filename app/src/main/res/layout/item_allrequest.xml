@@ -51,26 +51,24 @@
             android:id="@+id/imageButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/accept_request"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_username_desc"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25"
             app:srcCompat="@drawable/ic_done_24" />
 
         <ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="92dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/decline_request"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txt_username_desc"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25"
             app:srcCompat="@drawable/ic_close_24" />
 
         <View

@@ -13,7 +13,7 @@ import com.example.gamebuddy.domain.usecase.main.GetPopularGamesUseCase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
-import com.example.gamebuddy.domain.usecase.main.MatchUseCase
+import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
 import com.example.gamebuddy.domain.usecase.main.ProfileUseCase
 import com.example.gamebuddy.domain.usecase.main.SendFriendRequestUseCase
@@ -60,6 +60,7 @@ object AppModule {
             service = service
         )
     }
+
     @Singleton
     @Provides
     fun provideAvatarUseCase(
@@ -67,7 +68,7 @@ object AppModule {
         authTokenDao: AuthTokenDao
     ): AvatarUseCase {
         return AvatarUseCase(
-            service = service ,
+            service = service,
             authTokenDao = authTokenDao
         )
     }
@@ -98,7 +99,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideacceptFriendsUseCase(
+    fun provideAcceptFriendsUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
     ): acceptFriendsUseCase {
@@ -107,9 +108,10 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
     @Singleton
     @Provides
-    fun provideremoveFriendsUseCase(
+    fun provideRemoveFriendsUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao
     ): removeFriendsUseCase {
@@ -118,13 +120,14 @@ object AppModule {
             authTokenDao = authTokenDao
         )
     }
+
     @Singleton
     @Provides
     fun provideGetPopularUseCase(
         service: GameBuddyApiAppService,
         authTokenDao: AuthTokenDao,
-    ): GetPopularUseCase {
-        return GetPopularUseCase(
+    ): GetPopularGamesUseCase {
+        return GetPopularGamesUseCase(
             service = service,
             authTokenDao = authTokenDao
         )
@@ -159,7 +162,7 @@ object AppModule {
     fun provideGetChatBoxUseCase(
         service: GameBuddyApiMessageService,
         authTokenDao: AuthTokenDao
-    ): GetChatBoxUseCase{
+    ): GetChatBoxUseCase {
         return GetChatBoxUseCase(
             service = service,
             authTokenDao = authTokenDao
