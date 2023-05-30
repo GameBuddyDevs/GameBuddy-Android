@@ -40,19 +40,4 @@
         app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="@id/ivAvatarDisplayItem"
         app:layout_constraintTop_toBottomOf="@id/ivAvatarDisplayItem" />
-
-    <TextView
-        android:id="@+id/txtPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/poppins_black"
-        android:text="10 coin"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

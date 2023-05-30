@@ -18,7 +18,7 @@ class MarketAdapter(
 
     interface OnClickListener {
         fun onItemClick(position: Int, avatarId: String)
-        fun onBuyClick(position: Int, avatarId: String)
+        fun onBuyClick(position: Int, avatarId: String, price:Int)
 
     }
 
@@ -53,7 +53,7 @@ class MarketAdapter(
                     .load(item.image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivAvatarDisplayItem)
-                txtPrice.text = item.price
+                btnBuy.text = "BUY FOR ${item.price}"
             }
         }
 
@@ -61,7 +61,7 @@ class MarketAdapter(
             val builder = AlertDialog.Builder(binding.root.context)
             builder.setMessage("Do you confirm the purchase of this item ?")
             builder.setPositiveButton("Yes") { dialog, _ ->
-                onClickListener?.onBuyClick(absoluteAdapterPosition, item.id)
+                onClickListener?.onBuyClick(absoluteAdapterPosition, item.id, item.price.toInt())
                 dialog.dismiss()
             }
             builder.setNegativeButton("No") { dialog, _ ->

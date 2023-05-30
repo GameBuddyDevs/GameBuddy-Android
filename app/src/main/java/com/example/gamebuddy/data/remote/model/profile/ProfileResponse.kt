@@ -9,4 +9,7 @@ data class ProfileResponse(
     fun toProfileUser():profilUser?{
         return body?.data?.toProfileUser()
     }
+    fun toCoin():Int{
+        return body.data.toCoin()
+    }
 }

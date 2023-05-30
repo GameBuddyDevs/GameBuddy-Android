@@ -3,6 +3,8 @@ package com.example.gamebuddy.presentation.main.market
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.main.BuyItemUseCase
+import com.example.gamebuddy.domain.usecase.main.CoinUsecase
 import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.util.StateMessage
 import com.example.gamebuddy.util.UIComponentType
@@ -16,17 +18,37 @@ import javax.inject.Inject
 @HiltViewModel
 class MarketViewModel @Inject constructor(
     private val marketUseCase: MarketUseCase,
+    private val coinUseCase: CoinUsecase,
+    private val buyItemUseCase: BuyItemUseCase,
 ) : ViewModel() {
     private val _uiState: MutableLiveData<MarketState> = MutableLiveData(MarketState())
     val uiState: MutableLiveData<MarketState> get() = _uiState
 
     fun onTriggerEvent(event: MarketEvent) {
         when (event) {
+            is MarketEvent.OnSetAvatarId -> OnSetAvatarId(avatarId = event.avatarId)
             MarketEvent.GetAvatars -> getAvatars()
+            MarketEvent.GetCoin -> getCoin()
+            MarketEvent.BuyItem -> buyItem()
             MarketEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
         }
     }
+    private fun buyItem() {
+        val avatarId = _uiState.value?.avatarId
+        buyItemUseCase.execute(avatarId)
+            .onEach { dataState ->
+                Timber.d("MarketViewModel Buy Item: ${dataState.data}")
+                dataState?.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+            }.launchIn(viewModelScope)
+    }
 
+    private fun OnSetAvatarId(avatarId:String){
+        _uiState.value?.let { state->
+            _uiState.value = state.copy(avatarId = avatarId)
+        }
+    }
     private fun removeHeadFromQueue() {
         _uiState.value?.let {
             try {
@@ -52,19 +74,26 @@ class MarketViewModel @Inject constructor(
             }
         }
     }
-
-    private fun getAvatars() {
-        _uiState.value?.let { state ->
-            marketUseCase.execute().onEach { dataState ->
-                Timber.d("Match View Model getUsers: ${dataState.data}")
-                dataState.stateMessage?.let { stateMessage ->
-                    appendToMessageQueue(stateMessage)
-                }
-
-                _uiState.value = state.copy(avatars = dataState.data)
-            }.launchIn(viewModelScope)
-        }
+    private fun getCoin() {
+        coinUseCase.execute().onEach { dataState ->
+            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
+            dataState.data?.let { data ->
+                _uiState.value = uiState.value?.copy(coin = data)
+            }
+            dataState.stateMessage?.let { stateMessage ->
+                appendToMessageQueue(stateMessage)
+            }
+        }.launchIn(viewModelScope)
     }
-
-
+    private fun getAvatars() {
+        marketUseCase.execute().onEach { dataState ->
+            _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
+            dataState.data?.let { avatars->
+                _uiState.value = uiState.value?.copy(avatars = avatars)
+            }
+            dataState.stateMessage?.let { stateMessage ->
+                appendToMessageQueue(stateMessage)
+            }
+        }.launchIn(viewModelScope)
+    }
 }

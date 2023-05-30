@@ -28,4 +28,7 @@ data class ProfileData(
             friendsCount = friends.size
         )
     }
+    fun toCoin():Int{
+        return coin
+    }
 }

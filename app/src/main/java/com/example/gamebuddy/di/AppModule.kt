@@ -14,6 +14,8 @@ import com.example.gamebuddy.domain.usecase.main.MarketUseCase
 import com.example.gamebuddy.data.remote.network.GameBuddyApiMessageService
 import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
 import com.example.gamebuddy.domain.usecase.main.AchievementUseCase
+import com.example.gamebuddy.domain.usecase.main.BuyItemUseCase
+import com.example.gamebuddy.domain.usecase.main.CoinUsecase
 import com.example.gamebuddy.domain.usecase.main.CollectAchievementUseCase
 import com.example.gamebuddy.domain.usecase.main.GetGameDetailUseCase
 import com.example.gamebuddy.domain.usecase.main.PendingFriendUseCase
@@ -178,6 +180,30 @@ object AppModule {
         authTokenDao: AuthTokenDao,
     ): ProfileUseCase {
         return ProfileUseCase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideCoinUseCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): CoinUsecase {
+        return CoinUsecase(
+            service = service,
+            authTokenDao = authTokenDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideBuyItemCase(
+        service: GameBuddyApiAppService,
+        authTokenDao: AuthTokenDao,
+    ): BuyItemUseCase {
+        return BuyItemUseCase(
             service = service,
             authTokenDao = authTokenDao
         )

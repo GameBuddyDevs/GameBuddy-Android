@@ -37,6 +37,13 @@ interface GameBuddyApiAppService {
         @Path("gameId") gameId: String
     ): GameDetailResponse
 
+    @POST("buy/item/{itemId}")
+    @Api(ApiType.APPLICATION)
+    suspend fun buyItem(
+        @Header("Authorization") token: String,
+        @Path("itemId") itemId: String
+    ): BasicResponse
+
     @GET("get/keywords")
     @Api(ApiType.APPLICATION)
     suspend fun getKeywords(): KeywordResponse
