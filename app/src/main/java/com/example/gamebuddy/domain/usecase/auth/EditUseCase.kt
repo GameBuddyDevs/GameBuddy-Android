@@ -5,6 +5,7 @@ import com.example.gamebuddy.data.local.auth.toAuthToken
 import com.example.gamebuddy.data.remote.model.username.UsernameResponse
 import com.example.gamebuddy.data.remote.network.GameBuddyApiAuthService
 import com.example.gamebuddy.data.remote.request.NewAgeRequest
+import com.example.gamebuddy.data.remote.request.NewAvatarRequest
 import com.example.gamebuddy.data.remote.request.NewGamesRequest
 import com.example.gamebuddy.data.remote.request.usernameRequest
 import com.example.gamebuddy.util.DataState
@@ -23,7 +24,8 @@ class EditUseCase(
         username:String,
         age:Int,
         games:List<String>,
-        keywords:List<String>
+        keywords:List<String>,
+        avatarId:String
     ):Flow<DataState<Boolean>> = flow {
         emit(DataState.loading())
         val authToken = authTokenDao.getAuthToken()?.toAuthToken()
@@ -52,6 +54,14 @@ class EditUseCase(
                     )
                 )
             }
+            "avatar" -> {
+                service.newAvatar(
+                    token = "Bearer ${authToken?.token}",
+                    newAvatarRequest = NewAvatarRequest(
+                        avatarId = avatarId
+                    )
+                )
+            }
             else -> {
                 service.newKeywords(
                     token = "Bearer ${authToken?.token}",
@@ -62,7 +72,7 @@ class EditUseCase(
             }
         }
         if (!response.status.success) {
-            Timber.e("AcceptFriendsUseCase ${response.status.message}")
+            Timber.e("EditUseCase ${response.status.message}")
             throw Exception(response.status.message)
         }
         emit(DataState.success(response = null, data = true))

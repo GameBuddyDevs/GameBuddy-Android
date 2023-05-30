@@ -48,6 +48,13 @@ interface GameBuddyApiAuthService {
         @Body newAgeRequest: NewAgeRequest,
     ):UsernameResponse
 
+    @PUT("change/avatar")
+    @Api(ApiType.AUTH)
+    suspend fun newAvatar(
+        @Header("Authorization") token: String,
+        @Body newAvatarRequest: NewAvatarRequest,
+    ):UsernameResponse
+
     @PUT("change/games")
     @Api(ApiType.AUTH)
     suspend fun newGames(

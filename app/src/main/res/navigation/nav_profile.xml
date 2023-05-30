@@ -46,6 +46,9 @@
         <argument
             android:name="keywords"
             app:argType="string[]" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_editAvatarFragment"
+            app:destination="@id/editAvatarFragment" />
     </fragment>
     <fragment
         android:id="@+id/allFriendsFragment"
@@ -80,4 +83,9 @@
         android:name="com.example.gamebuddy.presentation.main.achievement.AchievementFragment"
         android:label="fragment_achievement"
         tools:layout="@layout/fragment_achievement" />
+    <fragment
+        android:id="@+id/editAvatarFragment"
+        android:name="com.example.gamebuddy.presentation.main.profile.EditAvatarFragment"
+        android:label="fragment_edit_avatar"
+        tools:layout="@layout/fragment_edit_avatar" />
 </navigation>

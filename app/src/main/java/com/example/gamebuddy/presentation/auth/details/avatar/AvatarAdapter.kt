@@ -22,7 +22,7 @@ class AvatarAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AvatarAdapter.MessageViewHolder(
+        return MessageViewHolder(
             ItemAvatarBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,

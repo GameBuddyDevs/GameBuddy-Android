@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.main.profile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamebuddy.domain.usecase.auth.AvatarUseCase
 import com.example.gamebuddy.domain.usecase.auth.EditUseCase
 import com.example.gamebuddy.domain.usecase.auth.GamesUseCase
 import com.example.gamebuddy.domain.usecase.auth.KeywordsUseCase
@@ -20,6 +21,7 @@ class EditProfileViewModel @Inject constructor(
     private val gamesUseCase: GamesUseCase,
     private val editUseCase: EditUseCase,
     private val keywordsUseCase: KeywordsUseCase,
+    private val avatarUseCase: AvatarUseCase,
 ) : ViewModel()  {
     private val _uiState:MutableLiveData<EditState> =
         MutableLiveData(EditState())
@@ -28,15 +30,30 @@ class EditProfileViewModel @Inject constructor(
     fun onTriggerEvent(event:EditEvent){
         when(event){
             is EditEvent.OnSetAge -> onSetAge(age = event.age)
+            is EditEvent.OnSetAvatar -> onSetAvatar(avatar = event.avatarId)
             is EditEvent.OnSetParam -> onSetParam(param = event.param)
             is EditEvent.OnSetUsername -> onSetUsername(username = event.username)
             is EditEvent.AddKeywordToSelected -> addKeywordToSelected(id=event.id)
             is EditEvent.AddGameToSelected -> addGameToSelected(id = event.id)
             EditEvent.GetGames -> getGames()
             EditEvent.GetKeywords -> getKeywords()
+            EditEvent.GetAvatars -> getAvatars()
             EditEvent.Edit -> edit()
             EditEvent.OnRemoveHeadFromQueue -> removeHeadFromQueue()
 
+        }
+    }
+    private fun getAvatars(){
+        _uiState.value?.let { state ->
+            avatarUseCase.execute().onEach { dataState ->
+                Timber.d("Edit Profile ViewModel getAvatars: ${dataState.data}")
+
+                dataState.stateMessage?.let { stateMessage ->
+                    appendToMessageQueue(stateMessage)
+                }
+
+                _uiState.value = state.copy(avatars = dataState.data)
+            }.launchIn(viewModelScope)
         }
     }
     private fun getKeywords() {
@@ -70,11 +87,12 @@ class EditProfileViewModel @Inject constructor(
     private fun edit(){
         val param = _uiState.value?.param ?: ""
         val age = _uiState.value?.age?.toIntOrNull() ?: 0
+        val avatarId = _uiState.value?.avatarId?: ""
         val username = _uiState.value?.username ?: ""
         val selectedGames = _uiState.value?.selectedGames ?: listOf()
         val selectedKeywords = _uiState.value?.selectedKeywords ?: listOf()
 
-        editUseCase.execute(param,username,age,selectedGames,selectedKeywords)
+        editUseCase.execute(param,username,age,selectedGames,selectedKeywords,avatarId)
             .onEach { dataState ->
                 Timber.d("startup-logic: Collecting data: $dataState")
                 _uiState.value = uiState.value?.copy(isLoading = dataState.isLoading)
@@ -121,7 +139,11 @@ class EditProfileViewModel @Inject constructor(
             _uiState.value = state.copy(username = username)
         }
     }
-
+    private fun onSetAvatar(avatar: String) {
+        _uiState.value?.let { state->
+            _uiState.value = state.copy(avatarId = avatar)
+        }
+    }
     private fun onSetAge(age: String) {
         _uiState.value?.let { state->
             _uiState.value = state.copy(age = age)

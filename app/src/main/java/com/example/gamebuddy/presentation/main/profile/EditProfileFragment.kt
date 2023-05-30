@@ -80,6 +80,9 @@ class EditProfileFragment : BaseAuthFragment() {
         binding.keywordEditButton.setOnClickListener {
             findNavController().navigate(EditProfileFragmentDirections.actionEditProfileFragmentToEditKeywordFragment())
         }
+        binding.profileAvatar.setOnClickListener {
+            findNavController().navigate(EditProfileFragmentDirections.actionEditProfileFragmentToEditAvatarFragment())
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

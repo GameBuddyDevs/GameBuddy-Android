@@ -3,6 +3,7 @@ package com.example.gamebuddy.presentation.main.profile
 
 sealed class EditEvent {
     data class OnSetAge(val age: String): EditEvent()
+    data class OnSetAvatar(val avatarId: String): EditEvent()
 
     data class OnSetUsername(val username: String): EditEvent()
 
@@ -15,6 +16,8 @@ sealed class EditEvent {
     object GetGames : EditEvent()
 
     object GetKeywords: EditEvent()
+
+    object GetAvatars: EditEvent()
 
     object Edit : EditEvent()
 
