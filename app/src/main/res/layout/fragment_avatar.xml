@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtKeyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:backgroundTint="@color/black"
+                android:background="@drawable/border"
+                android:fontFamily="@font/poppins_bold"
+                android:paddingTop="32dp"
+                android:paddingBottom="32dp"
+                android:text="Select your avatar"
+                android:textColor="@color/text"
+                android:textAlignment="center"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAvatarList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="@id/coinGroup"
+            app:layout_constraintStart_toStartOf="@id/coinGroup"
+            app:layout_constraintTop_toBottomOf="@id/coinGroup"
+            app:layout_constraintVertical_bias="1.0"
+            app:spanCount="2"
+            android:layout_above="@+id/btnBack"
+            tools:listitem="@layout/item_avatar" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintEnd_toEndOf="@id/rvAvatarList"
+            app:layout_constraintStart_toStartOf="@id/rvAvatarList"
+            app:layout_constraintTop_toBottomOf="@id/rvAvatarList"
+            app:layout_constraintBottom_toBottomOf="@id/container"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:textColor="@color/bottom_nav_selector"
+            android:text="Previous"
+            android:backgroundTint="@color/white"
+            app:cornerRadius="32dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

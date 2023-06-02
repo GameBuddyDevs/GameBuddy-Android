@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.main.communitydetail.CommunityDetailFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ic_back"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_arrow_back_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="spain gamers"
+                    android:textColor="@color/text"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ic_back"
+                    app:layout_constraintStart_toEndOf="@+id/ic_back"
+                    app:layout_constraintTop_toTopOf="@+id/ic_back" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/img_community_background"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:contentDescription="@string/community_background_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_profile"
+        tools:src="@drawable/flag_spain" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_community_avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/battlefield1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_profile" />
+
+    <TextView
+        android:id="@+id/txt_member_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="64dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="4000"
+        android:textColor="@color/pink_500"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_post_count"
+        app:layout_constraintTop_toBottomOf="@+id/img_community_background" />
+
+    <TextView
+        android:id="@+id/txt_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/member"
+        android:textColor="@color/pink_500"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_member_count"
+        app:layout_constraintStart_toStartOf="@+id/txt_member_count"
+        app:layout_constraintTop_toBottomOf="@+id/txt_member_count" />
+
+    <TextView
+        android:id="@+id/txt_post_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="4"
+        android:textColor="@color/pink_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_community_background" />
+
+
+    <TextView
+        android:id="@+id/txt_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/post"
+        android:textColor="@color/pink_500"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_post_count"
+        app:layout_constraintStart_toStartOf="@+id/txt_post_count"
+        app:layout_constraintTop_toBottomOf="@+id/txt_post_count" />
+
+    <TextView
+        android:id="@+id/txt_community_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:maxEms="12"
+        android:text="Spain Gamers is a community for gamers in spain"
+        android:textColor="@color/text"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/img_community_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/txt_member_count" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_follow_state"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/follow"
+        app:cornerRadius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_community_description" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_community_detail_posts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_follow_state"
+        app:spanCount="3"
+        tools:listitem="@layout/item_community_detail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

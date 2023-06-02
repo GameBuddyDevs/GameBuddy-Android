@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.gamebuddy.presentation.main.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_matchFragment"
+            app:destination="@id/matchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_popularGamesFragment"
+            app:destination="@id/popularGamesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_pendingFriendsFragment"
+            app:destination="@id/pendingFriendsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.example.gamebuddy.presentation.main.match.MatchFragment"
+        android:label="fragment_match"
+        tools:layout="@layout/fragment_match" >
+        <action
+            android:id="@+id/action_matchFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.gamebuddy.presentation.main.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="matchedUserId"
+            app:argType="string" />
+        <argument
+            android:name="matchedAvatar"
+            app:argType="string" />
+        <argument
+            android:name="matchedUsername"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/popularGamesFragment"
+        android:name="com.example.gamebuddy.presentation.main.populargames.PopularGamesFragment"
+        android:label="fragment_popular_games"
+        tools:layout="@layout/fragment_popular_games" >
+        <action
+            android:id="@+id/action_popularGamesFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.example.gamebuddy.presentation.main.gamedetail.GameDetailFragment"
+        android:label="fragment_game_detail"
+        tools:layout="@layout/fragment_game_detail" >
+        <argument
+            android:name="gameId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_gameDetailFragment_to_matchFragment"
+            app:destination="@id/matchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pendingFriendsFragment"
+        android:name="com.example.gamebuddy.presentation.main.pendingfriends.PendingFriendsFragment"
+        android:label="fragment_pending_friends"
+        tools:layout="@layout/fragment_pending_friends" />
+</navigation>

@@ -30,6 +30,17 @@ jobs:
       - name: Print Java version
         run: javac -version
 
+      - name: Add outer files
+        run: |
+          touch local.properties
+          touch src/app/src/debug/google-services.json
+          touch src/app/src/google-services.json
+          touch src/app/src/Debug/google-services.json
+          touch src/app/google-services.json
+
+      - name: Add Api Key
+        run: echo "apiKey=\"\"" >> local.properties
+
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 

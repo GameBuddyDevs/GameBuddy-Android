@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="black_700">#1A1B22</color>
+    <color name="black_500">#23252F</color>
+    <color name="pink_500">#FF4D67</color>
+    <color name="pink_200">#E98090</color>
+
+    <!-- Attribute helper colors -->
+    <color name="background">#1A1B22</color>
+    <color name="edit_text_background">#23252F</color>
+    <color name="edit_text_background_focus">#2C1F27</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="text_primary">@color/pink_500</color>
+    <color name="bottom_nav_bar_background">@color/black_700</color>
+    <color name="bottom_nav_selector">@color/pink_500</color>
+
+</resources>
