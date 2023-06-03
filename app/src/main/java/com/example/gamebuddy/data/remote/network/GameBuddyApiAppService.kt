@@ -116,7 +116,7 @@ interface GameBuddyApiAppService {
     @GET("get/popular/games")
     @Api(ApiType.APPLICATION)
     suspend fun getPopularGames(
-        @Header("Authorization") token: String,
+
     ): PopularGamesResponse
 
     @GET("get/marketplace")

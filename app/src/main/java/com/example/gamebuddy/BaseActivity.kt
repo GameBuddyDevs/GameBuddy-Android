@@ -24,14 +24,7 @@ abstract class BaseActivity : AppCompatActivity(), UICommunicationListener, Envi
     @Inject
     lateinit var sessionManager: SessionManager
 
-    override fun displayProgressBar(isLoading: Boolean) {
-        if (currentFocus != null) {
-            hideSoftKeyboard()
-            val inputMethodManager =
-                getSystemService(ContextThemeWrapper.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-    }
+    abstract override fun displayProgressBar(isLoading: Boolean)
 
     /*
     * override fun displayProgressBar(isLoading: Boolean){

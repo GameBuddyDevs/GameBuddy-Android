@@ -26,7 +26,7 @@ class GetPopularGamesUseCase(
         }
 
         val popular = service.getPopularGames(
-            token = "Bearer ${authToken.token}",
+            //token = "Bearer ${authToken.token}",
         ).toPopularGames()
 
         emit(DataState.success(response = null, data = popular))
