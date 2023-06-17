@@ -12,10 +12,18 @@
         tools:layout="@layout/fragment_community" >
         <action
             android:id="@+id/action_communityFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            app:destination="@id/commentFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_communityFragment_to_joinCommunityFragment"
-            app:destination="@id/joinCommunityFragment" />
+            app:destination="@id/joinCommunityFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
@@ -33,10 +41,18 @@
         tools:layout="@layout/fragment_join_community" >
         <action
             android:id="@+id/action_joinCommunityFragment_to_communityDialogFragment"
-            app:destination="@id/communityDialogFragment" />
+            app:destination="@id/communityDialogFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_joinCommunityFragment_to_communityDetailFragment"
-            app:destination="@id/communityDetailFragment" />
+            app:destination="@id/communityDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/communityDetailFragment"

@@ -12,13 +12,25 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_matchFragment"
-            app:destination="@id/matchFragment" />
+            app:destination="@id/matchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_popularGamesFragment"
-            app:destination="@id/popularGamesFragment" />
+            app:destination="@id/popularGamesFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_pendingFriendsFragment"
-            app:destination="@id/pendingFriendsFragment" />
+            app:destination="@id/pendingFriendsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"
@@ -27,7 +39,11 @@
         tools:layout="@layout/fragment_match" >
         <action
             android:id="@+id/action_matchFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -51,7 +67,11 @@
         tools:layout="@layout/fragment_popular_games" >
         <action
             android:id="@+id/action_popularGamesFragment_to_gameDetailFragment"
-            app:destination="@id/gameDetailFragment" />
+            app:destination="@id/gameDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/gameDetailFragment"
@@ -63,7 +83,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_gameDetailFragment_to_matchFragment"
-            app:destination="@id/matchFragment" />
+            app:destination="@id/matchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/pendingFriendsFragment"

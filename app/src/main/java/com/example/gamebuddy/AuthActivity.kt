@@ -2,6 +2,7 @@ package com.example.gamebuddy
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
@@ -123,4 +124,9 @@ class AuthActivity : BaseActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun displayProgressBar(isLoading: Boolean) {
+        if(isLoading) binding.progressBar.visibility = View.VISIBLE else binding.progressBar.visibility = View.GONE
+    }
+
 }
